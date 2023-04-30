@@ -32,38 +32,38 @@
             LblEmployee = new Label();
             LblTableNumber = new Label();
             BtnDrinks = new Button();
-            btnDinner = new Button();
-            btnLunch = new Button();
+            BtnDinner = new Button();
+            BtnLunch = new Button();
             pictureBox1 = new PictureBox();
             BtnPay = new Button();
             ListViewOrderdItems = new ListView();
             groupBox1 = new GroupBox();
             label1 = new Label();
             PnlDinner = new Panel();
-            LblDinnerMains = new Label();
-            ListDinnerMains = new ListView();
             LblDinnerStarter = new Label();
             ListDinnerStarter = new ListView();
             LblDinnerEntre = new Label();
             ListDinnerEntre = new ListView();
+            LblDinnerMains = new Label();
+            ListDinnerMains = new ListView();
+            LblDinnerDesserts = new Label();
+            ListDinnerDesserts = new ListView();
             PnlLunch = new Panel();
-            LblLunchDesserts = new Label();
-            ListLunchDesserts = new ListView();
             LblLunchStarter = new Label();
             ListLunchStarter = new ListView();
             LblLunchMains = new Label();
             ListLunchMains = new ListView();
-            LblDinnerDesserts = new Label();
-            ListDinnerDesserts = new ListView();
+            LblLunchDesserts = new Label();
+            ListLunchDesserts = new ListView();
             PnlDrinks = new Panel();
-            LblDrinksSpirits = new Label();
-            ListDrinksSpirits = new ListView();
-            LblDrinksWines = new Label();
-            ListDrinksWines = new ListView();
             LblDrinksSoft = new Label();
             ListDrinksSoft = new ListView();
             LblDrinksBeers = new Label();
             ListDrinksBeers = new ListView();
+            LblDrinksWines = new Label();
+            ListDrinksWines = new ListView();
+            LblDrinksSpirits = new Label();
+            ListDrinksSpirits = new ListView();
             LblDrinksHot = new Label();
             ListDrinksHot = new ListView();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -107,28 +107,31 @@
             BtnDrinks.TabIndex = 9;
             BtnDrinks.Text = "Drinks";
             BtnDrinks.UseVisualStyleBackColor = false;
+            BtnDrinks.Click += BtnDrinks_Click;
             // 
-            // btnDinner
+            // BtnDinner
             // 
-            btnDinner.BackColor = Color.FromArgb(138, 210, 176);
-            btnDinner.Location = new Point(158, 83);
-            btnDinner.Margin = new Padding(2);
-            btnDinner.Name = "btnDinner";
-            btnDinner.Size = new Size(90, 50);
-            btnDinner.TabIndex = 8;
-            btnDinner.Text = "Dinner";
-            btnDinner.UseVisualStyleBackColor = false;
+            BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDinner.Location = new Point(158, 83);
+            BtnDinner.Margin = new Padding(2);
+            BtnDinner.Name = "BtnDinner";
+            BtnDinner.Size = new Size(90, 50);
+            BtnDinner.TabIndex = 8;
+            BtnDinner.Text = "Dinner";
+            BtnDinner.UseVisualStyleBackColor = false;
+            BtnDinner.Click += BtnDinner_Click;
             // 
-            // btnLunch
+            // BtnLunch
             // 
-            btnLunch.BackColor = Color.FromArgb(138, 210, 176);
-            btnLunch.Location = new Point(16, 83);
-            btnLunch.Margin = new Padding(2);
-            btnLunch.Name = "btnLunch";
-            btnLunch.Size = new Size(90, 50);
-            btnLunch.TabIndex = 7;
-            btnLunch.Text = "Lunch";
-            btnLunch.UseVisualStyleBackColor = false;
+            BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
+            BtnLunch.Location = new Point(16, 83);
+            BtnLunch.Margin = new Padding(2);
+            BtnLunch.Name = "BtnLunch";
+            BtnLunch.Size = new Size(90, 50);
+            BtnLunch.TabIndex = 7;
+            BtnLunch.Text = "Lunch";
+            BtnLunch.UseVisualStyleBackColor = false;
+            BtnLunch.Click += BtnLunch_Click;
             // 
             // pictureBox1
             // 
@@ -199,24 +202,6 @@
             PnlDinner.Size = new Size(373, 275);
             PnlDinner.TabIndex = 16;
             // 
-            // LblDinnerMains
-            // 
-            LblDinnerMains.AutoSize = true;
-            LblDinnerMains.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDinnerMains.Location = new Point(155, 381);
-            LblDinnerMains.Name = "LblDinnerMains";
-            LblDinnerMains.Size = new Size(39, 15);
-            LblDinnerMains.TabIndex = 4;
-            LblDinnerMains.Text = "Mains";
-            // 
-            // ListDinnerMains
-            // 
-            ListDinnerMains.Location = new Point(9, 403);
-            ListDinnerMains.Name = "ListDinnerMains";
-            ListDinnerMains.Size = new Size(339, 155);
-            ListDinnerMains.TabIndex = 5;
-            ListDinnerMains.UseCompatibleStateImageBehavior = false;
-            // 
             // LblDinnerStarter
             // 
             LblDinnerStarter.AutoSize = true;
@@ -253,6 +238,42 @@
             ListDinnerEntre.TabIndex = 3;
             ListDinnerEntre.UseCompatibleStateImageBehavior = false;
             // 
+            // LblDinnerMains
+            // 
+            LblDinnerMains.AutoSize = true;
+            LblDinnerMains.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LblDinnerMains.Location = new Point(155, 381);
+            LblDinnerMains.Name = "LblDinnerMains";
+            LblDinnerMains.Size = new Size(39, 15);
+            LblDinnerMains.TabIndex = 4;
+            LblDinnerMains.Text = "Mains";
+            // 
+            // ListDinnerMains
+            // 
+            ListDinnerMains.Location = new Point(9, 403);
+            ListDinnerMains.Name = "ListDinnerMains";
+            ListDinnerMains.Size = new Size(339, 155);
+            ListDinnerMains.TabIndex = 5;
+            ListDinnerMains.UseCompatibleStateImageBehavior = false;
+            // 
+            // LblDinnerDesserts
+            // 
+            LblDinnerDesserts.AutoSize = true;
+            LblDinnerDesserts.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LblDinnerDesserts.Location = new Point(155, 570);
+            LblDinnerDesserts.Name = "LblDinnerDesserts";
+            LblDinnerDesserts.Size = new Size(55, 15);
+            LblDinnerDesserts.TabIndex = 18;
+            LblDinnerDesserts.Text = "Desserts";
+            // 
+            // ListDinnerDesserts
+            // 
+            ListDinnerDesserts.Location = new Point(9, 592);
+            ListDinnerDesserts.Name = "ListDinnerDesserts";
+            ListDinnerDesserts.Size = new Size(339, 155);
+            ListDinnerDesserts.TabIndex = 19;
+            ListDinnerDesserts.UseCompatibleStateImageBehavior = false;
+            // 
             // PnlLunch
             // 
             PnlLunch.AutoScroll = true;
@@ -262,34 +283,16 @@
             PnlLunch.Controls.Add(ListLunchMains);
             PnlLunch.Controls.Add(LblLunchDesserts);
             PnlLunch.Controls.Add(ListLunchDesserts);
-            PnlLunch.Location = new Point(13, 138);
+            PnlLunch.Location = new Point(16, 138);
             PnlLunch.Name = "PnlLunch";
             PnlLunch.Size = new Size(373, 275);
             PnlLunch.TabIndex = 17;
-            // 
-            // LblLunchDesserts
-            // 
-            LblLunchDesserts.AutoSize = true;
-            LblLunchDesserts.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblLunchDesserts.Location = new Point(155, 381);
-            LblLunchDesserts.Name = "LblLunchDesserts";
-            LblLunchDesserts.Size = new Size(55, 15);
-            LblLunchDesserts.TabIndex = 4;
-            LblLunchDesserts.Text = "Desserts";
-            // 
-            // ListLunchDesserts
-            // 
-            ListLunchDesserts.Location = new Point(9, 403);
-            ListLunchDesserts.Name = "ListLunchDesserts";
-            ListLunchDesserts.Size = new Size(339, 155);
-            ListLunchDesserts.TabIndex = 5;
-            ListLunchDesserts.UseCompatibleStateImageBehavior = false;
             // 
             // LblLunchStarter
             // 
             LblLunchStarter.AutoSize = true;
             LblLunchStarter.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblLunchStarter.Location = new Point(142, 8);
+            LblLunchStarter.Location = new Point(158, 8);
             LblLunchStarter.Name = "LblLunchStarter";
             LblLunchStarter.Size = new Size(52, 15);
             LblLunchStarter.TabIndex = 0;
@@ -321,23 +324,23 @@
             ListLunchMains.TabIndex = 3;
             ListLunchMains.UseCompatibleStateImageBehavior = false;
             // 
-            // LblDinnerDesserts
+            // LblLunchDesserts
             // 
-            LblDinnerDesserts.AutoSize = true;
-            LblDinnerDesserts.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDinnerDesserts.Location = new Point(155, 570);
-            LblDinnerDesserts.Name = "LblDinnerDesserts";
-            LblDinnerDesserts.Size = new Size(55, 15);
-            LblDinnerDesserts.TabIndex = 18;
-            LblDinnerDesserts.Text = "Desserts";
+            LblLunchDesserts.AutoSize = true;
+            LblLunchDesserts.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LblLunchDesserts.Location = new Point(155, 381);
+            LblLunchDesserts.Name = "LblLunchDesserts";
+            LblLunchDesserts.Size = new Size(55, 15);
+            LblLunchDesserts.TabIndex = 4;
+            LblLunchDesserts.Text = "Desserts";
             // 
-            // ListDinnerDesserts
+            // ListLunchDesserts
             // 
-            ListDinnerDesserts.Location = new Point(9, 592);
-            ListDinnerDesserts.Name = "ListDinnerDesserts";
-            ListDinnerDesserts.Size = new Size(339, 155);
-            ListDinnerDesserts.TabIndex = 19;
-            ListDinnerDesserts.UseCompatibleStateImageBehavior = false;
+            ListLunchDesserts.Location = new Point(9, 403);
+            ListLunchDesserts.Name = "ListLunchDesserts";
+            ListLunchDesserts.Size = new Size(339, 155);
+            ListLunchDesserts.TabIndex = 5;
+            ListLunchDesserts.UseCompatibleStateImageBehavior = false;
             // 
             // PnlDrinks
             // 
@@ -352,53 +355,16 @@
             PnlDrinks.Controls.Add(ListDrinksSpirits);
             PnlDrinks.Controls.Add(LblDrinksHot);
             PnlDrinks.Controls.Add(ListDrinksHot);
-            PnlDrinks.Location = new Point(16, 139);
+            PnlDrinks.Location = new Point(16, 138);
             PnlDrinks.Name = "PnlDrinks";
             PnlDrinks.Size = new Size(373, 275);
             PnlDrinks.TabIndex = 20;
-            // 
-            // LblDrinksSpirits
-            // 
-            LblDrinksSpirits.AutoSize = true;
-            LblDrinksSpirits.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDrinksSpirits.Location = new Point(155, 570);
-            LblDrinksSpirits.Name = "LblDrinksSpirits";
-            LblDrinksSpirits.Size = new Size(42, 15);
-            LblDrinksSpirits.TabIndex = 18;
-            LblDrinksSpirits.Text = "Spirits";
-            // 
-            // ListDrinksSpirits
-            // 
-            ListDrinksSpirits.Location = new Point(9, 592);
-            ListDrinksSpirits.Name = "ListDrinksSpirits";
-            ListDrinksSpirits.Size = new Size(339, 155);
-            ListDrinksSpirits.TabIndex = 19;
-            ListDrinksSpirits.UseCompatibleStateImageBehavior = false;
-            ListDrinksSpirits.SelectedIndexChanged += listView8_SelectedIndexChanged;
-            // 
-            // LblDrinksWines
-            // 
-            LblDrinksWines.AutoSize = true;
-            LblDrinksWines.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDrinksWines.Location = new Point(155, 381);
-            LblDrinksWines.Name = "LblDrinksWines";
-            LblDrinksWines.Size = new Size(41, 15);
-            LblDrinksWines.TabIndex = 4;
-            LblDrinksWines.Text = "Wines";
-            // 
-            // ListDrinksWines
-            // 
-            ListDrinksWines.Location = new Point(9, 403);
-            ListDrinksWines.Name = "ListDrinksWines";
-            ListDrinksWines.Size = new Size(339, 155);
-            ListDrinksWines.TabIndex = 5;
-            ListDrinksWines.UseCompatibleStateImageBehavior = false;
             // 
             // LblDrinksSoft
             // 
             LblDrinksSoft.AutoSize = true;
             LblDrinksSoft.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDrinksSoft.Location = new Point(152, 7);
+            LblDrinksSoft.Location = new Point(158, 8);
             LblDrinksSoft.Name = "LblDrinksSoft";
             LblDrinksSoft.Size = new Size(70, 15);
             LblDrinksSoft.TabIndex = 0;
@@ -430,6 +396,42 @@
             ListDrinksBeers.TabIndex = 3;
             ListDrinksBeers.UseCompatibleStateImageBehavior = false;
             // 
+            // LblDrinksWines
+            // 
+            LblDrinksWines.AutoSize = true;
+            LblDrinksWines.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LblDrinksWines.Location = new Point(155, 381);
+            LblDrinksWines.Name = "LblDrinksWines";
+            LblDrinksWines.Size = new Size(41, 15);
+            LblDrinksWines.TabIndex = 4;
+            LblDrinksWines.Text = "Wines";
+            // 
+            // ListDrinksWines
+            // 
+            ListDrinksWines.Location = new Point(9, 403);
+            ListDrinksWines.Name = "ListDrinksWines";
+            ListDrinksWines.Size = new Size(339, 155);
+            ListDrinksWines.TabIndex = 5;
+            ListDrinksWines.UseCompatibleStateImageBehavior = false;
+            // 
+            // LblDrinksSpirits
+            // 
+            LblDrinksSpirits.AutoSize = true;
+            LblDrinksSpirits.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LblDrinksSpirits.Location = new Point(155, 570);
+            LblDrinksSpirits.Name = "LblDrinksSpirits";
+            LblDrinksSpirits.Size = new Size(42, 15);
+            LblDrinksSpirits.TabIndex = 18;
+            LblDrinksSpirits.Text = "Spirits";
+            // 
+            // ListDrinksSpirits
+            // 
+            ListDrinksSpirits.Location = new Point(9, 592);
+            ListDrinksSpirits.Name = "ListDrinksSpirits";
+            ListDrinksSpirits.Size = new Size(339, 155);
+            ListDrinksSpirits.TabIndex = 19;
+            ListDrinksSpirits.UseCompatibleStateImageBehavior = false;
+            // 
             // LblDrinksHot
             // 
             LblDrinksHot.AutoSize = true;
@@ -457,13 +459,13 @@
             Controls.Add(PnlLunch);
             Controls.Add(PnlDrinks);
             Controls.Add(PnlDinner);
-            Controls.Add(btnDinner);
+            Controls.Add(BtnDinner);
             Controls.Add(groupBox1);
             Controls.Add(BtnPay);
             Controls.Add(LblEmployee);
             Controls.Add(LblTableNumber);
             Controls.Add(BtnDrinks);
-            Controls.Add(btnLunch);
+            Controls.Add(BtnLunch);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -488,8 +490,8 @@
         private Label LblEmployee;
         private Label LblTableNumber;
         private Button BtnDrinks;
-        private Button btnDinner;
-        private Button btnLunch;
+        private Button BtnDinner;
+        private Button BtnLunch;
         private PictureBox pictureBox1;
         private Button BtnPay;
         private ListView ListViewOrderdItems;

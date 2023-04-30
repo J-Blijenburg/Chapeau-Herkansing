@@ -17,7 +17,17 @@ namespace UI
             InitializeComponent();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void BtnLunch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnDinner_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnDrinks_Click(object sender, EventArgs e)
         {
 
         }

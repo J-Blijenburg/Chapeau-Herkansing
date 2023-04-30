@@ -30,18 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableOverview));
             pictureBox1 = new PictureBox();
-            btnLunch = new Button();
-            btnDinner = new Button();
+            BtnLunch = new Button();
+            BtnDinner = new Button();
             BtnDrinks = new Button();
             LblTableNumber = new Label();
             LblEmployee = new Label();
             groupBox1 = new GroupBox();
+            ListViewOrderdItems = new ListView();
             label3 = new Label();
             label4 = new Label();
             LblVatPrice = new Label();
             LblTotalPrice = new Label();
             BtnAdd = new Button();
-            ListViewOrderdItems = new ListView();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -56,29 +56,30 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
             // 
-            // btnLunch
+            // BtnLunch
             // 
-            btnLunch.BackColor = Color.FromArgb(138, 210, 176);
-            btnLunch.Location = new Point(16, 83);
-            btnLunch.Margin = new Padding(2);
-            btnLunch.Name = "btnLunch";
-            btnLunch.Size = new Size(90, 50);
-            btnLunch.TabIndex = 1;
-            btnLunch.Text = "Lunch";
-            btnLunch.UseVisualStyleBackColor = false;
+            BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
+            BtnLunch.Location = new Point(16, 83);
+            BtnLunch.Margin = new Padding(2);
+            BtnLunch.Name = "BtnLunch";
+            BtnLunch.Size = new Size(90, 50);
+            BtnLunch.TabIndex = 1;
+            BtnLunch.Text = "Lunch";
+            BtnLunch.UseVisualStyleBackColor = false;
+            BtnLunch.Click += BtnLunch_Click;
             // 
-            // btnDinner
+            // BtnDinner
             // 
-            btnDinner.BackColor = Color.FromArgb(138, 210, 176);
-            btnDinner.Location = new Point(158, 83);
-            btnDinner.Margin = new Padding(2);
-            btnDinner.Name = "btnDinner";
-            btnDinner.Size = new Size(90, 50);
-            btnDinner.TabIndex = 2;
-            btnDinner.Text = "Dinner";
-            btnDinner.UseVisualStyleBackColor = false;
+            BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDinner.Location = new Point(158, 83);
+            BtnDinner.Margin = new Padding(2);
+            BtnDinner.Name = "BtnDinner";
+            BtnDinner.Size = new Size(90, 50);
+            BtnDinner.TabIndex = 2;
+            BtnDinner.Text = "Dinner";
+            BtnDinner.UseVisualStyleBackColor = false;
+            BtnDinner.Click += BtnDinner_Click;
             // 
             // BtnDrinks
             // 
@@ -90,6 +91,7 @@
             BtnDrinks.TabIndex = 3;
             BtnDrinks.Text = "Drinks";
             BtnDrinks.UseVisualStyleBackColor = false;
+            BtnDrinks.Click += BtnDrinks_Click;
             // 
             // LblTableNumber
             // 
@@ -123,6 +125,15 @@
             groupBox1.Size = new Size(374, 369);
             groupBox1.TabIndex = 6;
             groupBox1.TabStop = false;
+            // 
+            // ListViewOrderdItems
+            // 
+            ListViewOrderdItems.Location = new Point(6, 22);
+            ListViewOrderdItems.Name = "ListViewOrderdItems";
+            ListViewOrderdItems.Size = new Size(362, 334);
+            ListViewOrderdItems.TabIndex = 0;
+            ListViewOrderdItems.UseCompatibleStateImageBehavior = false;
+            ListViewOrderdItems.View = View.Details;
             // 
             // label3
             // 
@@ -180,15 +191,6 @@
             BtnAdd.Text = "Pay";
             BtnAdd.UseVisualStyleBackColor = false;
             // 
-            // ListViewOrderdItems
-            // 
-            ListViewOrderdItems.Location = new Point(6, 22);
-            ListViewOrderdItems.Name = "ListViewOrderdItems";
-            ListViewOrderdItems.Size = new Size(362, 334);
-            ListViewOrderdItems.TabIndex = 0;
-            ListViewOrderdItems.UseCompatibleStateImageBehavior = false;
-            ListViewOrderdItems.View = View.Details;
-            // 
             // TableOverview
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -204,8 +206,8 @@
             Controls.Add(LblEmployee);
             Controls.Add(LblTableNumber);
             Controls.Add(BtnDrinks);
-            Controls.Add(btnDinner);
-            Controls.Add(btnLunch);
+            Controls.Add(BtnDinner);
+            Controls.Add(BtnLunch);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
@@ -221,8 +223,8 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private Button btnLunch;
-        private Button btnDinner;
+        private Button BtnLunch;
+        private Button BtnDinner;
         private Button BtnDrinks;
         private Label LblTableNumber;
         private Label LblEmployee;
