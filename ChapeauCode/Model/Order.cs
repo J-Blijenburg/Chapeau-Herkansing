@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Model
 {
-    internal class Order
+    public class Order
     {
+        public int OrderId { get; set; }
+        private int EmployeeId { get; set; }
+        private int ReceiptId { get; set; }
+        public DateTime OrderDateTime { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }
