@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
-    public abstract class BaseDAO
+    public abstract class BaseDao
     {
         private SqlDataAdapter adapter;
         private SqlConnection conn;
 
-        public BaseDAO()
+        public BaseDao()
         {
-
-            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["groep_INF1b3"].ConnectionString);
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["chapeau2223"].ConnectionString);
             adapter = new SqlDataAdapter();
-
         }
 
         protected SqlConnection OpenConnection()
