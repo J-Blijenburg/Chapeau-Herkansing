@@ -6,7 +6,7 @@ namespace UI
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new Order());
+            Application.Run(new TableOverview());
         }
     }
 }

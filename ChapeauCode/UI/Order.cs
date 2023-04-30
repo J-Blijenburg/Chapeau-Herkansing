@@ -12,47 +12,75 @@ namespace UI
 {
     public partial class Order : Form
     {
-        public Order()
+        private Form previousForm;
+        public Order(Form previousForm, string panelToShow)
         {
             InitializeComponent();
-            PnlDrinks.Hide();
-            PnlLunch.Hide();
-            PnlDinner.Hide();
+            ShowCorrectPanel(panelToShow);
+            this.previousForm = previousForm;
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
-            PnlDrinks.Hide();
-            PnlLunch.Show();
-            PnlDinner.Hide();
+            ShowCorrectPanel("Lunch");
 
-            BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
-            BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+
 
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
-            PnlDrinks.Hide();
-            PnlLunch.Hide();
-            PnlDinner.Show();
+            ShowCorrectPanel("Dinner");
 
-            BtnLunch.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
-            BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
-            PnlDrinks.Show();
+            ShowCorrectPanel("Drinks");
+
+
+
+        }
+
+        private void BtnPay_Click(object sender, EventArgs e)
+        {
+            //This form will be disposed and the previousform will be displayed again.
+            //This will make sure that there is only 1 form active
+            this.Dispose();
+            previousForm.Show();
+        }
+
+        private void ShowCorrectPanel(string panelToShow)
+        {
+            HideAllPanels();
+
+            switch (panelToShow)
+            {
+                case "Drinks":
+                    PnlDrinks.Show();
+                    BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+                case "Dinner":
+                    PnlDinner.Show();
+                    BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+                case "Lunch":
+                    PnlLunch.Show();
+                    BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+            }
+        }
+
+        private void HideAllPanels()
+        {
+            PnlDrinks.Hide();
             PnlLunch.Hide();
             PnlDinner.Hide();
 
             BtnLunch.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
-
+            BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
         }
 
 

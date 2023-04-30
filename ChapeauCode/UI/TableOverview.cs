@@ -19,17 +19,30 @@ namespace UI
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
-
+            OpenOrderForm("Lunch");
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
-
+            OpenOrderForm("Dinner");
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
+            OpenOrderForm("Drinks");
+        }
 
+        private void OpenOrderForm(string panelToShow)
+        {
+            //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
+            Order order = new Order(this, panelToShow);
+            this.Hide();
+
+            //Since there is no need of using both the forms at the same time, the orderform will be shown as a dialog preventing the user from using the tableoverview form
+            order.ShowDialog();
+
+            //This messagebox can be used to check how many Forms there are currently running
+            //MessageBox.Show(Application.OpenForms.Count.ToString());
         }
     }
 }

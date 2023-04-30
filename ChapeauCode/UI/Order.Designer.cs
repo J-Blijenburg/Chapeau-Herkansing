@@ -100,6 +100,8 @@
             // BtnDrinks
             // 
             BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDrinks.FlatAppearance.BorderSize = 0;
+            BtnDrinks.FlatStyle = FlatStyle.Flat;
             BtnDrinks.Location = new Point(300, 83);
             BtnDrinks.Margin = new Padding(2);
             BtnDrinks.Name = "BtnDrinks";
@@ -112,6 +114,8 @@
             // BtnDinner
             // 
             BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDinner.FlatAppearance.BorderSize = 0;
+            BtnDinner.FlatStyle = FlatStyle.Flat;
             BtnDinner.Location = new Point(158, 83);
             BtnDinner.Margin = new Padding(2);
             BtnDinner.Name = "BtnDinner";
@@ -124,6 +128,8 @@
             // BtnLunch
             // 
             BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
+            BtnLunch.FlatAppearance.BorderSize = 0;
+            BtnLunch.FlatStyle = FlatStyle.Flat;
             BtnLunch.Location = new Point(16, 83);
             BtnLunch.Margin = new Padding(2);
             BtnLunch.Name = "BtnLunch";
@@ -157,6 +163,7 @@
             BtnPay.TabIndex = 13;
             BtnPay.Text = "ADD";
             BtnPay.UseVisualStyleBackColor = false;
+            BtnPay.Click += BtnPay_Click;
             // 
             // ListViewOrderdItems
             // 
