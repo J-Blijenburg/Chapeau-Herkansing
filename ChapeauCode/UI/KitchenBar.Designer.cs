@@ -33,12 +33,14 @@
             // 
             // KitchenBar
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(2689, 1206);
+            ClientSize = new Size(1427, 665);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2, 2, 2, 2);
             Name = "KitchenBar";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "KitchenBar";
             ResumeLayout(false);
         }
