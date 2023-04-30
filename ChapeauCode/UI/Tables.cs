@@ -16,5 +16,10 @@ namespace UI
         {
             InitializeComponent();
         }
+
+        private void Tables_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

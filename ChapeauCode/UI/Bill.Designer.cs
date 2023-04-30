@@ -36,7 +36,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(392, 680);
+            ClientSize = new Size(414, 736);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Bill";
             Text = "Bill";
