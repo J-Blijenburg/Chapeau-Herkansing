@@ -62,7 +62,7 @@ CREATE TABLE [OrderStatus](
 CREATE TABLE [Order](
 	OrderId int identity(1,1) NOT NULL primary key,
 	EmployeeId int,
-	ReceiptId int,
+	ReceiptId int foreign key references Receipt(ReceiptId),
 	OrderDateTime DateTime,
 	Status int foreign key references OrderStatus(OrderStatusId)
 );
@@ -84,7 +84,7 @@ CREATE TABLE [MenuItem](
 
 CREATE TABLE [OrderItem](
 	OrderItemId int identity(1,1) NOT NULL primary key,
-	OrderId int,
+	OrderId int foreign key references [Order](OrderId),
 	Comment varchar(1000),
 	MenuItemId int foreign key references MenuItem(MenuItemId),
 	Quantity int
