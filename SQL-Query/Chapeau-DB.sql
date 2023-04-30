@@ -15,7 +15,7 @@ CREATE TABLE [Table](
 /*This is the ENUM for which payment is selected*/
 CREATE TABLE [PaymentMethod](
 	PaymentMethodId int identity(1,1) NOT NULL primary key,
-	Method int
+	Method varchar(15)
 );
 
 CREATE TABLE [Payment](
@@ -94,3 +94,28 @@ CREATE TABLE [OrderItem](
 
 GO
 
+INSERT INTO [TableStatus]
+VALUES 
+('Open'),
+('Reserved'),
+('Occupied');
+
+INSERT INTO [PaymentMethod]
+VALUES
+('CreditCard'),
+('Cash'),
+('Pin');
+
+INSERT INTO [EmployeeRole]
+VALUES
+('Chefkok'),
+('Bartender'),
+('Waiter'),
+('Manager');
+
+INSERT INTO [OrderStatus]
+VALUES
+('Ordered'),
+('Preparing'),
+('Deliverd'),
+('ReadyToBeServed');
