@@ -16,5 +16,10 @@ namespace UI
         {
             InitializeComponent();
         }
+
+        private void listView8_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
