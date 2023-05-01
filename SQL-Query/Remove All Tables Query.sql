@@ -2,7 +2,9 @@ DROP TABLE [OrderItem];
 GO
 DROP TABLE [MenuItem];
 GO
-DROP TABLE [Category];
+DROP TABLE [MenuCategory];
+GO
+DROP TABLE [Menu];
 GO
 DROP TABLE [Order];
 GO

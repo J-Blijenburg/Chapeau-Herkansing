@@ -50,7 +50,8 @@ CREATE TABLE [Receipt](
 	HighVatPrice float,
 	TotalPrice float,
 	Tip float,
-	IsHandled BIT
+	IsHandled BIT,
+	PaymentId int foreign key references Payment(PaymentId)
 );
 
 /*This Table is a enum for the status of the order*/
@@ -67,11 +68,18 @@ CREATE TABLE [Order](
 	Status int foreign key references OrderStatus(OrderStatusId)
 );
 
+CREATE TABLE [Menu](
+	MenuId int identity(1,1) NOT NULL primary key,
+	MenuType varchar(25),
+	StartTime time,
+	EndTime time
+);
 
-CREATE TABLE [Category](
-	CategoryId int identity(1,1) NOT NULL primary key,
+CREATE TABLE [MenuCategory](
+	MenuCategoryId int identity(1,1) NOT NULL primary key,
 	VAT float,
-	MenuCard varchar(25)
+	MenuCard varchar(25),
+	MenuId int foreign key references Menu(MenuId)
 );
 
 CREATE TABLE [MenuItem](
@@ -79,7 +87,7 @@ CREATE TABLE [MenuItem](
 	Name varchar(25),
 	Stock int,
 	Price float,
-	CategoryId int foreign key references Category(CategoryId)
+	MenuCategoryId int foreign key references MenuCategory(MenuCategoryId)
 )
 
 CREATE TABLE [OrderItem](
