@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Model;
+using Logic;
 
 namespace UI
 {
     public partial class Order : Form
     {
         private Form previousForm;
+        private OrderService orderService = new OrderService();
         public Order(Form previousForm, string panelToShow)
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace UI
         private void BtnLunch_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Lunch");
+
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
@@ -33,6 +37,22 @@ namespace UI
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Drinks");
+            List<MenuItem> listOfMenuItems = orderService.GetMenuItemsByMenuAndCategory("Drinks", "SoftDrinks");
+
+            ListDrinksSoft.Clear();
+
+            ListDrinksSoft.Columns.Add("Name", 380);
+            ListDrinksSoft.Columns.Add("Price", 100);
+
+            foreach (MenuItem menuItem in listOfMenuItems)
+            {
+                ListViewItem drinksSoft = new ListViewItem(menuItem.Name);
+                drinksSoft.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
+                ListDrinksSoft.Items.Add(drinksSoft);
+            }
+
+
+
         }
 
         private void BtnPay_Click(object sender, EventArgs e)
@@ -74,7 +94,6 @@ namespace UI
             BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
         }
-
 
     }
 }

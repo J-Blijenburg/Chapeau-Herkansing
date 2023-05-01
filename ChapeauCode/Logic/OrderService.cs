@@ -1,4 +1,5 @@
 ﻿using DAL;
+using Model;
 
 namespace Logic
 {
@@ -8,6 +9,11 @@ namespace Logic
 
         public OrderService() { 
             this.orderDAO = new OrderDAO();
+        }
+
+        public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
+        {
+            return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
         }
     }
 }
