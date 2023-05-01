@@ -10,7 +10,7 @@ namespace Model
     {
         public int menuCategoryId { get; set; }
         public double VAT { get; set; }
-        public string MenuCard { get; set; }
+        public string Name { get; set; }
         public Menu Menu { get; set; }
     }
 }

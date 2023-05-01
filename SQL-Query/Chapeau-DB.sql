@@ -70,7 +70,7 @@ CREATE TABLE [Order](
 
 CREATE TABLE [Menu](
 	MenuId int identity(1,1) NOT NULL primary key,
-	Menu varchar(25),
+	Name varchar(25),
 	StartTime time,
 	EndTime time
 );
@@ -78,7 +78,7 @@ CREATE TABLE [Menu](
 CREATE TABLE [MenuCategory](
 	MenuCategoryId int identity(1,1) NOT NULL primary key,
 	VAT float,
-	Category varchar(25),
+	Name varchar(25),
 	MenuId int foreign key references Menu(MenuId)
 );
 
