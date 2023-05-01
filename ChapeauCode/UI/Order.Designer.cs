@@ -228,6 +228,7 @@
             ListDinnerStarter.Size = new Size(487, 256);
             ListDinnerStarter.TabIndex = 1;
             ListDinnerStarter.UseCompatibleStateImageBehavior = false;
+            ListDinnerStarter.View = View.Details;
             // 
             // LblDinnerEntre
             // 
@@ -248,6 +249,7 @@
             ListDinnerEntre.Size = new Size(483, 256);
             ListDinnerEntre.TabIndex = 3;
             ListDinnerEntre.UseCompatibleStateImageBehavior = false;
+            ListDinnerEntre.View = View.Details;
             // 
             // LblDinnerMains
             // 
@@ -268,6 +270,7 @@
             ListDinnerMains.Size = new Size(483, 256);
             ListDinnerMains.TabIndex = 5;
             ListDinnerMains.UseCompatibleStateImageBehavior = false;
+            ListDinnerMains.View = View.Details;
             // 
             // LblDinnerDesserts
             // 
@@ -288,6 +291,7 @@
             ListDinnerDesserts.Size = new Size(483, 256);
             ListDinnerDesserts.TabIndex = 19;
             ListDinnerDesserts.UseCompatibleStateImageBehavior = false;
+            ListDinnerDesserts.View = View.Details;
             // 
             // PnlLunch
             // 
@@ -323,6 +327,7 @@
             ListLunchStarter.Size = new Size(487, 256);
             ListLunchStarter.TabIndex = 1;
             ListLunchStarter.UseCompatibleStateImageBehavior = false;
+            ListLunchStarter.View = View.Details;
             // 
             // LblLunchMains
             // 
@@ -343,6 +348,7 @@
             ListLunchMains.Size = new Size(483, 256);
             ListLunchMains.TabIndex = 3;
             ListLunchMains.UseCompatibleStateImageBehavior = false;
+            ListLunchMains.View = View.Details;
             // 
             // LblLunchDesserts
             // 
@@ -363,6 +369,7 @@
             ListLunchDesserts.Size = new Size(483, 256);
             ListLunchDesserts.TabIndex = 5;
             ListLunchDesserts.UseCompatibleStateImageBehavior = false;
+            ListLunchDesserts.View = View.Details;
             // 
             // PnlDrinks
             // 
@@ -424,6 +431,7 @@
             ListDrinksBeers.Size = new Size(483, 256);
             ListDrinksBeers.TabIndex = 3;
             ListDrinksBeers.UseCompatibleStateImageBehavior = false;
+            ListDrinksBeers.View = View.Details;
             // 
             // LblDrinksWines
             // 
@@ -444,6 +452,7 @@
             ListDrinksWines.Size = new Size(483, 256);
             ListDrinksWines.TabIndex = 5;
             ListDrinksWines.UseCompatibleStateImageBehavior = false;
+            ListDrinksWines.View = View.Details;
             // 
             // LblDrinksSpirits
             // 
@@ -464,6 +473,7 @@
             ListDrinksSpirits.Size = new Size(483, 256);
             ListDrinksSpirits.TabIndex = 19;
             ListDrinksSpirits.UseCompatibleStateImageBehavior = false;
+            ListDrinksSpirits.View = View.Details;
             // 
             // LblDrinksHot
             // 
@@ -484,6 +494,7 @@
             ListDrinksHot.Size = new Size(483, 256);
             ListDrinksHot.TabIndex = 21;
             ListDrinksHot.UseCompatibleStateImageBehavior = false;
+            ListDrinksHot.View = View.Details;
             // 
             // Order
             // 

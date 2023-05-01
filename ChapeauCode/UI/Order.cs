@@ -26,32 +26,19 @@ namespace UI
         private void BtnLunch_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Lunch");
-
+            GetAllLunches();
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Dinner");
+            GetAllDinners();
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Drinks");
-            List<MenuItem> listOfMenuItems = orderService.GetMenuItemsByMenuAndCategory("Drinks", "SoftDrinks");
-
-            ListDrinksSoft.Clear();
-
-            ListDrinksSoft.Columns.Add("Name", 380);
-            ListDrinksSoft.Columns.Add("Price", 100);
-
-            foreach (MenuItem menuItem in listOfMenuItems)
-            {
-                ListViewItem drinksSoft = new ListViewItem(menuItem.Name);
-                drinksSoft.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
-                ListDrinksSoft.Items.Add(drinksSoft);
-            }
-
-
+            GetAllDrinks();
 
         }
 
@@ -72,14 +59,17 @@ namespace UI
                 case "Drinks":
                     PnlDrinks.Show();
                     BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    GetAllDrinks();
                     break;
                 case "Dinner":
                     PnlDinner.Show();
                     BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    GetAllDinners();
                     break;
                 case "Lunch":
                     PnlLunch.Show();
                     BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    GetAllLunches();
                     break;
             }
         }
@@ -93,6 +83,53 @@ namespace UI
             BtnLunch.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+        }
+        private void GetAllDrinks()
+        {
+            FillListViewMenuItems(ListDrinksSoft, orderService.GetMenuItemsByMenuAndCategory("Drinks", "SoftDrinks"));
+
+            FillListViewMenuItems(ListDrinksBeers, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Beers"));
+
+            FillListViewMenuItems(ListDrinksWines, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Wines"));
+
+            FillListViewMenuItems(ListDrinksSpirits, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Spirits"));
+
+            FillListViewMenuItems(ListDrinksHot, orderService.GetMenuItemsByMenuAndCategory("Drinks", "HotDrinks"));
+
+        }
+
+        private void GetAllLunches()
+        {
+            FillListViewMenuItems(ListLunchStarter, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Starters"));
+
+            FillListViewMenuItems(ListLunchMains, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Mains"));
+
+            FillListViewMenuItems(ListLunchDesserts, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Desserts"));
+        }
+
+        private void GetAllDinners()
+        {
+            FillListViewMenuItems(ListDinnerStarter, orderService.GetMenuItemsByMenuAndCategory("Diner", "Starters"));
+            FillListViewMenuItems(ListDinnerEntre, orderService.GetMenuItemsByMenuAndCategory("Diner", "Entres"));
+
+            FillListViewMenuItems(ListDinnerMains, orderService.GetMenuItemsByMenuAndCategory("Diner", "Mains"));
+
+            FillListViewMenuItems(ListDinnerDesserts, orderService.GetMenuItemsByMenuAndCategory("Diner", "Desserts"));
+        }
+
+        private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems)
+        {
+            listView.Clear();
+
+            listView.Columns.Add("Name", 375);
+            listView.Columns.Add("Price", 100);
+
+            foreach (MenuItem menuItem in menuItems)
+            {
+                ListViewItem listViewItem = new ListViewItem(menuItem.Name);
+                listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
+                listView.Items.Add(listViewItem);
+            }
         }
 
     }
