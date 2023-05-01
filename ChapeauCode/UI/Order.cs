@@ -23,24 +23,16 @@ namespace UI
         private void BtnLunch_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Lunch");
-
-
-
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Dinner");
-
-
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel("Drinks");
-
-
-
         }
 
         private void BtnPay_Click(object sender, EventArgs e)
