@@ -14,12 +14,12 @@ using ListView = System.Windows.Forms.ListView;
 
 namespace UI
 {
-    public partial class OrderView : Form
+    public partial class OrderOverView : Form
     {
         private Form previousForm;
         private OrderService orderService = new OrderService();
         private Order order;
-        public OrderView(Form previousForm, string panelToShow)
+        public OrderOverView(Form previousForm, string panelToShow)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
@@ -50,7 +50,9 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            
+            Receipt receipt = CreateReceipt();
+
+
 
             SendOrderItems();
 
@@ -62,13 +64,36 @@ namespace UI
         }
 
 
-        private void CreateReceipt()
+        private Receipt CreateReceipt()
         {
-            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
-            //Receipt receipt = new Receipt();
-            //receipt.ReceiptDateTime = DateTime.Now;
-            //receipt.Employee =  ;
+            //de employee moet nog worden aangepast aan de gebruiker die is ingelogd
+            Employee employee = new Employee();
+            employee.EmployeeId = 1;
 
+            //de table moet nog worden aangepast aan de tafel waar de gebruiker aan zit
+            Table table = new Table();
+            table.TableId = 1;
+
+            //de payment moet nog worden aangepast aan de betaalmethode die de gebruiker heeft gekozen
+            Payment payment = new Payment();
+            payment.PaymentId = 1;
+
+            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
+            Receipt receipt = new Receipt();
+            receipt.ReceiptDateTime = DateTime.Now;
+            receipt.Feedback = "";
+            receipt.Employee = employee;
+            receipt.Table = table;
+            receipt.LowVatPrice = 0;
+            receipt.HighVatPrice = 0;
+            receipt.TotalPrice = 0;
+            receipt.Tip = 0;
+            receipt.IsHandled = false;
+            receipt.Payment = payment;
+
+            orderService.CreateReceipt(receipt);
+
+            return receipt;
         }
 
         private void ShowCorrectPanel(string panelToShow)

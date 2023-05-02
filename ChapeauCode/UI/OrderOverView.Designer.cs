@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class OrderView
+    partial class OrderOverView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderView));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderOverView));
             LblEmployee = new Label();
             LblTableNumber = new Label();
             BtnDrinks = new Button();

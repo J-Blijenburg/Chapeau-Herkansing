@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace UI
 {
-    public partial class Payment : Form
+    public partial class PaymentOverView : Form
     {
-        public Payment()
+        public PaymentOverView()
         {
             InitializeComponent();
         }

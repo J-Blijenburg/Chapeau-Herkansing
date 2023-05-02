@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class Payment
+    partial class PaymentOverView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Payment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentOverView));
             SuspendLayout();
             // 
             // Payment
