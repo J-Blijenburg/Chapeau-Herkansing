@@ -21,9 +21,9 @@ namespace Logic
             orderDAO.SendOrderItems(orderItems);
         }
         
-        public void CreateReceipt(Receipt receipt)
+        public void CreateOrder(Order order)
         {
-            orderDAO.CreateReceipt(receipt);
+            orderDAO.CreateOrder(order);
         }
     }
 }

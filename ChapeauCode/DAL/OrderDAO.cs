@@ -67,22 +67,16 @@ namespace DAL
             }
         }  
         
-        public void CreateReceipt(Receipt receipt)
+        public void CreateOrder(Order order)
         {
-            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableId, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableId, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId)";
+            string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@ReceiptDateTime", receipt.ReceiptDateTime),
-                new SqlParameter("@Feedback", receipt.Feedback),
-                new SqlParameter("@EmployeeId", receipt.Employee.EmployeeId),
-                new SqlParameter("@TableId", receipt.Table.TableId),
-                new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
-                new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
-                new SqlParameter("@TotalPrice", receipt.TotalPrice),
-                new SqlParameter("@Tip", receipt.Tip),
-                new SqlParameter("@IsHandled", receipt.IsHandled),
-                new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
+                new SqlParameter("@EmployeeId", order.Employee.EmployeeId),
+                new SqlParameter("@ReceiptId", 5),
+                new SqlParameter("@OrderDateTime", order.OrderDateTime),
+                new SqlParameter("@Status", (int) order.Status)
             };
             ExecuteEditQuery(query, sqlParameters);
         }

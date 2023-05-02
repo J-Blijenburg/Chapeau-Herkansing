@@ -2,6 +2,6 @@
 {
     public enum OrderStatus
     {
-        Ordered, Preparing, Delivered, ReadyToBeServed
+        Ordered = 1, Preparing, Delivered, ReadyToBeServed
     }
 }

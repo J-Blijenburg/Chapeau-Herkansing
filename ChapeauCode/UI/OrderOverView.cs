@@ -24,7 +24,10 @@ namespace UI
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
-            this.order = new Order();
+
+            Receipt receipt = CreateReceipt();
+            this.order = CreateOrder(receipt);
+
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 375);
         }
@@ -50,7 +53,7 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            Receipt receipt = CreateReceipt();
+            
 
 
 
@@ -91,9 +94,29 @@ namespace UI
             receipt.IsHandled = false;
             receipt.Payment = payment;
 
-            orderService.CreateReceipt(receipt);
+            ReceiptService receiptService = new ReceiptService();
 
+            receiptService.CreateReceipt(receipt);
+            
             return receipt;
+        }
+
+        private Order CreateOrder(Receipt receipt)
+        {
+            //de employee moet nog worden aangepast aan de gebruiker die is ingelogd
+            Employee employee = new Employee();
+            employee.EmployeeId = 1;
+
+            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
+            Order order = new Order();
+            order.Employee = employee;
+            order.Receipt = receipt;
+            order.OrderDateTime = DateTime.Now;
+            order.Status = OrderStatus.Ordered;
+
+            new OrderService().CreateOrder(order);
+
+            return order;
         }
 
         private void ShowCorrectPanel(string panelToShow)
