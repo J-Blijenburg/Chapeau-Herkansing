@@ -9,18 +9,24 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model;
 using Logic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ListView = System.Windows.Forms.ListView;
 
 namespace UI
 {
-    public partial class OrderUI : Form
+    public partial class OrderView : Form
     {
         private Form previousForm;
         private OrderService orderService = new OrderService();
-        public OrderUI(Form previousForm, string panelToShow)
+        private Order order;
+        public OrderView(Form previousForm, string panelToShow)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
+            this.order = new Order();
+            ListViewOrderdItems.Columns.Add("Amount", 100);
+            ListViewOrderdItems.Columns.Add("Name", 375);
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -44,6 +50,9 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
+            CreateOrder();
+
+
             //This form will be disposed and the previousform will be displayed again.
             //This will make sure that there is only 1 form active
             this.Dispose();
@@ -117,7 +126,8 @@ namespace UI
             FillListViewMenuItems(ListDinnerDesserts, orderService.GetMenuItemsByMenuAndCategory("Diner", "Desserts"));
         }
 
-        private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems)
+        //fill the listview with the given menuitems
+        private void FillListViewMenuItems(System.Windows.Forms.ListView listView, List<MenuItem> menuItems)
         {
             listView.Clear();
 
@@ -135,17 +145,51 @@ namespace UI
 
         private void CreateOrder()
         {
-            Order order = new Order();
             List<OrderItem> orderItems = new List<OrderItem>();
-
-
         }
 
         private void ListViewRowClick(object sender, EventArgs e)
         {
-            MenuItem item = (MenuItem)ListDrinksSoft.SelectedItems[0].Tag;
+            //deze moet nog ff weggehaald worden uit alle listviews
+            FillListViewOrderdItems((ListView)sender);
 
-            MessageBox.Show(item.Price.ToString());
+        }
+
+        //receive the selected menuitem and add it to the listview of ListViewOrderdItems
+        private void FillListViewOrderdItems(ListView listView)
+        {
+            bool itemExists = false;
+            MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
+
+            foreach (ListViewItem orderItems in ListViewOrderdItems.Items)
+            {
+                if (menuItem.Name == orderItems.SubItems[1].Text)
+                {
+                    OrderItem chosenOrderItem = (OrderItem)orderItems.Tag;
+                    chosenOrderItem.Quantity++;
+                    orderItems.Text = $"{chosenOrderItem.Quantity}x";
+                    itemExists = true;
+                    break;
+                }
+            }
+            if (!itemExists)
+            {
+                OrderItem orderItem = CreateOrderItem(menuItem);
+                ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
+                listViewItem.SubItems.Add(orderItem.MenuItem.Name);
+                listViewItem.Tag = orderItem;
+                ListViewOrderdItems.Items.Add(listViewItem);
+            }
+        }
+
+        private OrderItem CreateOrderItem(MenuItem menuItem)
+        {
+            OrderItem orderItem = new OrderItem();
+            orderItem.Order = order;
+            orderItem.Comment = "test";
+            orderItem.MenuItem = menuItem;
+            orderItem.Quantity = 1;
+            return orderItem;
         }
     }
 }

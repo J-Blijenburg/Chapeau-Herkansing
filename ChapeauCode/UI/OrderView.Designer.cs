@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class OrderUI
+    partial class OrderView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderUI));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderView));
             LblEmployee = new Label();
             LblTableNumber = new Label();
             BtnDrinks = new Button();
@@ -230,6 +230,7 @@
             ListDinnerStarter.TabIndex = 1;
             ListDinnerStarter.UseCompatibleStateImageBehavior = false;
             ListDinnerStarter.View = View.Details;
+            ListDinnerStarter.Click += ListViewRowClick;
             // 
             // LblDinnerEntre
             // 
@@ -252,6 +253,7 @@
             ListDinnerEntre.TabIndex = 3;
             ListDinnerEntre.UseCompatibleStateImageBehavior = false;
             ListDinnerEntre.View = View.Details;
+            ListDinnerEntre.Click += ListViewRowClick;
             // 
             // LblDinnerMains
             // 
@@ -274,6 +276,7 @@
             ListDinnerMains.TabIndex = 5;
             ListDinnerMains.UseCompatibleStateImageBehavior = false;
             ListDinnerMains.View = View.Details;
+            ListDinnerMains.Click += ListViewRowClick;
             // 
             // LblDinnerDesserts
             // 
@@ -296,6 +299,7 @@
             ListDinnerDesserts.TabIndex = 19;
             ListDinnerDesserts.UseCompatibleStateImageBehavior = false;
             ListDinnerDesserts.View = View.Details;
+            ListDinnerDesserts.Click += ListViewRowClick;
             // 
             // PnlLunch
             // 
@@ -333,6 +337,7 @@
             ListLunchStarter.TabIndex = 1;
             ListLunchStarter.UseCompatibleStateImageBehavior = false;
             ListLunchStarter.View = View.Details;
+            ListLunchStarter.Click += ListViewRowClick;
             // 
             // LblLunchMains
             // 
@@ -355,6 +360,7 @@
             ListLunchMains.TabIndex = 3;
             ListLunchMains.UseCompatibleStateImageBehavior = false;
             ListLunchMains.View = View.Details;
+            ListLunchMains.Click += ListViewRowClick;
             // 
             // LblLunchDesserts
             // 
@@ -377,6 +383,7 @@
             ListLunchDesserts.TabIndex = 5;
             ListLunchDesserts.UseCompatibleStateImageBehavior = false;
             ListLunchDesserts.View = View.Details;
+            ListLunchDesserts.Click += ListViewRowClick;
             // 
             // PnlDrinks
             // 
@@ -512,14 +519,14 @@
             ListDrinksHot.View = View.Details;
             ListDrinksHot.Click += ListViewRowClick;
             // 
-            // OrderUI
+            // OrderView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
-            Controls.Add(PnlDrinks);
             Controls.Add(PnlLunch);
+            Controls.Add(PnlDrinks);
             Controls.Add(PnlDinner);
             Controls.Add(BtnDinner);
             Controls.Add(groupBox1);
@@ -531,7 +538,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "OrderUI";
+            Name = "OrderView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Order";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
