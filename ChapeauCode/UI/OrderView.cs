@@ -50,13 +50,25 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            CreateOrder();
+            
+
+            SendOrderItems();
 
 
             //This form will be disposed and the previousform will be displayed again.
             //This will make sure that there is only 1 form active
             this.Dispose();
             previousForm.Show();
+        }
+
+
+        private void CreateReceipt()
+        {
+            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
+            //Receipt receipt = new Receipt();
+            //receipt.ReceiptDateTime = DateTime.Now;
+            //receipt.Employee =  ;
+
         }
 
         private void ShowCorrectPanel(string panelToShow)
@@ -143,14 +155,21 @@ namespace UI
             }
         }
 
-        private void CreateOrder()
+        private void SendOrderItems()
         {
             List<OrderItem> orderItems = new List<OrderItem>();
+
+            foreach (ListViewItem item in ListViewOrderdItems.Items)
+            {
+                orderItems.Add((OrderItem)item.Tag);
+                
+            }
+            orderService.SendOrderItems(orderItems);
+            
         }
 
         private void ListViewRowClick(object sender, EventArgs e)
         {
-            //deze moet nog ff weggehaald worden uit alle listviews
             FillListViewOrderdItems((ListView)sender);
 
         }
@@ -186,7 +205,7 @@ namespace UI
         {
             OrderItem orderItem = new OrderItem();
             orderItem.Order = order;
-            orderItem.Comment = "test";
+            orderItem.Comment = "";
             orderItem.MenuItem = menuItem;
             orderItem.Quantity = 1;
             return orderItem;
