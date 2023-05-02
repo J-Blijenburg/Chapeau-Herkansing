@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class Order
+    partial class OrderUI
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Order));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderUI));
             LblEmployee = new Label();
             LblTableNumber = new Label();
             BtnDrinks = new Button();
@@ -222,6 +222,7 @@
             // 
             // ListDinnerStarter
             // 
+            ListDinnerStarter.FullRowSelect = true;
             ListDinnerStarter.Location = new Point(9, 47);
             ListDinnerStarter.Margin = new Padding(4, 5, 4, 5);
             ListDinnerStarter.Name = "ListDinnerStarter";
@@ -243,6 +244,7 @@
             // 
             // ListDinnerEntre
             // 
+            ListDinnerEntre.FullRowSelect = true;
             ListDinnerEntre.Location = new Point(13, 357);
             ListDinnerEntre.Margin = new Padding(4, 5, 4, 5);
             ListDinnerEntre.Name = "ListDinnerEntre";
@@ -264,6 +266,7 @@
             // 
             // ListDinnerMains
             // 
+            ListDinnerMains.FullRowSelect = true;
             ListDinnerMains.Location = new Point(13, 672);
             ListDinnerMains.Margin = new Padding(4, 5, 4, 5);
             ListDinnerMains.Name = "ListDinnerMains";
@@ -285,6 +288,7 @@
             // 
             // ListDinnerDesserts
             // 
+            ListDinnerDesserts.FullRowSelect = true;
             ListDinnerDesserts.Location = new Point(13, 987);
             ListDinnerDesserts.Margin = new Padding(4, 5, 4, 5);
             ListDinnerDesserts.Name = "ListDinnerDesserts";
@@ -321,6 +325,7 @@
             // 
             // ListLunchStarter
             // 
+            ListLunchStarter.FullRowSelect = true;
             ListLunchStarter.Location = new Point(9, 47);
             ListLunchStarter.Margin = new Padding(4, 5, 4, 5);
             ListLunchStarter.Name = "ListLunchStarter";
@@ -342,6 +347,7 @@
             // 
             // ListLunchMains
             // 
+            ListLunchMains.FullRowSelect = true;
             ListLunchMains.Location = new Point(13, 357);
             ListLunchMains.Margin = new Padding(4, 5, 4, 5);
             ListLunchMains.Name = "ListLunchMains";
@@ -363,6 +369,7 @@
             // 
             // ListLunchDesserts
             // 
+            ListLunchDesserts.FullRowSelect = true;
             ListLunchDesserts.Location = new Point(13, 672);
             ListLunchDesserts.Margin = new Padding(4, 5, 4, 5);
             ListLunchDesserts.Name = "ListLunchDesserts";
@@ -411,6 +418,7 @@
             ListDrinksSoft.TabIndex = 1;
             ListDrinksSoft.UseCompatibleStateImageBehavior = false;
             ListDrinksSoft.View = View.Details;
+            ListDrinksSoft.Click += ListViewRowClick;
             // 
             // LblDrinksBeers
             // 
@@ -425,6 +433,7 @@
             // 
             // ListDrinksBeers
             // 
+            ListDrinksBeers.FullRowSelect = true;
             ListDrinksBeers.Location = new Point(13, 357);
             ListDrinksBeers.Margin = new Padding(4, 5, 4, 5);
             ListDrinksBeers.Name = "ListDrinksBeers";
@@ -432,6 +441,7 @@
             ListDrinksBeers.TabIndex = 3;
             ListDrinksBeers.UseCompatibleStateImageBehavior = false;
             ListDrinksBeers.View = View.Details;
+            ListDrinksBeers.Click += ListViewRowClick;
             // 
             // LblDrinksWines
             // 
@@ -446,6 +456,7 @@
             // 
             // ListDrinksWines
             // 
+            ListDrinksWines.FullRowSelect = true;
             ListDrinksWines.Location = new Point(13, 672);
             ListDrinksWines.Margin = new Padding(4, 5, 4, 5);
             ListDrinksWines.Name = "ListDrinksWines";
@@ -453,6 +464,7 @@
             ListDrinksWines.TabIndex = 5;
             ListDrinksWines.UseCompatibleStateImageBehavior = false;
             ListDrinksWines.View = View.Details;
+            ListDrinksWines.Click += ListViewRowClick;
             // 
             // LblDrinksSpirits
             // 
@@ -467,6 +479,7 @@
             // 
             // ListDrinksSpirits
             // 
+            ListDrinksSpirits.FullRowSelect = true;
             ListDrinksSpirits.Location = new Point(13, 987);
             ListDrinksSpirits.Margin = new Padding(4, 5, 4, 5);
             ListDrinksSpirits.Name = "ListDrinksSpirits";
@@ -474,6 +487,7 @@
             ListDrinksSpirits.TabIndex = 19;
             ListDrinksSpirits.UseCompatibleStateImageBehavior = false;
             ListDrinksSpirits.View = View.Details;
+            ListDrinksSpirits.Click += ListViewRowClick;
             // 
             // LblDrinksHot
             // 
@@ -488,6 +502,7 @@
             // 
             // ListDrinksHot
             // 
+            ListDrinksHot.FullRowSelect = true;
             ListDrinksHot.Location = new Point(13, 1305);
             ListDrinksHot.Margin = new Padding(4, 5, 4, 5);
             ListDrinksHot.Name = "ListDrinksHot";
@@ -495,8 +510,9 @@
             ListDrinksHot.TabIndex = 21;
             ListDrinksHot.UseCompatibleStateImageBehavior = false;
             ListDrinksHot.View = View.Details;
+            ListDrinksHot.Click += ListViewRowClick;
             // 
-            // Order
+            // OrderUI
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -515,7 +531,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Order";
+            Name = "OrderUI";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Order";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

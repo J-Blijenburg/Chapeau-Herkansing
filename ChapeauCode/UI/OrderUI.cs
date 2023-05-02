@@ -12,11 +12,11 @@ using Logic;
 
 namespace UI
 {
-    public partial class Order : Form
+    public partial class OrderUI : Form
     {
         private Form previousForm;
         private OrderService orderService = new OrderService();
-        public Order(Form previousForm, string panelToShow)
+        public OrderUI(Form previousForm, string panelToShow)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
@@ -128,9 +128,24 @@ namespace UI
             {
                 ListViewItem listViewItem = new ListViewItem(menuItem.Name);
                 listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
+                listViewItem.Tag = menuItem;
                 listView.Items.Add(listViewItem);
             }
         }
 
+        private void CreateOrder()
+        {
+            Order order = new Order();
+            List<OrderItem> orderItems = new List<OrderItem>();
+
+
+        }
+
+        private void ListViewRowClick(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)ListDrinksSoft.SelectedItems[0].Tag;
+
+            MessageBox.Show(item.Price.ToString());
+        }
     }
 }

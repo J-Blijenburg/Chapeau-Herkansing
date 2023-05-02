@@ -35,7 +35,7 @@ namespace UI
         private void OpenOrderForm(string panelToShow)
         {
             //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
-            Order order = new Order(this, panelToShow);
+            OrderUI order = new OrderUI(this, panelToShow);
             this.Hide();
 
             //Since there is no need of using both the forms at the same time, the orderform will be shown as a dialog preventing the user from using the tableoverview form
