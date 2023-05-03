@@ -30,20 +30,10 @@ namespace DAL
                 new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
             };
             //by using the method executeinsertqueryandreturnid we can get the id of the last inserted receipt
+            
             return ExecuteInsertQueryAndReturnId(query, sqlParameters);
 
+            //Het was nog een twijfel geval wat handiger was. Alleen het id return of het gehele object returnen.
         }
-
-
-
-
-        //public int GetLastInsertedReceipt()
-        //{
-        //    string query = "SELECT ReceiptId, ReceiptDateTime, Feedback, EmployeeId, TableId, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId " +
-        //                    "FROM [Receipt] " +
-        //                    "WHERE ReceiptId = (SELECT MAX(ReceiptId) FROM [Receipt]);";
-
-
-        //}
     }
 }

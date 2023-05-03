@@ -12,9 +12,9 @@ namespace Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int EmployeeNumber { get; set; }
-        private string Password { get; set; }
-        private bool IsActive { get; set; }
-        private DateTime RegistrationDate { get; set; }
+        public string Password { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime RegistrationDate { get; set; }
         public EmployeeRole Role { get; set; }
     }
 }

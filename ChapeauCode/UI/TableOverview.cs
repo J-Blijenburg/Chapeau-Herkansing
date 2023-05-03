@@ -19,7 +19,8 @@ namespace UI
         {
             InitializeComponent();
             this.orderService = new OrderService();
-            GetOrderdItems(table);
+            
+            FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -52,25 +53,21 @@ namespace UI
 
         private List<OrderItem> GetOrderdItems(Table table)
         {
-            List<OrderItem> orderItems = new List<OrderItem>();
-
-            orderService.GetOrderdItems(table);
-
-            return orderItems;
+            return orderService.GetOrderdItems(table);
         }
 
-        private void FillListViewOrderdItems(ListView listView, List<MenuItem> menuItems)
+        private void FillListViewOrderdItems(ListView listView, List<OrderItem> orderItems)
         {
             listView.Clear();
 
             listView.Columns.Add("Name", 375);
-            listView.Columns.Add("Price", 100);
 
-            foreach (MenuItem menuItem in menuItems)
+            MessageBox.Show(orderItems.Count().ToString());
+
+            foreach (OrderItem orderItem in orderItems)
             {
-                ListViewItem listViewItem = new ListViewItem(menuItem.Name);
-                listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
-                listViewItem.Tag = menuItem;
+                ListViewItem listViewItem = new ListViewItem(orderItem.MenuItem.Name);
+                listViewItem.Tag = orderItem;
                 listView.Items.Add(listViewItem);
             }
         }
