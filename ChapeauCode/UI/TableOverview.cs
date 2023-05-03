@@ -15,10 +15,13 @@ namespace UI
     public partial class TableOverview : Form
     {
         private OrderService orderService;
+        private Table table;
         public TableOverview(Table table)
         {
             InitializeComponent();
             this.orderService = new OrderService();
+            this.table = table;
+
             
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
         }
@@ -41,11 +44,15 @@ namespace UI
         private void OpenOrderForm(string panelToShow)
         {
             //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
-            OrderOverView order = new OrderOverView(this, panelToShow);
+            OrderOverView order = new OrderOverView(this, panelToShow, table);
             this.Hide();
 
             //Since there is no need of using both the forms at the same time, the orderform will be shown as a dialog preventing the user from using the tableoverview form
             order.ShowDialog();
+
+            FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
+            MessageBox.Show("Order is placed");
+            
 
             //This messagebox can be used to check how many Forms there are currently running
             //MessageBox.Show(Application.OpenForms.Count.ToString());
@@ -61,8 +68,6 @@ namespace UI
             listView.Clear();
 
             listView.Columns.Add("Name", 375);
-
-            MessageBox.Show(orderItems.Count().ToString());
 
             foreach (OrderItem orderItem in orderItems)
             {

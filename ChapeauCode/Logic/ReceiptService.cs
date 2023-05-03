@@ -16,9 +16,11 @@ namespace Logic
             this.receiptDAO = new ReceiptDAO();
         }
 
-        public int CreateReceipt(Receipt receipt)
+        public Receipt GetReceipt(Table table)
         {
-           return receiptDAO.CreateReceipt(receipt);
+            return receiptDAO.GetReceiptByTable(table);
         }
+
+
     }
 }

@@ -18,19 +18,25 @@ namespace UI
     {
         private Form previousForm;
         private OrderService orderService = new OrderService();
+        private ReceiptService receiptService = new ReceiptService();
+
         private Order order;
-        public OrderOverView(Form previousForm, string panelToShow)
+        public OrderOverView(Form previousForm, string panelToShow, Table table)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
 
-            Receipt receipt = CreateReceipt();
+
+            Receipt receipt = receiptService.GetReceipt(table);
+
             this.order = CreateOrder(receipt);
 
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 375);
         }
+
+        
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
@@ -53,10 +59,6 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            
-
-
-
             SendOrderItems();
 
 
@@ -67,39 +69,7 @@ namespace UI
         }
 
 
-        private Receipt CreateReceipt()
-        {
-            //de employee moet nog worden aangepast aan de gebruiker die is ingelogd
-            Employee employee = new Employee();
-            employee.EmployeeId = 1;
-
-            //de table moet nog worden aangepast aan de tafel waar de gebruiker aan zit
-            Table table = new Table();
-            table.TableId = 1;
-
-            //de payment moet nog worden aangepast aan de betaalmethode die de gebruiker heeft gekozen
-            Payment payment = new Payment();
-            payment.PaymentId = 1;
-
-            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
-            Receipt receipt = new Receipt();
-            receipt.ReceiptDateTime = DateTime.Now;
-            receipt.Feedback = "";
-            receipt.Employee = employee;
-            receipt.Table = table;
-            receipt.LowVatPrice = 0;
-            receipt.HighVatPrice = 0;
-            receipt.TotalPrice = 0;
-            receipt.Tip = 0;
-            receipt.IsHandled = false;
-            receipt.Payment = payment;
-
-            ReceiptService receiptService = new ReceiptService();
-
-            receipt.ReceiptId =  receiptService.CreateReceipt(receipt);
-
-            return receipt;
-        }
+        
 
         private Order CreateOrder(Receipt receipt)
         {
