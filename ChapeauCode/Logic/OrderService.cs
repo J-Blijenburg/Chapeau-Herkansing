@@ -21,9 +21,14 @@ namespace Logic
             orderDAO.SendOrderItems(orderItems);
         }
         
-        public void CreateOrder(Order order)
+        public int CreateOrder(Order order)
         {
-            orderDAO.CreateOrder(order);
+            return orderDAO.CreateOrder(order);
+        }
+
+        public List<OrderItem> GetOrderdItems(Table table)
+        {
+            return orderDAO.GetOrderdItems(table);
         }
     }
 }

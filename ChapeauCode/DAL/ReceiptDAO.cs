@@ -11,9 +11,10 @@ namespace DAL
 {
     public class ReceiptDAO : BaseDao
     {
-        public void CreateReceipt(Receipt receipt)
+        public int CreateReceipt(Receipt receipt)
         {
-            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableId, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableId, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId); ";
+            //https://stackoverflow.com/questions/20117825/executescalar-call-throwing-exception-object-reference-not-set-to-an-instance-o
+            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableId, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableId, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
@@ -28,8 +29,8 @@ namespace DAL
                 new SqlParameter("@IsHandled", receipt.IsHandled),
                 new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
             };
-            ExecuteEditQuery(query, sqlParameters);
-
+            //by using the method executeinsertqueryandreturnid we can get the id of the last inserted receipt
+            return ExecuteInsertQueryAndReturnId(query, sqlParameters);
 
         }
 

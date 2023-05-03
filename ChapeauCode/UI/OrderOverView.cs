@@ -96,8 +96,8 @@ namespace UI
 
             ReceiptService receiptService = new ReceiptService();
 
-            receiptService.CreateReceipt(receipt);
-            
+            receipt.ReceiptId =  receiptService.CreateReceipt(receipt);
+
             return receipt;
         }
 
@@ -114,7 +114,7 @@ namespace UI
             order.OrderDateTime = DateTime.Now;
             order.Status = OrderStatus.Ordered;
 
-            new OrderService().CreateOrder(order);
+            order.OrderId = new OrderService().CreateOrder(order);
 
             return order;
         }
@@ -187,7 +187,7 @@ namespace UI
         }
 
         //fill the listview with the given menuitems
-        private void FillListViewMenuItems(System.Windows.Forms.ListView listView, List<MenuItem> menuItems)
+        private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems)
         {
             listView.Clear();
 

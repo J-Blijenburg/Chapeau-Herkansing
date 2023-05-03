@@ -58,7 +58,7 @@ namespace DAL
                 SqlParameter[] sqlParameters;
                 sqlParameters = new SqlParameter[]
                 {
-                    new SqlParameter("@orderId", 1),
+                    new SqlParameter("@orderId", orderItem.Order.OrderId),
                     new SqlParameter("@comment", orderItem.Comment),
                     new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId),
                     new SqlParameter("@quantity", orderItem.Quantity)
@@ -67,18 +67,22 @@ namespace DAL
             }
         }  
         
-        public void CreateOrder(Order order)
+        public int CreateOrder(Order order)
         {
-            string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status)";
+            string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@EmployeeId", order.Employee.EmployeeId),
-                new SqlParameter("@ReceiptId", 5),
+                new SqlParameter("@ReceiptId", order.Receipt.ReceiptId),
                 new SqlParameter("@OrderDateTime", order.OrderDateTime),
                 new SqlParameter("@Status", (int) order.Status)
             };
-            ExecuteEditQuery(query, sqlParameters);
+            return ExecuteInsertQueryAndReturnId(query, sqlParameters);
+        }
+
+        public List<OrderItem> GetOrderdItems(Table table){
+            return null;
         }
     }
 }

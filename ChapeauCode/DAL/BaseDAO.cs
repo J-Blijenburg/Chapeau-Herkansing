@@ -134,5 +134,39 @@ namespace DAL
             }
             return dataTable;
         }
+
+
+
+
+        /* For Insert/Update/Delete Queries */
+        protected int ExecuteInsertQueryAndReturnId(string query, SqlParameter[] sqlParameters)
+        {
+            SqlCommand command = new SqlCommand();
+            Int32 newProdID = 0;
+
+            try
+            {
+                command.Connection = OpenConnection();
+                command.CommandText = query;
+                command.Parameters.AddRange(sqlParameters);
+                adapter.InsertCommand = command;
+                //command.ExecuteNonQuery();
+
+
+                //https://learn.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlcommand.executescalar?view=dotnet-plat-ext-8.0
+                newProdID = (Int32)command.ExecuteScalar();
+            }
+            catch (SqlException e)
+            {
+                // Print.ErrorLog(e);
+                throw;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return (int)newProdID;
+
+        }
     }
 }
