@@ -66,6 +66,8 @@
             ListDrinksSpirits = new ListView();
             LblDrinksHot = new Label();
             ListDrinksHot = new ListView();
+            BtnRemove = new Button();
+            BtnAddComment = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             PnlDinner.SuspendLayout();
@@ -519,12 +521,34 @@
             ListDrinksHot.View = View.Details;
             ListDrinksHot.Click += ListViewRowClick;
             // 
-            // OrderView
+            // BtnRemove
+            // 
+            BtnRemove.BackColor = Color.FromArgb(196, 196, 196);
+            BtnRemove.Location = new Point(183, 1072);
+            BtnRemove.Name = "BtnRemove";
+            BtnRemove.Size = new Size(149, 58);
+            BtnRemove.TabIndex = 22;
+            BtnRemove.Text = "Remove";
+            BtnRemove.UseVisualStyleBackColor = false;
+            // 
+            // BtnAddComment
+            // 
+            BtnAddComment.BackColor = Color.FromArgb(196, 196, 196);
+            BtnAddComment.Location = new Point(23, 1072);
+            BtnAddComment.Name = "BtnAddComment";
+            BtnAddComment.Size = new Size(149, 58);
+            BtnAddComment.TabIndex = 23;
+            BtnAddComment.Text = "Comment";
+            BtnAddComment.UseVisualStyleBackColor = false;
+            // 
+            // OrderOverView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
+            Controls.Add(BtnAddComment);
+            Controls.Add(BtnRemove);
             Controls.Add(PnlLunch);
             Controls.Add(PnlDrinks);
             Controls.Add(PnlDinner);
@@ -538,7 +562,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "OrderView";
+            Name = "OrderOverView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Order";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -592,5 +616,7 @@
         private ListView ListDrinksBeers;
         private Label LblDrinksHot;
         private ListView ListDrinksHot;
+        private Button BtnRemove;
+        private Button BtnAddComment;
     }
 }

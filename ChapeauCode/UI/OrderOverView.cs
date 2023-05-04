@@ -26,14 +26,14 @@ namespace UI
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
             this.table = table;
-            
+
 
 
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 375);
         }
 
-        
+
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
@@ -57,7 +57,7 @@ namespace UI
         private void BtnPay_Click(object sender, EventArgs e)
         {
             SendOrderItems();
-            
+
 
             //This form will be disposed and the previousform will be displayed again.
             //This will make sure that there is only 1 form active
@@ -66,7 +66,7 @@ namespace UI
         }
 
 
-        
+
 
         private Order CreateOrder(Receipt receipt)
         {
@@ -176,6 +176,9 @@ namespace UI
             {
                 List<OrderItem> orderItems = new List<OrderItem>();
 
+                //Had eerst de class zo gemaakt dat de order al in de constructor werdt aangemaakt
+                //Maar op het moment dat de order wordt gecanceld moet je de weer verwijderen uit de database
+
                 Receipt receipt = receiptService.GetReceipt(table);
                 Order order = CreateOrder(receipt);
 
@@ -186,10 +189,6 @@ namespace UI
                     orderItems.Add(orderItem);
 
                 }
-
-                
-
-
                 orderService.SendOrderItems(orderItems);
             }
         }
@@ -206,7 +205,6 @@ namespace UI
             bool itemExists = false;
             MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
 
-            //TODO: Dit moet een menuitem zijn, niet een orderitem
             foreach (ListViewItem orderItems in ListViewOrderdItems.Items)
             {
                 if (menuItem.Name == orderItems.SubItems[1].Text)
