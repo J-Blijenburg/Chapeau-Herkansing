@@ -205,13 +205,16 @@ namespace UI
             bool itemExists = false;
             MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
 
-            foreach (ListViewItem orderItems in ListViewOrderdItems.Items)
+            foreach (ListViewItem orderItem in ListViewOrderdItems.Items)
             {
-                if (menuItem.Name == orderItems.SubItems[1].Text)
+                if (menuItem.Name == orderItem.SubItems[1].Text)
                 {
-                    OrderItem chosenOrderItem = (OrderItem)orderItems.Tag;
+                    OrderItem chosenOrderItem = (OrderItem)orderItem.Tag;
                     chosenOrderItem.Quantity++;
-                    orderItems.Text = $"{chosenOrderItem.Quantity}x";
+                    orderItem.Text = $"{chosenOrderItem.Quantity}x";
+
+                    
+
                     itemExists = true;
                     break;
                 }
@@ -233,6 +236,38 @@ namespace UI
             orderItem.MenuItem = menuItem;
             orderItem.Quantity = 1;
             return orderItem;
+        }
+
+        private void BtnRemoveOrderItem_Click(object sender, EventArgs e)
+        {
+            //TODO: Try catch dat je wel een item moet selecteren
+            OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+            orderItem.Quantity--;
+            if (orderItem.Quantity == 0)
+            {
+                ListViewOrderdItems.Items.Remove(ListViewOrderdItems.SelectedItems[0]);
+            }
+            else
+            {
+                ListViewOrderdItems.SelectedItems[0].Text = $"{orderItem.Quantity}x";
+            }
+        }
+
+        private void BtnAddCommentOrderItem_Click(object sender, EventArgs e)
+        {
+            //TODO: Try catch dat je wel een item moet selecteren
+            OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+
+            OrderComment orderComment = new OrderComment(this, orderItem);
+            this.Hide();
+            orderComment.ShowDialog();
+
+            ShowComment(orderItem);
+        }
+
+        private void ShowComment(OrderItem orderItem)
+        {
+
         }
     }
 }
