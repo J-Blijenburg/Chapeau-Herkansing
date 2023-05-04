@@ -49,7 +49,7 @@ namespace DAL
                 new SqlParameter("@ReceiptDateTime", receipt.ReceiptDateTime),
                 new SqlParameter("@Feedback", receipt.Feedback),
                 new SqlParameter("@EmployeeId", receipt.Employee.EmployeeId),
-                new SqlParameter("@TableId", receipt.Table.TableId),
+                new SqlParameter("@TableId", receipt.Table.Number),
                 new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
                 new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
                 new SqlParameter("@TotalPrice", receipt.TotalPrice),

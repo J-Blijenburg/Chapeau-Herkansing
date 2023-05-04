@@ -30,5 +30,10 @@ namespace Logic
         {
             return orderDAO.GetOrderdItems(table);
         }
+
+        public void DeleteOrder(Order order)
+        {
+            orderDAO.DeleteOrder(order);
+        }
     }
 }

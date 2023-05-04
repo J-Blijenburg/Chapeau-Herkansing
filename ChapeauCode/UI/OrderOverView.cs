@@ -19,18 +19,15 @@ namespace UI
         private Form previousForm;
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
-
-        private Order order;
+        private Table table;
         public OrderOverView(Form previousForm, string panelToShow, Table table)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
+            this.table = table;
+            
 
-
-            Receipt receipt = receiptService.GetReceipt(table);
-
-            this.order = CreateOrder(receipt);
 
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 375);
@@ -60,7 +57,7 @@ namespace UI
         private void BtnPay_Click(object sender, EventArgs e)
         {
             SendOrderItems();
-
+            
 
             //This form will be disposed and the previousform will be displayed again.
             //This will make sure that there is only 1 form active
@@ -175,15 +172,26 @@ namespace UI
 
         private void SendOrderItems()
         {
-            List<OrderItem> orderItems = new List<OrderItem>();
-
-            foreach (ListViewItem item in ListViewOrderdItems.Items)
+            if (ListViewOrderdItems.Items.Count != 0)
             {
-                orderItems.Add((OrderItem)item.Tag);
+                List<OrderItem> orderItems = new List<OrderItem>();
+
+                Receipt receipt = receiptService.GetReceipt(table);
+                Order order = CreateOrder(receipt);
+
+                foreach (ListViewItem item in ListViewOrderdItems.Items)
+                {
+                    OrderItem orderItem = (OrderItem)item.Tag;
+                    orderItem.Order = order;
+                    orderItems.Add(orderItem);
+
+                }
+
                 
+
+
+                orderService.SendOrderItems(orderItems);
             }
-            orderService.SendOrderItems(orderItems);
-            
         }
 
         private void ListViewRowClick(object sender, EventArgs e)
@@ -198,6 +206,7 @@ namespace UI
             bool itemExists = false;
             MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
 
+            //TODO: Dit moet een menuitem zijn, niet een orderitem
             foreach (ListViewItem orderItems in ListViewOrderdItems.Items)
             {
                 if (menuItem.Name == orderItems.SubItems[1].Text)
@@ -222,7 +231,6 @@ namespace UI
         private OrderItem CreateOrderItem(MenuItem menuItem)
         {
             OrderItem orderItem = new OrderItem();
-            orderItem.Order = order;
             orderItem.Comment = "";
             orderItem.MenuItem = menuItem;
             orderItem.Quantity = 1;
