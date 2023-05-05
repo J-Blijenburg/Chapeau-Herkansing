@@ -30,7 +30,8 @@ namespace UI
 
 
             ListViewOrderdItems.Columns.Add("Amount", 100);
-            ListViewOrderdItems.Columns.Add("Name", 375);
+            ListViewOrderdItems.Columns.Add("Name", 300);
+            ListViewOrderdItems.Columns.Add("Comment", 100);
         }
 
 
@@ -213,7 +214,7 @@ namespace UI
                     chosenOrderItem.Quantity++;
                     orderItem.Text = $"{chosenOrderItem.Quantity}x";
 
-                    
+
 
                     itemExists = true;
                     break;
@@ -224,6 +225,7 @@ namespace UI
                 OrderItem orderItem = CreateOrderItem(menuItem);
                 ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
                 listViewItem.SubItems.Add(orderItem.MenuItem.Name);
+                listViewItem.SubItems.Add(orderItem.Comment);
                 listViewItem.Tag = orderItem;
                 ListViewOrderdItems.Items.Add(listViewItem);
             }
@@ -261,13 +263,13 @@ namespace UI
             OrderComment orderComment = new OrderComment(this, orderItem);
             this.Hide();
             orderComment.ShowDialog();
-
             ShowComment(orderItem);
         }
 
         private void ShowComment(OrderItem orderItem)
         {
-
+            ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
+            selectedItem.SubItems[2].Text = orderItem.Comment;
         }
     }
 }
