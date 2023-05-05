@@ -14,7 +14,7 @@ namespace UI
             table.Number = 1;
             table.Status = TableStatus.Open;
 
-            Application.Run(new TableOverview(table));
+            Application.Run(new Login());
         }
     }
 }

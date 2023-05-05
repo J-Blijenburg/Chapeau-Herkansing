@@ -14,7 +14,7 @@ namespace Model
         public int EmployeeNumber { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
-        public DateTime RegistrationDate { get; set; }
+        public DateTime? RegistrationDate { get; set; }
         public EmployeeRole Role { get; set; }
     }
 }
