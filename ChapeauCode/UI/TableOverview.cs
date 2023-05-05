@@ -51,7 +51,6 @@ namespace UI
             order.ShowDialog();
 
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
-            MessageBox.Show("Order is placed");
             
 
             //This messagebox can be used to check how many Forms there are currently running
