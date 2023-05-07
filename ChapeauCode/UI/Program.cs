@@ -9,11 +9,6 @@ namespace UI
         {
             ApplicationConfiguration.Initialize();
 
-
-            Table table = new Table();
-            table.Number = 1;
-            table.Status = TableStatus.Open;
-
             Application.Run(new Login());
         }
     }

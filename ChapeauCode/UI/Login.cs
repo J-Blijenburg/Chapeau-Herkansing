@@ -34,24 +34,15 @@ namespace UI
                 ShowLoginError();
             }
         }
-
+        private bool IsUserInputValid()
+        {
+            return !string.IsNullOrWhiteSpace(userNameTextBox.Text) && !string.IsNullOrWhiteSpace(passwordTextbox.Text);
+        }
         private void ProcessSuccessfulLogin(Employee loggedInEmployee)
         {
-            HideLoginForm();
-            OpenFormBasedOnRole(loggedInEmployee);
-            ShowLoginForm();
-        }
-
-        private void HideLoginForm()
-        {
             this.Hide();
+            OpenFormBasedOnRole(loggedInEmployee);
         }
-
-        private void ShowLoginForm()
-        {
-            this.Show();
-        }
-
         private void ShowLoginError()
         {
             loginErrorMsgLbl.Text = "Invalid login credentials";
@@ -71,7 +62,7 @@ namespace UI
 
                 case EmployeeRole.Waiter:
                 case EmployeeRole.Manager:
-                    using (Tables waiterForm = new Tables())
+                    using (Tables waiterForm = new Tables(loggedInEmployee))
                     {
                         waiterForm.ShowDialog();
                     }
@@ -101,18 +92,18 @@ namespace UI
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
-
         private void UpdateLoginButton()
         {
             try
             {
-                loginBtn.Enabled = !string.IsNullOrWhiteSpace(userNameTextBox.Text) && !string.IsNullOrWhiteSpace(passwordTextbox.Text);
+                loginBtn.Enabled = IsUserInputValid();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
 
         private void userNameTextBox_TextChanged(object sender, EventArgs e)
         {
