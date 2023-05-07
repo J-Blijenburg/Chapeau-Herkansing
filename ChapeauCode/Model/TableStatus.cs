@@ -8,6 +8,6 @@ namespace Model
 {
     public enum TableStatus
     {
-        Open, Reserved, Occupied
+        Open = 1, Reserved, Occupied
     }
 }
