@@ -20,13 +20,14 @@ namespace UI
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
         private Table table;
-        public OrderOverView(Form previousForm, string panelToShow, Table table)
+        public OrderOverView(Form previousForm, string panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
             this.table = table;
-
+            LblEmployee.Text = employee.FirstName;
+            LblTableNumber.Text = $"Table #{table.Number}";
 
 
             ListViewOrderdItems.Columns.Add("Amount", 100);
