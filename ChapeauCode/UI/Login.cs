@@ -31,114 +31,59 @@ namespace UI
             }
             else
             {
-                ShowLoginError();
+                ShowLoginError("Invalid login credentials");
             }
-        }
-        private bool IsUserInputValid()
-        {
-            return !string.IsNullOrWhiteSpace(userNameTextBox.Text) && !string.IsNullOrWhiteSpace(passwordTextbox.Text);
         }
         private void ProcessSuccessfulLogin(Employee loggedInEmployee)
         {
             this.Hide();
             OpenFormBasedOnRole(loggedInEmployee);
         }
-        private void ShowLoginError()
+        private void ShowLoginError(string errorMessage)
         {
-            loginErrorMsgLbl.Text = "Invalid login credentials";
+            loginErrorMsgLbl.Text = errorMessage;
         }
-
         private void OpenFormBasedOnRole(Employee loggedInEmployee)
         {
+            Form employeeForm = null;
             switch (loggedInEmployee.Role)
             {
                 case EmployeeRole.Chefkok:
                 case EmployeeRole.Bartender:
-                    using (KitchenBar chefForm = new KitchenBar())
-                    {
-                        chefForm.ShowDialog();
-                    }
+                    employeeForm = new KitchenBar();
+                    employeeForm.ShowDialog();
                     break;
-
                 case EmployeeRole.Waiter:
                 case EmployeeRole.Manager:
-                    using (Tables waiterForm = new Tables(loggedInEmployee))
-                    {
-                        waiterForm.ShowDialog();
-                    }
+                    employeeForm = new Tables(loggedInEmployee);
+                    employeeForm.ShowDialog();
                     break;
-
                 default:
                     throw new ArgumentException("Invalid employee role");
             }
         }
         private void showHidePasswordBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (passwordTextbox.UseSystemPasswordChar)
-                {
-                    passwordTextbox.UseSystemPasswordChar = false;
-                    showHidePasswordBtn.Text = "Hide";
-                }
-                else
-                {
-                    passwordTextbox.UseSystemPasswordChar = true;
-                    showHidePasswordBtn.Text = "Show";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            passwordTextbox.UseSystemPasswordChar = !passwordTextbox.UseSystemPasswordChar;
+            showHidePasswordBtn.Text = passwordTextbox.UseSystemPasswordChar ? "Show" : "Hide";
         }
         private void UpdateLoginButton()
         {
-            try
-            {
-                loginBtn.Enabled = IsUserInputValid();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            loginBtn.Enabled = employeeService.IsUserInputValid(userNameTextBox.Text, passwordTextbox.Text);
         }
-
-
         private void userNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
                 UpdateLoginButton();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
         }
 
         private void passwordTextbox_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
                 UpdateLoginButton();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
         }
 
         private void forgotPasswordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            try
-            {
-                managerContactMsgLbl.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+                managerContactMsgLbl.Visible = true;    
         }
     }
 }

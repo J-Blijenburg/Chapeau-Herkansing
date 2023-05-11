@@ -17,26 +17,31 @@ namespace UI
         private Table selectedTable;
         private TableService tableService;
         private Employee loggedInEmployee;
+        private bool isFormClosing = false;
 
-        public event EventHandler TableStatusChanged;
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee)
         {
             InitializeComponent();
             tableService = new TableService();
             this.selectedTable = selectedTable;
             this.loggedInEmployee = loggedInEmployee;
-
+            SetLabels();
+            SubscribeToEvents();
+            UpdateButtonSelection();
+        }
+        private void SetLabels()
+        {
             employeeNameLbl.Text = this.loggedInEmployee.FirstName;
             tableNumberLbl.Text = $"Table {this.selectedTable.Number}";
+        }
 
+        private void SubscribeToEvents()
+        {
             freeBtn.Click += ChangeTableStatusButton_Click;
             occupiedBtn.Click += ChangeTableStatusButton_Click;
             reservedBtn.Click += ChangeTableStatusButton_Click;
-
-            UpdateButtonSelection();
+            this.FormClosing += TableStatusOverview_FormClosing;
         }
-
-
         private void UpdateButtonSelection()
         {
             freeBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Open ? 2 : 0;
@@ -52,43 +57,40 @@ namespace UI
                 newStatus = TableStatus.Occupied;
             else
                 newStatus = TableStatus.Reserved;
-
             UpdateTableStatus(newStatus);
         }
-
         private void UpdateTableStatus(TableStatus newStatus)
         {
             try
             {
-                if (tableService.UpdateTableStatus(selectedTable.TableId, newStatus))
-                {
-                    selectedTable.Status = newStatus;
-                    UpdateButtonSelection();
-
-                    TableStatusChanged?.Invoke(this, EventArgs.Empty);
-                }
-                else
-                {
-                    MessageBox.Show("Error updating table status.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                tableService.UpdateTableStatus(selectedTable.Number, newStatus);
+                selectedTable.Status = newStatus;
+                UpdateButtonSelection();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error updating table status: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void TableStatusOverview_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isFormClosing)
+            {
+                isFormClosing = true;
+                Tables tables = new Tables(loggedInEmployee);
+                tables.Show();
+            }
+        }
+
         private void backBtn_Click(object sender, EventArgs e)
         {
-            Tables tables = new Tables(loggedInEmployee);
             this.Close();
-            tables.Show();
         }
 
         private void goToTableBtn_Click(object sender, EventArgs e)
         {
             TableOverview tableOverview = new TableOverview(selectedTable);
-            this.Close();
-            tableOverview.Show();
+            tableOverview.ShowDialog();
         }
     }
 }

@@ -52,6 +52,7 @@
             employeeNameLbl = new Label();
             timeLbl = new Label();
             timeUpdateTimer = new System.Windows.Forms.Timer(components);
+            tableUpdateTimer = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -237,22 +238,25 @@
             employeeNameLbl.AutoSize = true;
             employeeNameLbl.Location = new Point(334, 20);
             employeeNameLbl.Name = "employeeNameLbl";
-            employeeNameLbl.Size = new Size(50, 20);
+            employeeNameLbl.Size = new Size(0, 20);
             employeeNameLbl.TabIndex = 19;
-            employeeNameLbl.Text = "label5";
             // 
             // timeLbl
             // 
             timeLbl.AutoSize = true;
             timeLbl.Location = new Point(175, 20);
             timeLbl.Name = "timeLbl";
-            timeLbl.Size = new Size(50, 20);
+            timeLbl.Size = new Size(0, 20);
             timeLbl.TabIndex = 20;
-            timeLbl.Text = "label5";
             // 
             // timeUpdateTimer
             // 
             timeUpdateTimer.Enabled = true;
+            // 
+            // tableUpdateTimer
+            // 
+            tableUpdateTimer.Enabled = true;
+            tableUpdateTimer.Tick += tableUpdateTimer_Tick;
             // 
             // Tables
             // 
@@ -319,5 +323,6 @@
         private Label employeeNameLbl;
         private Label timeLbl;
         private System.Windows.Forms.Timer timeUpdateTimer;
+        private System.Windows.Forms.Timer tableUpdateTimer;
     }
 }
