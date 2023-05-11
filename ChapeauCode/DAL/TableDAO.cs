@@ -10,28 +10,32 @@ namespace DAL
     {
         public List<Table> GetTables()
         {
-            string query = "SELECT [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status] as [TableStatus] FROM [Table] INNER JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]";
-            return ReadTables(ExecuteSelectQuery(query));
-        }
-
-        public bool UpdateTableStatus(Table table)
-        {
-            string query = "UPDATE [Table] SET [Status] = @Status WHERE [TableId] = @TableId";
-            SqlParameter[] sqlParameters = {
-                new SqlParameter("@Status", SqlDbType.Int) { Value = (int)table.Status },
-                new SqlParameter("@TableId", SqlDbType.Int) { Value = table.TableId }
+            string query = @"SELECT [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status] as [TableStatus],
+                             COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
+                             FROM [Table]
+                             LEFT JOIN [Receipt] ON [Table].[TableId] = [Receipt].[TableId]
+                             LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] = @DeliveredStatus
+                             LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
+                             GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@DeliveredStatus", (int)OrderStatus.Delivered)
             };
 
-            try
-            {
-                ExecuteEditQuery(query, sqlParameters);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }
+        public void UpdateTableStatus(int tableNumber, TableStatus newStatus)
+        {
+            string query = "UPDATE [Table] SET Status = @NewStatus WHERE Number = @TableNumber";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableNumber", tableNumber),
+                new SqlParameter("@NewStatus", (int)newStatus)
+            };
+
+            ExecuteEditQuery(query, sqlParameters);
+        }
+
 
         private List<Table> ReadTables(DataTable dataTable)
         {
@@ -45,8 +49,10 @@ namespace DAL
                     {
                         TableId = (int)dr["TableId"],
                         Number = (int)dr["Number"],
-                        Status = (TableStatus)dr["Status"]
+                        Status = (TableStatus)dr["Status"],
+                        UndeliveredOrdersCount = (int)dr["UndeliveredOrdersCount"]
                     };
+
 
                     tables.Add(table);
                 }

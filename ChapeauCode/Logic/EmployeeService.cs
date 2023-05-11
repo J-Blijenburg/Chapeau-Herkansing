@@ -61,10 +61,9 @@ namespace Logic
 
             return null;
         }
-
-
-
-
-
+        public bool IsUserInputValid(string userName, string password)
+        {
+            return !string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password);
+        }
     }
 }
