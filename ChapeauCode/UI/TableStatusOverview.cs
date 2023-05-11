@@ -1,5 +1,6 @@
 ﻿using Logic;
 using Model;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ namespace UI
         private Table selectedTable;
         private TableService tableService;
         private Employee loggedInEmployee;
+        public event EventHandler TableStatusChanged;
+
         private bool isFormClosing = false;
 
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee)
@@ -77,11 +80,9 @@ namespace UI
             if (!isFormClosing)
             {
                 isFormClosing = true;
-                Tables tables = new Tables(loggedInEmployee);
-                tables.Show();
+                TableStatusChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Close();

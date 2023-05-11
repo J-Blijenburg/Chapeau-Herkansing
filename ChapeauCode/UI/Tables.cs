@@ -20,7 +20,7 @@ namespace UI
             employeeNameLbl.Text = this.loggedInEmployee.FirstName;
             timeUpdateTimer.Start();
             timeUpdateTimer.Tick += timeUpdateTimer_Tick;
-            tableUpdateTimer.Interval = 3000;
+            tableUpdateTimer.Interval = 10000;
             tableUpdateTimer.Tick += tableUpdateTimer_Tick;
             tableUpdateTimer.Start();
         }
