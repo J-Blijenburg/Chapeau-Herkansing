@@ -91,6 +91,7 @@
             goToTableBtn.TabIndex = 24;
             goToTableBtn.Text = "Go to table";
             goToTableBtn.UseVisualStyleBackColor = false;
+            goToTableBtn.Click += goToTableBtn_Click;
             // 
             // reservedBtn
             // 

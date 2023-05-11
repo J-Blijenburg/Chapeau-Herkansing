@@ -12,7 +12,7 @@ namespace UI
             Table table = new Table();
             table.Number = 1;
 
-            Application.Run(new TableOverview(table));
+            Application.Run(new Login());
         }
     }
 }

@@ -14,20 +14,20 @@ namespace UI
 {
     public partial class TableStatusOverview : Form
     {
-        private Table _selectedTable;
-        private TableService _tableService;
-        private Employee _loggedInEmployee;
+        private Table selectedTable;
+        private TableService tableService;
+        private Employee loggedInEmployee;
 
         public event EventHandler TableStatusChanged;
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee)
         {
             InitializeComponent();
-            _selectedTable = selectedTable;
-            _tableService = new TableService();
-            _loggedInEmployee = loggedInEmployee;
+            tableService = new TableService();
+            this.selectedTable = selectedTable;
+            this.loggedInEmployee = loggedInEmployee;
 
-            employeeNameLbl.Text = _loggedInEmployee.FirstName;
-            tableNumberLbl.Text = $"Table {_selectedTable.Number}";
+            employeeNameLbl.Text = this.loggedInEmployee.FirstName;
+            tableNumberLbl.Text = $"Table {this.selectedTable.Number}";
 
             freeBtn.Click += ChangeTableStatusButton_Click;
             occupiedBtn.Click += ChangeTableStatusButton_Click;
@@ -39,9 +39,9 @@ namespace UI
 
         private void UpdateButtonSelection()
         {
-            freeBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Open ? 2 : 0;
-            occupiedBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Occupied ? 2 : 0;
-            reservedBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Reserved ? 2 : 0;
+            freeBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Open ? 2 : 0;
+            occupiedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Occupied ? 2 : 0;
+            reservedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Reserved ? 2 : 0;
         }
         private void ChangeTableStatusButton_Click(object sender, EventArgs e)
         {
@@ -60,9 +60,9 @@ namespace UI
         {
             try
             {
-                if (_tableService.UpdateTableStatus(_selectedTable.TableId, newStatus))
+                if (tableService.UpdateTableStatus(selectedTable.TableId, newStatus))
                 {
-                    _selectedTable.Status = newStatus;
+                    selectedTable.Status = newStatus;
                     UpdateButtonSelection();
 
                     TableStatusChanged?.Invoke(this, EventArgs.Empty);
@@ -79,9 +79,16 @@ namespace UI
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            Tables tables = new Tables(_loggedInEmployee);
+            Tables tables = new Tables(loggedInEmployee);
             this.Close();
             tables.Show();
+        }
+
+        private void goToTableBtn_Click(object sender, EventArgs e)
+        {
+            TableOverview tableOverview = new TableOverview(selectedTable);
+            this.Close();
+            tableOverview.Show();
         }
     }
 }
