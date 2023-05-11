@@ -253,29 +253,36 @@ namespace UI
 
         //receive the selected menuitem and add it to the listview of ListViewOrderdItems
         private void FillListViewOrderdItems(ListView listView)
-        {
-            bool itemExists = false;
-            MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
-
-            foreach (ListViewItem orderItem in ListViewOrderdItems.Items)
+        {      
+            try
             {
-                if (menuItem.Name == orderItem.SubItems[1].Text)
+                bool itemExists = false;
+                MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
+
+                foreach (ListViewItem orderItem in ListViewOrderdItems.Items)
                 {
-                    OrderItem chosenOrderItem = (OrderItem)orderItem.Tag;
-                    chosenOrderItem.Quantity++;
-                    orderItem.Text = $"{chosenOrderItem.Quantity}x";
-                    itemExists = true;
-                    break;
+                    if (menuItem.Name == orderItem.SubItems[1].Text)
+                    {
+                        OrderItem chosenOrderItem = (OrderItem)orderItem.Tag;
+                        chosenOrderItem.Quantity++;
+                        orderItem.Text = $"{chosenOrderItem.Quantity}x";
+                        itemExists = true;
+                        break;
+                    }
+                }
+                if (!itemExists)
+                {
+                    OrderItem orderItem = CreateOrderItem(menuItem);
+                    ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
+                    listViewItem.SubItems.Add(orderItem.MenuItem.Name);
+                    listViewItem.SubItems.Add(orderItem.Comment);
+                    listViewItem.Tag = orderItem;
+                    ListViewOrderdItems.Items.Add(listViewItem);
                 }
             }
-            if (!itemExists)
+            catch (Exception ex)
             {
-                OrderItem orderItem = CreateOrderItem(menuItem);
-                ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
-                listViewItem.SubItems.Add(orderItem.MenuItem.Name);
-                listViewItem.SubItems.Add(orderItem.Comment);
-                listViewItem.Tag = orderItem;
-                ListViewOrderdItems.Items.Add(listViewItem);
+                MessageBox.Show(ex.Message);
             }
         }
 
