@@ -46,6 +46,7 @@ namespace UI
             //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
             Employee employee = new Employee();
             employee.FirstName = "Jens";
+            employee.EmployeeId = 1;
             
             OrderOverView order = new OrderOverView(this, panelToShow, table, employee);
             this.Hide();
