@@ -9,7 +9,10 @@ namespace UI
         {
             ApplicationConfiguration.Initialize();
 
-            Application.Run(new Login());
+            Table table = new Table();
+            table.Number = 1;
+
+            Application.Run(new TableOverview(table));
         }
     }
 }

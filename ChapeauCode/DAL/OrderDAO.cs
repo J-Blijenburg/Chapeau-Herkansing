@@ -142,7 +142,7 @@ namespace DAL
                                 Password = (string)dataRow["Password"],
                                 IsActive = (bool)dataRow["IsActive"],
                                 RegistrationDate = DateTime.Now,
-                                Role = StringToEmployeeRole((string)dataRow["Role"])
+                                Role =  StringToEmployeeRole((string)dataRow["Role"])
                             },
                             Table = new Table()
                             {
