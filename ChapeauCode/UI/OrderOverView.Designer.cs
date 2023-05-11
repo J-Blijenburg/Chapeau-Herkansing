@@ -566,6 +566,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "OrderOverView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Order";
