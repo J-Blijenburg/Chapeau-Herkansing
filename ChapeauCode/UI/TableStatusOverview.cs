@@ -1,5 +1,6 @@
 ﻿using Logic;
 using Model;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,34 +15,41 @@ namespace UI
 {
     public partial class TableStatusOverview : Form
     {
-        private Table _selectedTable;
-        private TableService _tableService;
-        private Employee _loggedInEmployee;
-
+        private Table selectedTable;
+        private TableService tableService;
+        private Employee loggedInEmployee;
         public event EventHandler TableStatusChanged;
+
+        private bool isFormClosing = false;
+
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee)
         {
             InitializeComponent();
-            _selectedTable = selectedTable;
-            _tableService = new TableService();
-            _loggedInEmployee = loggedInEmployee;
+            tableService = new TableService();
+            this.selectedTable = selectedTable;
+            this.loggedInEmployee = loggedInEmployee;
+            SetLabels();
+            SubscribeToEvents();
+            UpdateButtonSelection();
+        }
+        private void SetLabels()
+        {
+            employeeNameLbl.Text = this.loggedInEmployee.FirstName;
+            tableNumberLbl.Text = $"Table {this.selectedTable.Number}";
+        }
 
-            employeeNameLbl.Text = _loggedInEmployee.FirstName;
-            tableNumberLbl.Text = $"Table {_selectedTable.Number}";
-
+        private void SubscribeToEvents()
+        {
             freeBtn.Click += ChangeTableStatusButton_Click;
             occupiedBtn.Click += ChangeTableStatusButton_Click;
             reservedBtn.Click += ChangeTableStatusButton_Click;
-
-            UpdateButtonSelection();
+            this.FormClosing += TableStatusOverview_FormClosing;
         }
-
-
         private void UpdateButtonSelection()
         {
-            freeBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Open ? 2 : 0;
-            occupiedBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Occupied ? 2 : 0;
-            reservedBtn.FlatAppearance.BorderSize = _selectedTable.Status == TableStatus.Reserved ? 2 : 0;
+            freeBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Open ? 2 : 0;
+            occupiedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Occupied ? 2 : 0;
+            reservedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Reserved ? 2 : 0;
         }
         private void ChangeTableStatusButton_Click(object sender, EventArgs e)
         {
@@ -52,36 +60,38 @@ namespace UI
                 newStatus = TableStatus.Occupied;
             else
                 newStatus = TableStatus.Reserved;
-
             UpdateTableStatus(newStatus);
         }
-
         private void UpdateTableStatus(TableStatus newStatus)
         {
             try
             {
-                if (_tableService.UpdateTableStatus(_selectedTable.TableId, newStatus))
-                {
-                    _selectedTable.Status = newStatus;
-                    UpdateButtonSelection();
-
-                    TableStatusChanged?.Invoke(this, EventArgs.Empty);
-                }
-                else
-                {
-                    MessageBox.Show("Error updating table status.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                tableService.UpdateTableStatus(selectedTable.Number, newStatus);
+                selectedTable.Status = newStatus;
+                UpdateButtonSelection();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error updating table status: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void TableStatusOverview_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isFormClosing)
+            {
+                isFormClosing = true;
+                TableStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            Tables tables = new Tables(_loggedInEmployee);
             this.Close();
-            tables.Show();
+        }
+
+        private void goToTableBtn_Click(object sender, EventArgs e)
+        {
+            TableOverview tableOverview = new TableOverview(selectedTable);
+            tableOverview.ShowDialog();
         }
     }
 }

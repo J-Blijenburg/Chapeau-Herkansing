@@ -4,6 +4,7 @@ using System.Linq;
 using Model;
 using DAL;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Logic
 {
@@ -20,17 +21,20 @@ namespace Logic
         {
             return tableDAO.GetTables();
         }
-        public bool UpdateTableStatus(int tableId, TableStatus newStatus)
+        public void UpdateTableStatus(int tableNumber, TableStatus newStatus)
         {
-            Table table = new Table
+            tableDAO.UpdateTableStatus(tableNumber, newStatus);
+        }
+        public Color GetColorForTable(Table table)
+        {
+            if (table.UndeliveredOrdersCount > 0)
             {
-                TableId = tableId,
-                Status = newStatus
-            };
-
-            bool isUpdated = tableDAO.UpdateTableStatus(table);
-
-            return isUpdated;
+                return Color.Red;
+            }
+            else
+            {
+                return GetColorForStatus(table.Status);
+            }
         }
 
         public Color GetColorForStatus(TableStatus status)
@@ -47,6 +51,5 @@ namespace Logic
                     return Color.Gray;
             }
         }
-
     }
 }
