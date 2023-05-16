@@ -25,6 +25,7 @@ namespace Model
             OrderItems = new List<OrderItem>();
         }
 
+        //deze method mag weg aangezien de int tochal op public staat
         public void SetOrderId(int id)
         {
             this.OrderId = id;

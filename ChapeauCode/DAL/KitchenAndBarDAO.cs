@@ -8,7 +8,7 @@ namespace DAL
 {
     public class KitchenAndBarDAO
     {
-
+        //kitchen and bar DAO methods kunnen gerust in de orderDAO ~Gerwin
 
 
     }

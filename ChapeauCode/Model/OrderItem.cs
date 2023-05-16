@@ -10,6 +10,7 @@ namespace Model
     public class OrderItem
     {
         public int OrderItemId { get; set; }
+        //doordat er nu een list is in order is dit niet meer nodig de order order zegmaar
         public Order Order { get; set; }
         public string Comment { get; set; }
         public MenuItem MenuItem { get; set; }

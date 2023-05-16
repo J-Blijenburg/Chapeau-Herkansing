@@ -5,6 +5,12 @@ namespace UI
 {
     public partial class OrderOverView : Form
     {
+        //algemeen de structuur goed aanpassen met listviews van de menu etc...
+        //een plusje bij de menuitems zetten zodat je ze kan toevoegen aan de listview
+        //de listview van lunch, dinner en drinks in 1 listview zetten, en dan gwn de titel in het midden zetten
+        //de afwerkingen van de rondjes en de kleuren enzo -> design dingetje
+
+
         private Form previousForm;
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
@@ -19,11 +25,13 @@ namespace UI
             this.currentEmployee = employee;
             DisplayTextLabel(employee);
 
+            //dit in een aparte method
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 300);
             ListViewOrderdItems.Columns.Add("Comment", 100);
         }
 
+        //verander methode naam naar dislayEmployeeName
         private void DisplayTextLabel(Employee employee)
         {
             LblEmployee.Text = employee.FirstName;
@@ -109,6 +117,14 @@ namespace UI
         {
             try
             {
+                //als je een methode maakt die een listview en een list<menuitem> verwacht
+                //dan kan je deze 3 methodes in 1 methode zetten
+                //
+                
+
+                //als je een listmenuitem aanmaakt dan hoef je niet constant orderservice aan te roepen
+
+                //van te voren de menuitems inladen en ingelaad laten zodat ze niet constant opnieuw worden ingeladen
                 FillListViewMenuItems(ListDrinksSoft, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()));
 
                 FillListViewMenuItems(ListDrinksBeers, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()));
@@ -129,6 +145,7 @@ namespace UI
         {
             try
             {
+                //zelfde geldt voor hier
                 FillListViewMenuItems(ListLunchStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()));
 
                 FillListViewMenuItems(ListLunchMains, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()));
@@ -146,6 +163,7 @@ namespace UI
         {
             try
             {
+                //zelfde geldt voor hier
                 FillListViewMenuItems(ListDinnerStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()));
                 FillListViewMenuItems(ListDinnerEntre, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()));
 
@@ -166,6 +184,7 @@ namespace UI
             {
                 listView.Clear();
 
+                //maak hier een methode van
                 listView.Columns.Add("Name", 375);
                 listView.Columns.Add("Price", 100);
 
@@ -190,7 +209,7 @@ namespace UI
                 if (ListViewOrderdItems.Items.Count != 0)
                 {
                     //Had eerst de class zo gemaakt dat de order al in de constructor werdt aangemaakt
-                    //Maar op het moment dat de order wordt gecanceld moet je het weer verwijderen uit de database
+                    //Maar op het moment dat de order wordt gecanceld, moet je het weer verwijderen uit de database
 
                     Receipt receipt = receiptService.GetReceipt(table);
                     Order order = CreateOrder(receipt, employee);
@@ -218,6 +237,7 @@ namespace UI
             
             try
             {
+                //het toevoegen van de orderid kan ook in de DAO laag scheelt weer code
                 int orderId = orderService.CreateOrder(order);
                 order.SetOrderId(orderId);
             }
@@ -243,15 +263,17 @@ namespace UI
                 bool itemExists = false;
                 MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
 
-                foreach (ListViewItem orderItem in ListViewOrderdItems.Items)
+                foreach (ListViewItem lvItem in ListViewOrderdItems.Items)
                 {
-                    if (menuItem.Name == orderItem.SubItems[1].Text)
-                    {
-                        OrderItem chosenOrderItem = (OrderItem)orderItem.Tag;
-                        
-                        chosenOrderItem.UpdateQuantity(chosenOrderItem.Quantity + 1);
+                    OrderItem orderItem = (OrderItem)lvItem.Tag;
 
-                        orderItem.Text = $"{chosenOrderItem.Quantity}x";
+                    if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
+                    {
+                        //de update quantity kan gwn met orderitem.quantity++ of --
+                        orderItem.UpdateQuantity(orderItem.Quantity + 1);
+
+                        //dit stukje komt vaker voor in de code, misschien een methode van maken
+                        lvItem.Text = $"{orderItem.Quantity}x";
                         itemExists = true;
                         break;
                     }
@@ -275,21 +297,19 @@ namespace UI
         private void BtnRemoveOrderItem_Click(object sender, EventArgs e)
         {
             try
-            {                 
-
-                if (ListViewOrderdItems.SelectedItems.Count == 0)
-                {
-                    throw new Exception("Selecteer een item!");
-                }
+            {
+                //Omdat het niet onverwachts is kan je beter iets anders dan een exception gooien
+                CheckOrderdItems();
 
                 OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-                orderItem.Quantity--;
+                orderItem.UpdateQuantity(orderItem.Quantity - 1);
                 if (orderItem.Quantity == 0)
                 {
                     ListViewOrderdItems.Items.Remove(ListViewOrderdItems.SelectedItems[0]);
                 }
                 else
                 {
+                    //dit stukje komt vaker voor in de code, misschien een methode van maken
                     ListViewOrderdItems.SelectedItems[0].Text = $"{orderItem.Quantity}x";
                 }
             }
@@ -303,10 +323,9 @@ namespace UI
         {
             try
             {
-                if (ListViewOrderdItems.SelectedItems.Count == 0)
-                {
-                    throw new Exception("Selecteer een item!");
-                }
+                //Omdat het niet onverwachts is kan je beter iets anders dan een exception gooien
+
+                CheckOrderdItems();
 
                 OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
 
@@ -321,9 +340,21 @@ namespace UI
             }
         }
 
+        private void CheckOrderdItems()
+        {
+            //Omdat het niet onverwachts is kan je beter iets anders dan een exception gooien
+
+            if (ListViewOrderdItems.SelectedItems.Count == 0)
+            {
+                throw new Exception("Please, select an item!");
+            }
+        }
+
         private void ShowComment(OrderItem orderItem)
         {
+            
             ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
+            //dit ziet er niet heel netjes uit. Je wilt voorkomen dat je de index van de subitems moet weten
             selectedItem.SubItems[2].Text = orderItem.Comment;
         }
     }
