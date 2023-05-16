@@ -35,15 +35,6 @@ namespace DAL
                     Name = (string)dr["Name"],
                     Stock = (int)dr["Stock"],
                     Price = (double)dr["Price"],
-                    MenuCategory = new MenuCategory()
-                    {
-                        VAT = (double)dr["VAT"],
-                        Name = StringtoCategory((string)dr["Name"]),
-                        Menu = new Menu()
-                        {
-                            Name = StringToMenuType((string)dr["Name"])
-                        }
-                    }
                 };
                 list.Add(menuItem);
             } 
@@ -67,7 +58,7 @@ namespace DAL
             }
         }  
         
-        public int CreateOrder(Order order)
+        public void CreateOrder(Order order)
         {
             string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
@@ -78,7 +69,7 @@ namespace DAL
                 new SqlParameter("@OrderDateTime", order.OrderDateTime),
                 new SqlParameter("@Status", (int) order.Status)
             };
-            return ExecuteInsertQueryAndReturnId(query, sqlParameters);
+            order.OrderId = ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
 
         public List<OrderItem> GetOrderdItems(Table table){
@@ -172,20 +163,6 @@ namespace DAL
                         Name = (string)dataRow["Name"],
                         Stock = (int)dataRow["Stock"],
                         Price = (double)dataRow["Price"],
-                        MenuCategory = new MenuCategory()
-                        {
-                            menuCategoryId = (int)dataRow["MenuCategoryId"],
-                            VAT = (double)dataRow["VAT"],
-                            Name =  StringtoCategory((string)dataRow["Name"]),
-                            Menu = new Menu()
-                            {
-                                MenuId = (int)dataRow["MenuId"],
-                                Name = StringToMenuType((string)dataRow["Name"]),
-                                StartTime = DateTime.Now,
-                                EndTime = DateTime.Now
-                            }
-                        }
-
                     },
                     Quantity = (int)dataRow["Quantity"]
                 };

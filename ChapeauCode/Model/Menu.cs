@@ -12,8 +12,6 @@ namespace Model
         public MenuType Name { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
-        //toevoegen van de listmenuCategory, ff checken of het goed staat enzo...
         public List<MenuCategory> MenuCategories { get; set; }
 
     }

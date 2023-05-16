@@ -23,16 +23,20 @@ namespace UI
             this.previousForm = previousForm;
             this.table = table;
             this.currentEmployee = employee;
-            DisplayTextLabel(employee);
+            DisplayEmployeeAndTable(employee, table);
 
-            //dit in een aparte method
+            AddColumnsToListViewOrderdItems();
+            
+        }
+
+        private void AddColumnsToListViewOrderdItems()
+        {
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 300);
             ListViewOrderdItems.Columns.Add("Comment", 100);
         }
-
-        //verander methode naam naar dislayEmployeeName
-        private void DisplayTextLabel(Employee employee)
+        
+        private void DisplayEmployeeAndTable(Employee employee, Table table)
         {
             LblEmployee.Text = employee.FirstName;
             LblTableNumber.Text = $"Table #{table.Number}";
@@ -119,7 +123,7 @@ namespace UI
             {
                 //als je een methode maakt die een listview en een list<menuitem> verwacht
                 //dan kan je deze 3 methodes in 1 methode zetten
-                //
+                
                 
 
                 //als je een listmenuitem aanmaakt dan hoef je niet constant orderservice aan te roepen
@@ -234,12 +238,9 @@ namespace UI
         {
 
             Order order = new Order(employee, receipt, DateTime.Now, OrderStatus.Ordered);
-            
             try
             {
-                //het toevoegen van de orderid kan ook in de DAO laag scheelt weer code
-                int orderId = orderService.CreateOrder(order);
-                order.SetOrderId(orderId);
+                orderService.CreateOrder(order);
             }
             catch (Exception e)
             {
