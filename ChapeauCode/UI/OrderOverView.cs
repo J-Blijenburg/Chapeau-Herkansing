@@ -10,7 +10,7 @@ namespace UI
         private ReceiptService receiptService = new ReceiptService();
         private Table table;
         private Employee currentEmployee;
-        public OrderOverView(Form previousForm, string panelToShow, Table table, Employee employee)
+        public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
             ShowCorrectPanel(panelToShow);
@@ -32,19 +32,19 @@ namespace UI
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
-            ShowCorrectPanel("Lunch");
+            ShowCorrectPanel(MenuType.Lunch);
             GetAllLunches();
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
-            ShowCorrectPanel("Dinner");
+            ShowCorrectPanel(MenuType.Dinner);
             GetAllDinners();
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
-            ShowCorrectPanel("Drinks");
+            ShowCorrectPanel(MenuType.Drinks);
             GetAllDrinks();
 
         }
@@ -67,7 +67,7 @@ namespace UI
         }
   
 
-        private void ShowCorrectPanel(string panelToShow)
+        private void ShowCorrectPanel(MenuType panelToShow)
         {
             HideAllPanels();
 
@@ -76,17 +76,17 @@ namespace UI
 
             switch (panelToShow)
             {
-                case "Drinks":
+                case MenuType.Drinks:
                     GetAllDrinks();
                     PnlDrinks.Show();
                     BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
                     break;
-                case "Dinner":
+                case MenuType.Dinner:
                     GetAllDinners();
                     PnlDinner.Show();
                     BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
                     break;
-                case "Lunch":
+                case MenuType.Lunch:
                     GetAllLunches();
                     PnlLunch.Show();
                     BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
@@ -109,15 +109,15 @@ namespace UI
         {
             try
             {
-                FillListViewMenuItems(ListDrinksSoft, orderService.GetMenuItemsByMenuAndCategory("Drinks", "SoftDrinks"));
+                FillListViewMenuItems(ListDrinksSoft, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()));
 
-                FillListViewMenuItems(ListDrinksBeers, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Beers"));
+                FillListViewMenuItems(ListDrinksBeers, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()));
 
-                FillListViewMenuItems(ListDrinksWines, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Wines"));
+                FillListViewMenuItems(ListDrinksWines, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Wines.ToString()));
 
-                FillListViewMenuItems(ListDrinksSpirits, orderService.GetMenuItemsByMenuAndCategory("Drinks", "Spirits"));
+                FillListViewMenuItems(ListDrinksSpirits, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Spirits.ToString()));
 
-                FillListViewMenuItems(ListDrinksHot, orderService.GetMenuItemsByMenuAndCategory("Drinks", "HotDrinks"));
+                FillListViewMenuItems(ListDrinksHot, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.HotDrinks.ToString()));
             }
             catch (Exception ex)
             {
@@ -129,11 +129,11 @@ namespace UI
         {
             try
             {
-                FillListViewMenuItems(ListLunchStarter, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Starters"));
+                FillListViewMenuItems(ListLunchStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()));
 
-                FillListViewMenuItems(ListLunchMains, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Mains"));
+                FillListViewMenuItems(ListLunchMains, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()));
 
-                FillListViewMenuItems(ListLunchDesserts, orderService.GetMenuItemsByMenuAndCategory("Lunch", "Desserts"));
+                FillListViewMenuItems(ListLunchDesserts, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Desserts.ToString()));
             }
             catch (Exception ex)
             {
@@ -141,17 +141,17 @@ namespace UI
             }
 
         }
-
+        
         private void GetAllDinners()
         {
             try
             {
-                FillListViewMenuItems(ListDinnerStarter, orderService.GetMenuItemsByMenuAndCategory("Diner", "Starters"));
-                FillListViewMenuItems(ListDinnerEntre, orderService.GetMenuItemsByMenuAndCategory("Diner", "Entres"));
+                FillListViewMenuItems(ListDinnerStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()));
+                FillListViewMenuItems(ListDinnerEntre, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()));
 
-                FillListViewMenuItems(ListDinnerMains, orderService.GetMenuItemsByMenuAndCategory("Diner", "Mains"));
+                FillListViewMenuItems(ListDinnerMains, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Mains.ToString()));
 
-                FillListViewMenuItems(ListDinnerDesserts, orderService.GetMenuItemsByMenuAndCategory("Diner", "Desserts"));
+                FillListViewMenuItems(ListDinnerDesserts, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Desserts.ToString()));
             }
             catch (Exception ex)
             {

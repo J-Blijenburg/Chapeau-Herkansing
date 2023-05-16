@@ -38,10 +38,10 @@ namespace DAL
                     MenuCategory = new MenuCategory()
                     {
                         VAT = (double)dr["VAT"],
-                        Name = (string)dr["Name"],
+                        Name = StringtoCategory((string)dr["Name"]),
                         Menu = new Menu()
                         {
-                            Name = (string)dr["Name"]
+                            Name = StringToMenuType((string)dr["Name"])
                         }
                     }
                 };
@@ -176,11 +176,11 @@ namespace DAL
                         {
                             menuCategoryId = (int)dataRow["MenuCategoryId"],
                             VAT = (double)dataRow["VAT"],
-                            Name = (string)dataRow["Name"],
+                            Name =  StringtoCategory((string)dataRow["Name"]),
                             Menu = new Menu()
                             {
                                 MenuId = (int)dataRow["MenuId"],
-                                Name = (string)dataRow["Name"],
+                                Name = StringToMenuType((string)dataRow["Name"]),
                                 StartTime = DateTime.Now,
                                 EndTime = DateTime.Now
                             }
@@ -193,6 +193,48 @@ namespace DAL
             }
 
             return orderItems;
+        }
+
+        private Category StringtoCategory(string categoryName)
+        {
+            switch (categoryName)
+            {
+                case "Starters":
+                    return Category.Starters;
+                case "Mains":
+                    return Category.Mains;
+                case "Desserts":
+                    return Category.Desserts;
+                case "Entres":
+                    return Category.Entres;
+                case "SoftDrinks":
+                    return Category.SoftDrinks;
+                case "Beers":
+                    return Category.Beers;
+                case "Wines":
+                    return Category.Wines;
+                case "Spirits":
+                    return Category.Spirits;
+                case "HotDrinks":
+                    return Category.HotDrinks;
+                default:
+                    return Category.Starters;
+            }
+        }
+
+        private MenuType StringToMenuType(string name)
+        {
+            switch (name)
+            {
+                case "Lunch":
+                return MenuType.Lunch;
+                case "Dinner":
+                return MenuType.Dinner;
+                case "Drinks":
+                return MenuType.Drinks;
+                default:
+                return MenuType.Lunch;
+            }
         }
 
         private EmployeeRole StringToEmployeeRole(string role)
