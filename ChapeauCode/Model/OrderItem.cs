@@ -14,5 +14,24 @@ namespace Model
         public string Comment { get; set; }
         public MenuItem MenuItem { get; set; }
         public int Quantity { get; set; }
+
+        public OrderItem() { }
+
+        public OrderItem(string comment, MenuItem menuItem, int quantity)
+        {
+            Comment = comment;
+            MenuItem = menuItem;
+            Quantity = quantity;
+        }
+
+        public void UpdateQuantity(int quantity)
+        {
+            this.Quantity = quantity;
+        }
+
+        public void UpdateComment(string comment)
+        {
+            this.Comment = comment;
+        }
     }
 }

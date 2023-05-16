@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Model;
+﻿using Model;
 using Logic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using ListView = System.Windows.Forms.ListView;
 
 namespace UI
 {
@@ -76,54 +65,34 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-
-
-        private Order CreateOrder(Receipt receipt, Employee employee)
-        {
-            //LET OP: Deze methode is nog niet af. moet nog worden aangepast aan gebruikers etc...
-            Order order = new Order();
-            order.Employee = employee;
-            order.Receipt = receipt;
-            order.OrderDateTime = DateTime.Now;
-            order.Status = OrderStatus.Ordered;
-
-            try
-            {
-                order.OrderId = new OrderService().CreateOrder(order);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-
-            return order;
-
-        }
+  
 
         private void ShowCorrectPanel(string panelToShow)
         {
             HideAllPanels();
 
+            //TODO: for later
+            //button.BackColor = ColorTranslator.FromHtml("#CAEADB");
+
             switch (panelToShow)
             {
                 case "Drinks":
+                    GetAllDrinks();
                     PnlDrinks.Show();
                     BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    GetAllDrinks();
                     break;
                 case "Dinner":
+                    GetAllDinners();
                     PnlDinner.Show();
                     BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    GetAllDinners();
                     break;
                 case "Lunch":
+                    GetAllLunches();
                     PnlLunch.Show();
                     BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    GetAllLunches();
                     break;
             }
+
         }
 
         private void HideAllPanels()
@@ -220,10 +189,8 @@ namespace UI
             {
                 if (ListViewOrderdItems.Items.Count != 0)
                 {
-                    List<OrderItem> orderItems = new List<OrderItem>();
-
                     //Had eerst de class zo gemaakt dat de order al in de constructor werdt aangemaakt
-                    //Maar op het moment dat de order wordt gecanceld moet je de weer verwijderen uit de database
+                    //Maar op het moment dat de order wordt gecanceld moet je het weer verwijderen uit de database
 
                     Receipt receipt = receiptService.GetReceipt(table);
                     Order order = CreateOrder(receipt, employee);
@@ -232,10 +199,10 @@ namespace UI
                     {
                         OrderItem orderItem = (OrderItem)item.Tag;
                         orderItem.Order = order;
-                        orderItems.Add(orderItem);
-
+                        
+                        order.OrderItems.Add(orderItem);
                     }
-                    orderService.SendOrderItems(orderItems);
+                    orderService.SendOrderItems(order);
                 }
             }
             catch (Exception ex)
@@ -244,11 +211,28 @@ namespace UI
             }
 
         }
+        private Order CreateOrder(Receipt receipt, Employee employee)
+        {
+
+            Order order = new Order(employee, receipt, DateTime.Now, OrderStatus.Ordered);
+            
+            try
+            {
+                int orderId = orderService.CreateOrder(order);
+                order.SetOrderId(orderId);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            return order;
+
+        }
 
         private void ListViewRowClick(object sender, EventArgs e)
         {
             FillListViewOrderdItems((ListView)sender);
-
         }
 
         //receive the selected menuitem and add it to the listview of ListViewOrderdItems
@@ -264,7 +248,9 @@ namespace UI
                     if (menuItem.Name == orderItem.SubItems[1].Text)
                     {
                         OrderItem chosenOrderItem = (OrderItem)orderItem.Tag;
-                        chosenOrderItem.Quantity++;
+                        
+                        chosenOrderItem.UpdateQuantity(chosenOrderItem.Quantity + 1);
+
                         orderItem.Text = $"{chosenOrderItem.Quantity}x";
                         itemExists = true;
                         break;
@@ -272,7 +258,7 @@ namespace UI
                 }
                 if (!itemExists)
                 {
-                    OrderItem orderItem = CreateOrderItem(menuItem);
+                    OrderItem orderItem = new OrderItem("", menuItem, 1);
                     ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
                     listViewItem.SubItems.Add(orderItem.MenuItem.Name);
                     listViewItem.SubItems.Add(orderItem.Comment);
@@ -286,19 +272,11 @@ namespace UI
             }
         }
 
-        private OrderItem CreateOrderItem(MenuItem menuItem)
-        {
-            OrderItem orderItem = new OrderItem();
-            orderItem.Comment = "";
-            orderItem.MenuItem = menuItem;
-            orderItem.Quantity = 1;
-            return orderItem;
-        }
-
         private void BtnRemoveOrderItem_Click(object sender, EventArgs e)
         {
             try
-            {
+            {                 
+
                 if (ListViewOrderdItems.SelectedItems.Count == 0)
                 {
                     throw new Exception("Selecteer een item!");

@@ -14,9 +14,9 @@ namespace Logic
             return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
         }
 
-        public void SendOrderItems(List<OrderItem> orderItems)
+        public void SendOrderItems(Order order)
         {
-            orderDAO.SendOrderItems(orderItems);
+            orderDAO.SendOrderItems(order);
         }
         
         public int CreateOrder(Order order)

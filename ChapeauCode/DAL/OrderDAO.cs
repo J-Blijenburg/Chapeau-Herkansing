@@ -50,10 +50,10 @@ namespace DAL
             return list;
         }
 
-        public void SendOrderItems(List<OrderItem> orderItems)
+        public void SendOrderItems(Order order)
         {
             string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
-            foreach (OrderItem orderItem in orderItems)
+            foreach (OrderItem orderItem in order.OrderItems)
             {
                 SqlParameter[] sqlParameters;
                 sqlParameters = new SqlParameter[]
