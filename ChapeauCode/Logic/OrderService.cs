@@ -14,14 +14,14 @@ namespace Logic
             return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
         }
 
-        public void SendOrderItems(List<OrderItem> orderItems)
+        public void SendOrderItems(Order order)
         {
-            orderDAO.SendOrderItems(orderItems);
+            orderDAO.SendOrderItems(order);
         }
         
-        public int CreateOrder(Order order)
+        public void CreateOrder(Order order)
         {
-            return orderDAO.CreateOrder(order);
+            orderDAO.CreateOrder(order);
         }
 
         public List<OrderItem> GetOrderdItems(Table table)

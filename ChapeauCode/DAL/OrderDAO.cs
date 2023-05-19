@@ -35,25 +35,16 @@ namespace DAL
                     Name = (string)dr["Name"],
                     Stock = (int)dr["Stock"],
                     Price = (double)dr["Price"],
-                    MenuCategory = new MenuCategory()
-                    {
-                        VAT = (double)dr["VAT"],
-                        Name = (string)dr["Name"],
-                        Menu = new Menu()
-                        {
-                            Name = (string)dr["Name"]
-                        }
-                    }
                 };
                 list.Add(menuItem);
             } 
             return list;
         }
 
-        public void SendOrderItems(List<OrderItem> orderItems)
+        public void SendOrderItems(Order order)
         {
             string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
-            foreach (OrderItem orderItem in orderItems)
+            foreach (OrderItem orderItem in order.OrderItems)
             {
                 SqlParameter[] sqlParameters;
                 sqlParameters = new SqlParameter[]
@@ -67,7 +58,7 @@ namespace DAL
             }
         }  
         
-        public int CreateOrder(Order order)
+        public void CreateOrder(Order order)
         {
             string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
@@ -78,7 +69,7 @@ namespace DAL
                 new SqlParameter("@OrderDateTime", order.OrderDateTime),
                 new SqlParameter("@Status", (int) order.Status)
             };
-            return ExecuteInsertQueryAndReturnId(query, sqlParameters);
+            order.OrderId = ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
 
         public List<OrderItem> GetOrderdItems(Table table){
@@ -172,20 +163,6 @@ namespace DAL
                         Name = (string)dataRow["Name"],
                         Stock = (int)dataRow["Stock"],
                         Price = (double)dataRow["Price"],
-                        MenuCategory = new MenuCategory()
-                        {
-                            menuCategoryId = (int)dataRow["MenuCategoryId"],
-                            VAT = (double)dataRow["VAT"],
-                            Name = (string)dataRow["Name"],
-                            Menu = new Menu()
-                            {
-                                MenuId = (int)dataRow["MenuId"],
-                                Name = (string)dataRow["Name"],
-                                StartTime = DateTime.Now,
-                                EndTime = DateTime.Now
-                            }
-                        }
-
                     },
                     Quantity = (int)dataRow["Quantity"]
                 };
@@ -193,6 +170,48 @@ namespace DAL
             }
 
             return orderItems;
+        }
+
+        private Category StringtoCategory(string categoryName)
+        {
+            switch (categoryName)
+            {
+                case "Starters":
+                    return Category.Starters;
+                case "Mains":
+                    return Category.Mains;
+                case "Desserts":
+                    return Category.Desserts;
+                case "Entres":
+                    return Category.Entres;
+                case "SoftDrinks":
+                    return Category.SoftDrinks;
+                case "Beers":
+                    return Category.Beers;
+                case "Wines":
+                    return Category.Wines;
+                case "Spirits":
+                    return Category.Spirits;
+                case "HotDrinks":
+                    return Category.HotDrinks;
+                default:
+                    return Category.Starters;
+            }
+        }
+
+        private MenuType StringToMenuType(string name)
+        {
+            switch (name)
+            {
+                case "Lunch":
+                return MenuType.Lunch;
+                case "Dinner":
+                return MenuType.Dinner;
+                case "Drinks":
+                return MenuType.Drinks;
+                default:
+                return MenuType.Lunch;
+            }
         }
 
         private EmployeeRole StringToEmployeeRole(string role)

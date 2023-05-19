@@ -30,7 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenBar));
             this.lstViewOrders = new System.Windows.Forms.ListView();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.lstViewSelectedOrder = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,12 +49,6 @@
             this.txtTypeOfOrder = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +67,26 @@
             this.lstViewOrders.UseCompatibleStateImageBehavior = false;
             this.lstViewOrders.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Order ID";
+            this.columnHeader3.Width = 200;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Order number";
+            this.columnHeader4.Width = 200;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Count";
+            this.columnHeader5.Width = 200;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Description";
+            this.columnHeader6.Width = 200;
+            // 
             // lstViewSelectedOrder
             // 
             this.lstViewSelectedOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -80,6 +100,16 @@
             this.lstViewSelectedOrder.TabIndex = 1;
             this.lstViewSelectedOrder.UseCompatibleStateImageBehavior = false;
             this.lstViewSelectedOrder.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Selected order ID";
+            this.columnHeader1.Width = 320;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Order status";
+            this.columnHeader2.Width = 340;
             // 
             // textBox1
             // 
@@ -204,36 +234,6 @@
             this.pictureBox1.TabIndex = 14;
             this.pictureBox1.TabStop = false;
             // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Selected order ID";
-            this.columnHeader1.Width = 320;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Order status";
-            this.columnHeader2.Width = 340;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Order ID";
-            this.columnHeader3.Width = 200;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Order number";
-            this.columnHeader4.Width = 200;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Count";
-            this.columnHeader5.Width = 200;
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Description";
-            this.columnHeader6.Width = 200;
-            // 
             // KitchenBar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -256,6 +256,7 @@
             this.Controls.Add(this.lstViewOrders);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "KitchenBar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KitchenBar";

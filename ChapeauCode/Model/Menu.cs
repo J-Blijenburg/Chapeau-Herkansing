@@ -9,9 +9,10 @@ namespace Model
     public class Menu
     {
         public int MenuId { get; set; }
-        public string Name { get; set; }
+        public MenuType Name { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public List<MenuCategory> MenuCategories { get; set; }
 
     }
 }

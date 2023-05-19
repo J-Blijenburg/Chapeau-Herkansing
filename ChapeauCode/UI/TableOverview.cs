@@ -28,20 +28,20 @@ namespace UI
 
         private void BtnLunch_Click(object sender, EventArgs e)
         {
-            OpenOrderForm("Lunch");
+            OpenOrderForm(MenuType.Lunch);
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
-            OpenOrderForm("Dinner");
+            OpenOrderForm(MenuType.Dinner);
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
-            OpenOrderForm("Drinks");
+            OpenOrderForm(MenuType.Drinks);
         }
 
-        private void OpenOrderForm(string panelToShow)
+        private void OpenOrderForm(MenuType panelToShow)
         {
             //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
             Employee employee = new Employee();
