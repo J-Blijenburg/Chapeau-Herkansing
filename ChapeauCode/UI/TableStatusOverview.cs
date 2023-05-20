@@ -19,15 +19,18 @@ namespace UI
         private TableService tableService;
         private Employee loggedInEmployee;
         public event EventHandler TableStatusChanged;
+        private Tables tablesForm;
 
         private bool isFormClosing = false;
 
-        public TableStatusOverview(Table selectedTable, Employee loggedInEmployee)
+        public TableStatusOverview(Table selectedTable, Employee loggedInEmployee, Tables tablesForm)
         {
             InitializeComponent();
             tableService = new TableService();
             this.selectedTable = selectedTable;
             this.loggedInEmployee = loggedInEmployee;
+            this.tablesForm = tablesForm;
+
             SetLabels();
             SubscribeToEvents();
             UpdateButtonSelection();
@@ -86,6 +89,7 @@ namespace UI
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+            tablesForm.Show();
         }
 
         private void goToTableBtn_Click(object sender, EventArgs e)
