@@ -7,6 +7,7 @@ namespace UI
     {
         private TableService tableService;
         private Employee loggedInEmployee;
+        private Tables tablesForm;
         public Tables(Employee loggedInEmployee)
         {
             InitializeComponent();
