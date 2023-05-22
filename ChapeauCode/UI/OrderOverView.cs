@@ -5,12 +5,8 @@ namespace UI
 {
     public partial class OrderOverView : Form
     {
-        //algemeen de structuur goed aanpassen met listviews van de menu etc...
         //een plusje bij de menuitems zetten zodat je ze kan toevoegen aan de listview
-        //de listview van lunch, dinner en drinks in 1 listview zetten, en dan gwn de titel in het midden zetten
         //de afwerkingen van de rondjes en de kleuren enzo -> design dingetje
-
-
         private Form previousForm;
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
@@ -19,14 +15,78 @@ namespace UI
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
+            GetAllMenuItemsDisplayed();
             ShowCorrectPanel(panelToShow);
             this.previousForm = previousForm;
             this.table = table;
             this.currentEmployee = employee;
             DisplayEmployeeAndTable(employee, table);
-
             AddColumnsToListView();
+        }
 
+        private void GetAllMenuItemsDisplayed()
+        {
+            try
+            {
+                //als je een methode maakt die een listview en een list<menuitem> verwacht
+                //dan kan je deze 3 methodes in 1 methode zetten
+
+                //als je een listmenuitem aanmaakt dan hoef je niet constant orderservice aan te roepen
+
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()), Category.SoftDrinks);
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()), Category.Beers);
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Wines.ToString()), Category.Wines);
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Spirits.ToString()), Category.Spirits);
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.HotDrinks.ToString()), Category.HotDrinks);
+
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()), Category.Starters);
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()), Category.Mains);
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Desserts.ToString()), Category.Desserts);
+
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()), Category.Starters);
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()), Category.Entres);
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Mains.ToString()), Category.Mains);
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Desserts.ToString()), Category.Desserts);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ShowCorrectPanel(MenuType panelToShow)
+        {
+            HideAllPanels();
+            //TODO: for later
+            //button.BackColor = ColorTranslator.FromHtml("#CAEADB");
+
+            switch (panelToShow)
+            {
+                case MenuType.Drinks:
+                    PnlDrinks.Show();
+                    BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+                case MenuType.Dinner:
+                    PnlDinner.Show();
+                    BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+                case MenuType.Lunch:
+                    PnlLunch.Show();
+                    BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
+                    break;
+            }
+        }
+
+        private void HideAllPanels()
+        {
+            PnlDrinks.Hide();
+            PnlLunch.Hide();
+            PnlDinner.Hide();
+
+            BtnLunch.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
         }
 
         private void AddColumnsToListView()
@@ -50,31 +110,25 @@ namespace UI
             listView.Columns.Add(name, width);
         }
 
-        private void DisplayEmployeeAndTable(Employee employee, Table table)
-        {
-            LblEmployee.Text = employee.FirstName;
-            LblTableNumber.Text = $"Table #{table.Number}";
-        }
-
         private void BtnLunch_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel(MenuType.Lunch);
-            GetAllLunches();
         }
 
         private void BtnDinner_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel(MenuType.Dinner);
-            GetAllDinners();
         }
 
         private void BtnDrinks_Click(object sender, EventArgs e)
         {
             ShowCorrectPanel(MenuType.Drinks);
-            GetAllDrinks();
-
         }
-
+        private void DisplayEmployeeAndTable(Employee employee, Table table)
+        {
+            LblEmployee.Text = employee.FirstName;
+            LblTableNumber.Text = $"Table #{table.Number}";
+        }
         private void BtnPay_Click(object sender, EventArgs e)
         {
             try
@@ -92,109 +146,6 @@ namespace UI
             }
         }
 
-
-        private void ShowCorrectPanel(MenuType panelToShow)
-        {
-            HideAllPanels();
-
-            //TODO: for later
-            //button.BackColor = ColorTranslator.FromHtml("#CAEADB");
-
-            switch (panelToShow)
-            {
-                case MenuType.Drinks:
-                    GetAllDrinks();
-                    PnlDrinks.Show();
-                    BtnDrinks.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    break;
-                case MenuType.Dinner:
-                    GetAllDinners();
-                    PnlDinner.Show();
-                    BtnDinner.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    break;
-                case MenuType.Lunch:
-                    GetAllLunches();
-                    PnlLunch.Show();
-                    BtnLunch.BackColor = ColorTranslator.FromHtml("#CAEADB");
-                    break;
-            }
-
-        }
-
-        private void HideAllPanels()
-        {
-            PnlDrinks.Hide();
-            PnlLunch.Hide();
-            PnlDinner.Hide();
-
-            BtnLunch.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            BtnDinner.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            BtnDrinks.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-        }
-        private void GetAllDrinks()
-        {
-            try
-            {
-                //als je een methode maakt die een listview en een list<menuitem> verwacht
-                //dan kan je deze 3 methodes in 1 methode zetten
-
-
-
-                //als je een listmenuitem aanmaakt dan hoef je niet constant orderservice aan te roepen
-
-                //van te voren de menuitems inladen en ingelaad laten zodat ze niet constant opnieuw worden ingeladen
-                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()), Category.SoftDrinks);
-
-                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()), Category.Beers);
-
-                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Wines.ToString()), Category.Wines);
-
-                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Spirits.ToString()), Category.Spirits);
-
-                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.HotDrinks.ToString()), Category.HotDrinks);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void GetAllLunches()
-        {
-            try
-            {
-                //zelfde geldt voor hier
-                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()), Category.Starters);
-
-                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()), Category.Mains);
-
-                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Desserts.ToString()), Category.Desserts);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-
-        private void GetAllDinners()
-        {
-            try
-            {
-                //zelfde geldt voor hier
-                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()), Category.Starters);
-                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()), Category.Entres);
-
-                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Mains.ToString()), Category.Mains);
-
-                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Desserts.ToString()), Category.Desserts);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         //fill the listview with the given menuitems
         private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems, Category menuCategory)
         {
@@ -205,22 +156,15 @@ namespace UI
                 list.Font = new Font("Arial", 12, FontStyle.Bold);
                 listView.Items.Add(list);
 
-               
-
                 foreach (MenuItem menuItem in menuItems)
                 {
-                   
-
                     ListViewItem listViewItem = new ListViewItem(menuItem.Name);
                     listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
                     listViewItem.SubItems.Add(menuItem.Stock.ToString());
                     listViewItem.Tag = menuItem;
-                    listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");
-                   
+                    listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");                  
                     listView.Items.Add(listViewItem);
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -270,7 +214,6 @@ namespace UI
             }
 
             return order;
-
         }
 
         private void ListViewRowClick(object sender, EventArgs e)
@@ -301,8 +244,7 @@ namespace UI
                         //TODO: What if multiple employees are working on the same order?
                         if (menuItem.Stock >= orderItem.Quantity)
                         {
-                            //de update quantity kan gwn met orderitem.quantity++ of --
-                            orderItem.UpdateQuantity(orderItem.Quantity + 1);
+                            orderItem.Quantity++;
 
                             //dit stukje komt vaker voor in de code, misschien een methode van maken
                             lvItem.Text = $"{orderItem.Quantity}x";
@@ -323,7 +265,6 @@ namespace UI
                 if (!itemExists)
                 {
                     OrderItem orderItem = new OrderItem("", menuItem, 1);
-                    orderItem.MenuItem.Stock--;
                     ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
                     listViewItem.SubItems.Add(orderItem.MenuItem.Name);
                     listViewItem.SubItems.Add(orderItem.Comment);
@@ -345,7 +286,7 @@ namespace UI
                 CheckOrderdItems();
 
                 OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-                orderItem.UpdateQuantity(orderItem.Quantity - 1);
+                orderItem.Quantity--;
                 if (orderItem.Quantity == 0)
                 {
                     ListViewOrderdItems.Items.Remove(ListViewOrderdItems.SelectedItems[0]);
@@ -375,6 +316,7 @@ namespace UI
                 OrderComment orderComment = new OrderComment(this, orderItem);
                 this.Hide();
                 orderComment.ShowDialog();
+
                 ShowComment(orderItem);
             }
             catch (Exception ex)

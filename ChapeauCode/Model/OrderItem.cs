@@ -25,11 +25,6 @@ namespace Model
             Quantity = quantity;
         }
 
-        public void UpdateQuantity(int quantity)
-        {
-            this.Quantity = quantity;
-        }
-
         public void UpdateComment(string comment)
         {
             this.Comment = comment;
