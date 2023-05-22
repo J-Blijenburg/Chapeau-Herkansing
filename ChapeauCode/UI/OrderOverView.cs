@@ -43,8 +43,14 @@ namespace UI
             ListDrinks.Columns.Add(null, 100);
 
 
-            ListLunch.Columns.Add(null, 375);
-            ListLunch.Columns.Add(null, 100);
+            AddColumn(ListLunch, "", 375);
+            AddColumn(ListLunch, "", 100);
+        }
+
+        private void AddColumn(ListView listView, string name, int width)
+        {
+            listView.Columns.Add(name, width);
+            listView.Columns.Add(name, width);
         }
 
         private void DisplayEmployeeAndTable(Employee employee, Table table)

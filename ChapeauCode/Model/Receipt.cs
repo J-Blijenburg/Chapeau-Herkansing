@@ -19,5 +19,6 @@ namespace Model
         public double Tip { get; set; }
         public bool IsHandled { get; set; }
         public Payment Payment { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }
