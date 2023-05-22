@@ -44,7 +44,7 @@ namespace UI
         {
             Button tableButton = sender as Button;
             Table selectedTable = tableButton.Tag as Table;
-            TableStatusOverview tableStatusOverview = new TableStatusOverview(selectedTable, loggedInEmployee);
+            TableStatusOverview tableStatusOverview = new TableStatusOverview(selectedTable, loggedInEmployee, tablesForm);
             tableStatusOverview.TableStatusChanged += (s, eventArgs) => LoadTables();
             tableStatusOverview.Show();
             this.Hide();

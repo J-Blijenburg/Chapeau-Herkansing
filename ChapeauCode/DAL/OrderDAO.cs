@@ -54,9 +54,22 @@ namespace DAL
                     new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId),
                     new SqlParameter("@quantity", orderItem.Quantity)
                 };
+                UpdateQuantity(orderItem);
                 ExecuteEditQuery(query, sqlParameters);
             }
         }  
+
+        private void UpdateQuantity(OrderItem orderItem)
+        {
+            string query = "UPDATE MenuItem SET Stock = @stock WHERE MenuItemId = @menuItemId";
+            SqlParameter[] sqlParameters;
+            sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@stock", orderItem.MenuItem.Stock - orderItem.Quantity),
+                new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId)
+            };
+            ExecuteEditQuery(query, sqlParameters);
+        }
         
         public void CreateOrder(Order order)
         {

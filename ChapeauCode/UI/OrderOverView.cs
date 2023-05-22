@@ -26,7 +26,7 @@ namespace UI
             DisplayEmployeeAndTable(employee, table);
 
             AddColumnsToListViewOrderdItems();
-            
+
         }
 
         private void AddColumnsToListViewOrderdItems()
@@ -34,8 +34,19 @@ namespace UI
             ListViewOrderdItems.Columns.Add("Amount", 100);
             ListViewOrderdItems.Columns.Add("Name", 300);
             ListViewOrderdItems.Columns.Add("Comment", 100);
+
+            ListDinner.Columns.Add(null, 375);
+            ListDinner.Columns.Add(null, 100);
+
+
+            ListDrinks.Columns.Add(null, 375);
+            ListDrinks.Columns.Add(null, 100);
+
+
+            ListLunch.Columns.Add(null, 375);
+            ListLunch.Columns.Add(null, 100);
         }
-        
+
         private void DisplayEmployeeAndTable(Employee employee, Table table)
         {
             LblEmployee.Text = employee.FirstName;
@@ -77,7 +88,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-  
+
 
         private void ShowCorrectPanel(MenuType panelToShow)
         {
@@ -123,21 +134,21 @@ namespace UI
             {
                 //als je een methode maakt die een listview en een list<menuitem> verwacht
                 //dan kan je deze 3 methodes in 1 methode zetten
-                
-                
+
+
 
                 //als je een listmenuitem aanmaakt dan hoef je niet constant orderservice aan te roepen
 
                 //van te voren de menuitems inladen en ingelaad laten zodat ze niet constant opnieuw worden ingeladen
-                FillListViewMenuItems(ListDrinksSoft, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()));
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.SoftDrinks.ToString()), Category.SoftDrinks);
 
-                FillListViewMenuItems(ListDrinksBeers, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()));
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Beers.ToString()), Category.Beers);
 
-                FillListViewMenuItems(ListDrinksWines, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Wines.ToString()));
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Wines.ToString()), Category.Wines);
 
-                FillListViewMenuItems(ListDrinksSpirits, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Spirits.ToString()));
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.Spirits.ToString()), Category.Spirits);
 
-                FillListViewMenuItems(ListDrinksHot, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.HotDrinks.ToString()));
+                FillListViewMenuItems(ListDrinks, orderService.GetMenuItemsByMenuAndCategory(MenuType.Drinks.ToString(), Category.HotDrinks.ToString()), Category.HotDrinks);
             }
             catch (Exception ex)
             {
@@ -150,11 +161,11 @@ namespace UI
             try
             {
                 //zelfde geldt voor hier
-                FillListViewMenuItems(ListLunchStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()));
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Starters.ToString()), Category.Starters);
 
-                FillListViewMenuItems(ListLunchMains, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()));
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Mains.ToString()), Category.Mains);
 
-                FillListViewMenuItems(ListLunchDesserts, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Desserts.ToString()));
+                FillListViewMenuItems(ListLunch, orderService.GetMenuItemsByMenuAndCategory(MenuType.Lunch.ToString(), Category.Desserts.ToString()), Category.Desserts);
             }
             catch (Exception ex)
             {
@@ -162,18 +173,18 @@ namespace UI
             }
 
         }
-        
+
         private void GetAllDinners()
         {
             try
             {
                 //zelfde geldt voor hier
-                FillListViewMenuItems(ListDinnerStarter, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()));
-                FillListViewMenuItems(ListDinnerEntre, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()));
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Starters.ToString()), Category.Starters);
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Entres.ToString()), Category.Entres);
 
-                FillListViewMenuItems(ListDinnerMains, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Mains.ToString()));
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Mains.ToString()), Category.Mains);
 
-                FillListViewMenuItems(ListDinnerDesserts, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Desserts.ToString()));
+                FillListViewMenuItems(ListDinner, orderService.GetMenuItemsByMenuAndCategory(MenuType.Dinner.ToString(), Category.Desserts.ToString()), Category.Desserts);
             }
             catch (Exception ex)
             {
@@ -182,23 +193,32 @@ namespace UI
         }
 
         //fill the listview with the given menuitems
-        private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems)
+        private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems, Category menuCategory)
         {
             try
             {
-                listView.Clear();
+                ListViewItem list = new ListViewItem();
+                list.Text = menuCategory.ToString();
+                list.Font = new Font("Arial", 12, FontStyle.Bold);
+                listView.Items.Add(list);
 
-                //maak hier een methode van
-                listView.Columns.Add("Name", 375);
-                listView.Columns.Add("Price", 100);
+               
 
                 foreach (MenuItem menuItem in menuItems)
                 {
+                   
+
                     ListViewItem listViewItem = new ListViewItem(menuItem.Name);
                     listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
+                    listViewItem.SubItems.Add(menuItem.Stock.ToString());
                     listViewItem.Tag = menuItem;
+                    listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");
+                   
                     listView.Items.Add(listViewItem);
                 }
+
+                listView.Items.Add("");
+
             }
             catch (Exception ex)
             {
@@ -222,7 +242,7 @@ namespace UI
                     {
                         OrderItem orderItem = (OrderItem)item.Tag;
                         orderItem.Order = order;
-                        
+
                         order.OrderItems.Add(orderItem);
                     }
                     orderService.SendOrderItems(order);
@@ -254,11 +274,12 @@ namespace UI
         private void ListViewRowClick(object sender, EventArgs e)
         {
             FillListViewOrderdItems((ListView)sender);
+
         }
 
         //receive the selected menuitem and add it to the listview of ListViewOrderdItems
         private void FillListViewOrderdItems(ListView listView)
-        {      
+        {
             try
             {
                 bool itemExists = false;
@@ -270,18 +291,32 @@ namespace UI
 
                     if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
                     {
-                        //de update quantity kan gwn met orderitem.quantity++ of --
-                        orderItem.UpdateQuantity(orderItem.Quantity + 1);
+                        //TODO: What if multiple employees are working on the same order?
+                        if (menuItem.Stock >= orderItem.Quantity)
+                        {
+                            //de update quantity kan gwn met orderitem.quantity++ of --
+                            orderItem.UpdateQuantity(orderItem.Quantity + 1);
 
-                        //dit stukje komt vaker voor in de code, misschien een methode van maken
-                        lvItem.Text = $"{orderItem.Quantity}x";
-                        itemExists = true;
-                        break;
+                            //dit stukje komt vaker voor in de code, misschien een methode van maken
+                            lvItem.Text = $"{orderItem.Quantity}x";
+                            itemExists = true;
+
+                            break;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not enough stock");
+                            itemExists = true;
+                            break;
+                        }
+                        
                     }
                 }
+
                 if (!itemExists)
                 {
                     OrderItem orderItem = new OrderItem("", menuItem, 1);
+                    orderItem.MenuItem.Stock--;
                     ListViewItem listViewItem = new ListViewItem($"{orderItem.Quantity}x");
                     listViewItem.SubItems.Add(orderItem.MenuItem.Name);
                     listViewItem.SubItems.Add(orderItem.Comment);
@@ -353,7 +388,7 @@ namespace UI
 
         private void ShowComment(OrderItem orderItem)
         {
-            
+
             ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
             //dit ziet er niet heel netjes uit. Je wilt voorkomen dat je de index van de subitems moet weten
             selectedItem.SubItems[2].Text = orderItem.Comment;
