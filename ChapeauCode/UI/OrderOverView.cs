@@ -25,31 +25,28 @@ namespace UI
             this.currentEmployee = employee;
             DisplayEmployeeAndTable(employee, table);
 
-            AddColumnsToListViewOrderdItems();
+            AddColumnsToListView();
 
         }
 
-        private void AddColumnsToListViewOrderdItems()
+        private void AddColumnsToListView()
         {
-            ListViewOrderdItems.Columns.Add("Amount", 100);
-            ListViewOrderdItems.Columns.Add("Name", 300);
-            ListViewOrderdItems.Columns.Add("Comment", 100);
+            //Add columns to the orderd items listview
+            AddColumn(ListViewOrderdItems, "Amount", 100);
+            AddColumn(ListViewOrderdItems, "Name", 300);
+            AddColumn(ListViewOrderdItems, "Comment", 100);
 
-            ListDinner.Columns.Add(null, 375);
-            ListDinner.Columns.Add(null, 100);
-
-
-            ListDrinks.Columns.Add(null, 375);
-            ListDrinks.Columns.Add(null, 100);
-
-
+            //Add columns to the menu listviews
+            AddColumn(ListDinner, "", 375);
+            AddColumn(ListDinner, "", 100);
+            AddColumn(ListDrinks, "", 375);
+            AddColumn(ListDrinks, "", 100);
             AddColumn(ListLunch, "", 375);
             AddColumn(ListLunch, "", 100);
         }
 
         private void AddColumn(ListView listView, string name, int width)
         {
-            listView.Columns.Add(name, width);
             listView.Columns.Add(name, width);
         }
 
@@ -223,7 +220,6 @@ namespace UI
                     listView.Items.Add(listViewItem);
                 }
 
-                listView.Items.Add("");
 
             }
             catch (Exception ex)
@@ -279,8 +275,13 @@ namespace UI
 
         private void ListViewRowClick(object sender, EventArgs e)
         {
-            FillListViewOrderdItems((ListView)sender);
 
+            ListView listView = (ListView)sender;
+            //check if the item has a color otherwise it is a title category
+            if (!listView.SelectedItems[0].BackColor.IsKnownColor)
+            {
+                FillListViewOrderdItems((ListView)sender);
+            }
         }
 
         //receive the selected menuitem and add it to the listview of ListViewOrderdItems
