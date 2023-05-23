@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderOverView));
             LblEmployee = new Label();
             LblTableNumber = new Label();
-            BtnDrinks = new Button();
             BtnDinner = new Button();
             BtnLunch = new Button();
             pictureBox1 = new PictureBox();
@@ -50,6 +49,7 @@
             ListDrinks = new ListView();
             BtnRemoveOrderItem = new Button();
             BtnAddCommentOrderItem = new Button();
+            BtnDrinks = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             PnlDinner.SuspendLayout();
@@ -80,19 +80,6 @@
             LblTableNumber.Size = new Size(224, 52);
             LblTableNumber.TabIndex = 10;
             LblTableNumber.Text = "Table #10";
-            // 
-            // BtnDrinks
-            // 
-            BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
-            BtnDrinks.FlatAppearance.BorderSize = 0;
-            BtnDrinks.FlatStyle = FlatStyle.Flat;
-            BtnDrinks.Location = new Point(429, 138);
-            BtnDrinks.Name = "BtnDrinks";
-            BtnDrinks.Size = new Size(129, 83);
-            BtnDrinks.TabIndex = 9;
-            BtnDrinks.Text = "Drinks";
-            BtnDrinks.UseVisualStyleBackColor = false;
-            BtnDrinks.Click += BtnDrinks_Click;
             // 
             // BtnDinner
             // 
@@ -307,12 +294,25 @@
             BtnAddCommentOrderItem.UseVisualStyleBackColor = false;
             BtnAddCommentOrderItem.Click += BtnAddCommentOrderItem_Click;
             // 
+            // BtnDrinks
+            // 
+            BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDrinks.FlatStyle = FlatStyle.Flat;
+            BtnDrinks.Location = new Point(428, 138);
+            BtnDrinks.Name = "BtnDrinks";
+            BtnDrinks.Size = new Size(129, 83);
+            BtnDrinks.TabIndex = 24;
+            BtnDrinks.Text = "Drinks";
+            BtnDrinks.UseVisualStyleBackColor = false;
+            BtnDrinks.Click += BtnDrinks_Click;
+            // 
             // OrderOverView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
+            Controls.Add(BtnDrinks);
             Controls.Add(BtnAddCommentOrderItem);
             Controls.Add(BtnRemoveOrderItem);
             Controls.Add(PnlDinner);
@@ -323,7 +323,6 @@
             Controls.Add(BtnPay);
             Controls.Add(LblEmployee);
             Controls.Add(LblTableNumber);
-            Controls.Add(BtnDrinks);
             Controls.Add(BtnLunch);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
@@ -348,7 +347,6 @@
 
         private Label LblEmployee;
         private Label LblTableNumber;
-        private Button BtnDrinks;
         private Button BtnDinner;
         private Button BtnLunch;
         private PictureBox pictureBox1;
@@ -367,5 +365,6 @@
         private ListView ListDrinks;
         private Button BtnRemoveOrderItem;
         private Button BtnAddCommentOrderItem;
+        private CustomTools.RoundedButton BtnDrinks;
     }
 }

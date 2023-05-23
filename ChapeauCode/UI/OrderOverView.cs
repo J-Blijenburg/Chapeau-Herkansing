@@ -162,7 +162,7 @@ namespace UI
                     listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
                     listViewItem.SubItems.Add(menuItem.Stock.ToString());
                     listViewItem.Tag = menuItem;
-                    listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");                  
+                    listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");
                     listView.Items.Add(listViewItem);
                 }
             }
@@ -242,14 +242,13 @@ namespace UI
                     if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
                     {
                         //TODO: What if multiple employees are working on the same order?
-                        if (menuItem.Stock >= orderItem.Quantity)
+                        if (menuItem.Stock > orderItem.Quantity)
                         {
                             orderItem.Quantity++;
 
                             //dit stukje komt vaker voor in de code, misschien een methode van maken
                             lvItem.Text = $"{orderItem.Quantity}x";
                             itemExists = true;
-
                             break;
                         }
                         else
@@ -258,7 +257,6 @@ namespace UI
                             itemExists = true;
                             break;
                         }
-                        
                     }
                 }
 
@@ -344,3 +342,4 @@ namespace UI
         }
     }
 }
+
