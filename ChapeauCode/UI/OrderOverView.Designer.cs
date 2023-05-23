@@ -29,12 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderOverView));
-            LblEmployee = new Label();
             LblTableNumber = new Label();
-            BtnDinner = new Button();
-            BtnLunch = new Button();
             pictureBox1 = new PictureBox();
-            BtnPay = new Button();
             ListViewOrderdItems = new ListView();
             groupBox1 = new GroupBox();
             label1 = new Label();
@@ -47,28 +43,19 @@
             PnlDrinks = new Panel();
             LblDrinks = new Label();
             ListDrinks = new ListView();
-            BtnRemoveOrderItem = new Button();
-            BtnAddCommentOrderItem = new Button();
             BtnDrinks = new CustomTools.RoundedButton();
+            BtnDinner = new CustomTools.RoundedButton();
+            BtnLunch = new CustomTools.RoundedButton();
+            BtnAddCommentOrderItem = new CustomTools.RoundedButton();
+            BtnRemoveOrderItem = new CustomTools.RoundedButton();
+            BtnPay = new CustomTools.RoundedButton();
+            LblEmployee = new CustomTools.RoundedLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             PnlDinner.SuspendLayout();
             PnlLunch.SuspendLayout();
             PnlDrinks.SuspendLayout();
             SuspendLayout();
-            // 
-            // LblEmployee
-            // 
-            LblEmployee.AutoEllipsis = true;
-            LblEmployee.BackColor = Color.FromArgb(255, 179, 71);
-            LblEmployee.Font = new Font("Poppins", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblEmployee.Location = new Point(433, 23);
-            LblEmployee.Margin = new Padding(4, 0, 4, 0);
-            LblEmployee.Name = "LblEmployee";
-            LblEmployee.Size = new Size(123, 67);
-            LblEmployee.TabIndex = 11;
-            LblEmployee.Text = "Employee";
-            LblEmployee.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // LblTableNumber
             // 
@@ -81,32 +68,6 @@
             LblTableNumber.TabIndex = 10;
             LblTableNumber.Text = "Table #10";
             // 
-            // BtnDinner
-            // 
-            BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
-            BtnDinner.FlatAppearance.BorderSize = 0;
-            BtnDinner.FlatStyle = FlatStyle.Flat;
-            BtnDinner.Location = new Point(226, 138);
-            BtnDinner.Name = "BtnDinner";
-            BtnDinner.Size = new Size(129, 83);
-            BtnDinner.TabIndex = 8;
-            BtnDinner.Text = "Dinner";
-            BtnDinner.UseVisualStyleBackColor = false;
-            BtnDinner.Click += BtnDinner_Click;
-            // 
-            // BtnLunch
-            // 
-            BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
-            BtnLunch.FlatAppearance.BorderSize = 0;
-            BtnLunch.FlatStyle = FlatStyle.Flat;
-            BtnLunch.Location = new Point(23, 138);
-            BtnLunch.Name = "BtnLunch";
-            BtnLunch.Size = new Size(129, 83);
-            BtnLunch.TabIndex = 7;
-            BtnLunch.Text = "Lunch";
-            BtnLunch.UseVisualStyleBackColor = false;
-            BtnLunch.Click += BtnLunch_Click;
-            // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
@@ -116,20 +77,6 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
-            // 
-            // BtnPay
-            // 
-            BtnPay.BackColor = Color.FromArgb(255, 179, 71);
-            BtnPay.FlatAppearance.BorderColor = Color.Red;
-            BtnPay.FlatAppearance.BorderSize = 20;
-            BtnPay.Font = new Font("Poppins", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnPay.Location = new Point(350, 1060);
-            BtnPay.Name = "BtnPay";
-            BtnPay.Size = new Size(207, 83);
-            BtnPay.TabIndex = 13;
-            BtnPay.Text = "ADD";
-            BtnPay.UseVisualStyleBackColor = false;
-            BtnPay.Click += BtnPay_Click;
             // 
             // ListViewOrderdItems
             // 
@@ -272,31 +219,10 @@
             ListDrinks.View = View.Details;
             ListDrinks.Click += ListViewRowClick;
             // 
-            // BtnRemoveOrderItem
-            // 
-            BtnRemoveOrderItem.BackColor = Color.FromArgb(196, 196, 196);
-            BtnRemoveOrderItem.Location = new Point(183, 1072);
-            BtnRemoveOrderItem.Name = "BtnRemoveOrderItem";
-            BtnRemoveOrderItem.Size = new Size(149, 58);
-            BtnRemoveOrderItem.TabIndex = 22;
-            BtnRemoveOrderItem.Text = "Remove";
-            BtnRemoveOrderItem.UseVisualStyleBackColor = false;
-            BtnRemoveOrderItem.Click += BtnRemoveOrderItem_Click;
-            // 
-            // BtnAddCommentOrderItem
-            // 
-            BtnAddCommentOrderItem.BackColor = Color.FromArgb(196, 196, 196);
-            BtnAddCommentOrderItem.Location = new Point(23, 1072);
-            BtnAddCommentOrderItem.Name = "BtnAddCommentOrderItem";
-            BtnAddCommentOrderItem.Size = new Size(149, 58);
-            BtnAddCommentOrderItem.TabIndex = 23;
-            BtnAddCommentOrderItem.Text = "Comment";
-            BtnAddCommentOrderItem.UseVisualStyleBackColor = false;
-            BtnAddCommentOrderItem.Click += BtnAddCommentOrderItem_Click;
-            // 
             // BtnDrinks
             // 
             BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDrinks.FlatAppearance.BorderSize = 0;
             BtnDrinks.FlatStyle = FlatStyle.Flat;
             BtnDrinks.Location = new Point(428, 138);
             BtnDrinks.Name = "BtnDrinks";
@@ -306,24 +232,102 @@
             BtnDrinks.UseVisualStyleBackColor = false;
             BtnDrinks.Click += BtnDrinks_Click;
             // 
+            // BtnDinner
+            // 
+            BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDinner.FlatAppearance.BorderSize = 0;
+            BtnDinner.FlatStyle = FlatStyle.Flat;
+            BtnDinner.Location = new Point(226, 138);
+            BtnDinner.Name = "BtnDinner";
+            BtnDinner.Size = new Size(129, 83);
+            BtnDinner.TabIndex = 25;
+            BtnDinner.Text = "Dinner";
+            BtnDinner.UseVisualStyleBackColor = false;
+            BtnDinner.Click += BtnDinner_Click;
+            // 
+            // BtnLunch
+            // 
+            BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
+            BtnLunch.FlatAppearance.BorderSize = 0;
+            BtnLunch.FlatStyle = FlatStyle.Flat;
+            BtnLunch.Location = new Point(23, 138);
+            BtnLunch.Name = "BtnLunch";
+            BtnLunch.Size = new Size(129, 83);
+            BtnLunch.TabIndex = 26;
+            BtnLunch.Text = "Lunch";
+            BtnLunch.UseVisualStyleBackColor = false;
+            BtnLunch.Click += BtnLunch_Click;
+            // 
+            // BtnAddCommentOrderItem
+            // 
+            BtnAddCommentOrderItem.BackColor = Color.FromArgb(196, 196, 196);
+            BtnAddCommentOrderItem.FlatAppearance.BorderSize = 0;
+            BtnAddCommentOrderItem.FlatStyle = FlatStyle.Flat;
+            BtnAddCommentOrderItem.Location = new Point(23, 1072);
+            BtnAddCommentOrderItem.Name = "BtnAddCommentOrderItem";
+            BtnAddCommentOrderItem.Size = new Size(149, 58);
+            BtnAddCommentOrderItem.TabIndex = 27;
+            BtnAddCommentOrderItem.Text = "Comment";
+            BtnAddCommentOrderItem.UseVisualStyleBackColor = false;
+            BtnAddCommentOrderItem.Click += BtnAddCommentOrderItem_Click;
+            // 
+            // BtnRemoveOrderItem
+            // 
+            BtnRemoveOrderItem.BackColor = Color.FromArgb(196, 196, 196);
+            BtnRemoveOrderItem.FlatAppearance.BorderSize = 0;
+            BtnRemoveOrderItem.FlatStyle = FlatStyle.Flat;
+            BtnRemoveOrderItem.Location = new Point(185, 1072);
+            BtnRemoveOrderItem.Name = "BtnRemoveOrderItem";
+            BtnRemoveOrderItem.Size = new Size(149, 58);
+            BtnRemoveOrderItem.TabIndex = 28;
+            BtnRemoveOrderItem.Text = "Remove";
+            BtnRemoveOrderItem.UseVisualStyleBackColor = false;
+            BtnRemoveOrderItem.Click += BtnRemoveOrderItem_Click;
+            // 
+            // BtnPay
+            // 
+            BtnPay.BackColor = Color.FromArgb(255, 179, 71);
+            BtnPay.FlatAppearance.BorderSize = 0;
+            BtnPay.FlatStyle = FlatStyle.Flat;
+            BtnPay.Font = new Font("Poppins", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnPay.Location = new Point(349, 1060);
+            BtnPay.Name = "BtnPay";
+            BtnPay.Size = new Size(207, 83);
+            BtnPay.TabIndex = 29;
+            BtnPay.Text = "ADD Order";
+            BtnPay.UseVisualStyleBackColor = false;
+            BtnPay.Click += BtnPay_Click;
+            // 
+            // LblEmployee
+            // 
+            LblEmployee.AutoEllipsis = true;
+            LblEmployee.BackColor = Color.FromArgb(255, 179, 71);
+            LblEmployee.Font = new Font("Poppins", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            LblEmployee.Location = new Point(433, 23);
+            LblEmployee.Name = "LblEmployee";
+            LblEmployee.Size = new Size(123, 67);
+            LblEmployee.TabIndex = 30;
+            LblEmployee.Text = "Employee";
+            LblEmployee.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // OrderOverView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
-            Controls.Add(BtnDrinks);
-            Controls.Add(BtnAddCommentOrderItem);
+            Controls.Add(LblEmployee);
+            Controls.Add(BtnPay);
             Controls.Add(BtnRemoveOrderItem);
+            Controls.Add(BtnAddCommentOrderItem);
+            Controls.Add(BtnLunch);
+            Controls.Add(BtnDinner);
+            Controls.Add(BtnDrinks);
             Controls.Add(PnlDinner);
             Controls.Add(PnlDrinks);
             Controls.Add(PnlLunch);
-            Controls.Add(BtnDinner);
             Controls.Add(groupBox1);
-            Controls.Add(BtnPay);
-            Controls.Add(LblEmployee);
             Controls.Add(LblTableNumber);
-            Controls.Add(BtnLunch);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -344,13 +348,9 @@
         }
 
         #endregion
-
-        private Label LblEmployee;
         private Label LblTableNumber;
-        private Button BtnDinner;
-        private Button BtnLunch;
+        private Button BtnDinner1;
         private PictureBox pictureBox1;
-        private Button BtnPay;
         private ListView ListViewOrderdItems;
         private GroupBox groupBox1;
         private Label label1;
@@ -363,8 +363,12 @@
         private Panel PnlDrinks;
         private Label LblDrinks;
         private ListView ListDrinks;
-        private Button BtnRemoveOrderItem;
-        private Button BtnAddCommentOrderItem;
         private CustomTools.RoundedButton BtnDrinks;
+        private CustomTools.RoundedButton BtnDinner;
+        private CustomTools.RoundedButton BtnLunch;
+        private CustomTools.RoundedButton BtnAddCommentOrderItem;
+        private CustomTools.RoundedButton BtnRemoveOrderItem;
+        private CustomTools.RoundedButton BtnPay;
+        private CustomTools.RoundedLabel LblEmployee;
     }
 }

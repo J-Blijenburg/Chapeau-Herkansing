@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace UI.CustomTools
 {
-    //https://stackoverflow.com/questions/28486521/rounded-edges-in-button-c-sharp-winforms
-    public class RoundedButton : Button
+    public class RoundedLabel : Label
     {
         GraphicsPath GetRoundPath(RectangleF Rect, int radius)
         {
