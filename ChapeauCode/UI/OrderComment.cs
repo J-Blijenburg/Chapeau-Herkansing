@@ -33,7 +33,7 @@ namespace UI
 
         private void BtnAddComment_Click(object sender, EventArgs e)
         {
-            item.UpdateComment(item.Comment);
+            item.Comment = TxtComment.Text;
             ShowPreviousForm();
         }
 

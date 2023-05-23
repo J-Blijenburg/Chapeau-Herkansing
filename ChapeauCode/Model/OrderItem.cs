@@ -25,9 +25,9 @@ namespace Model
             Quantity = quantity;
         }
 
-        public void UpdateComment(string comment)
+        public string DisplayQuantityFormat()
         {
-            this.Comment = comment;
+            return $"{Quantity}x";
         }
     }
 }
