@@ -10,7 +10,7 @@ namespace DAL
         //Code By: Jens Begin *******************************************************
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
-            string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price" +
+            string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price " +
                 "FROM MenuItem AS MI " +
                 "JOIN MenuCategory AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
                 "JOIN Menu AS ME ON MC.MenuId = ME.MenuId " +
