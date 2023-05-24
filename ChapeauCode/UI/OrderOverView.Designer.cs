@@ -50,6 +50,7 @@
             BtnRemoveOrderItem = new CustomTools.RoundedButton();
             BtnPay = new CustomTools.RoundedButton();
             LblEmployee = new CustomTools.RoundedLabel();
+            BtnAddOrderItem = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             PnlDinner.SuspendLayout();
@@ -84,6 +85,7 @@
             ListViewOrderdItems.GridLines = true;
             ListViewOrderdItems.Location = new Point(9, 20);
             ListViewOrderdItems.Margin = new Padding(4, 5, 4, 5);
+            ListViewOrderdItems.MultiSelect = false;
             ListViewOrderdItems.Name = "ListViewOrderdItems";
             ListViewOrderdItems.Size = new Size(515, 296);
             ListViewOrderdItems.TabIndex = 0;
@@ -276,11 +278,13 @@
             BtnRemoveOrderItem.BackColor = Color.FromArgb(196, 196, 196);
             BtnRemoveOrderItem.FlatAppearance.BorderSize = 0;
             BtnRemoveOrderItem.FlatStyle = FlatStyle.Flat;
-            BtnRemoveOrderItem.Location = new Point(185, 1072);
+            BtnRemoveOrderItem.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnRemoveOrderItem.Location = new Point(208, 1073);
             BtnRemoveOrderItem.Name = "BtnRemoveOrderItem";
-            BtnRemoveOrderItem.Size = new Size(149, 58);
+            BtnRemoveOrderItem.Size = new Size(50, 55);
             BtnRemoveOrderItem.TabIndex = 28;
-            BtnRemoveOrderItem.Text = "Remove";
+            BtnRemoveOrderItem.Text = "-";
+            BtnRemoveOrderItem.TextAlign = ContentAlignment.TopCenter;
             BtnRemoveOrderItem.UseVisualStyleBackColor = false;
             BtnRemoveOrderItem.Click += BtnRemoveOrderItem_Click;
             // 
@@ -310,12 +314,28 @@
             LblEmployee.Text = "Employee";
             LblEmployee.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // BtnAddOrderItem
+            // 
+            BtnAddOrderItem.BackColor = Color.FromArgb(196, 196, 196);
+            BtnAddOrderItem.FlatAppearance.BorderSize = 0;
+            BtnAddOrderItem.FlatStyle = FlatStyle.Flat;
+            BtnAddOrderItem.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnAddOrderItem.Location = new Point(264, 1073);
+            BtnAddOrderItem.Name = "BtnAddOrderItem";
+            BtnAddOrderItem.Size = new Size(50, 55);
+            BtnAddOrderItem.TabIndex = 31;
+            BtnAddOrderItem.Text = "+";
+            BtnAddOrderItem.TextAlign = ContentAlignment.TopRight;
+            BtnAddOrderItem.UseVisualStyleBackColor = false;
+            BtnAddOrderItem.Click += BtnAddOrderItem_Click;
+            // 
             // OrderOverView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
+            Controls.Add(BtnAddOrderItem);
             Controls.Add(LblEmployee);
             Controls.Add(BtnPay);
             Controls.Add(BtnRemoveOrderItem);
@@ -370,5 +390,6 @@
         private CustomTools.RoundedButton BtnRemoveOrderItem;
         private CustomTools.RoundedButton BtnPay;
         private CustomTools.RoundedLabel LblEmployee;
+        private CustomTools.RoundedButton BtnAddOrderItem;
     }
 }

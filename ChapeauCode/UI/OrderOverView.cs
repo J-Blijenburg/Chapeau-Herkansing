@@ -1,6 +1,8 @@
 ﻿using Model;
 using Logic;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.ListViewItem;
 
 namespace UI
 {
@@ -35,31 +37,31 @@ namespace UI
                 List<Category> lunch = new List<Category>() { Category.Starters, Category.Mains, Category.Desserts };
                 List<Category> dinner = new List<Category>() { Category.Starters, Category.Entres, Category.Mains, Category.Desserts };
 
-                foreach (MenuType menuType in (MenuType[]) Enum.GetValues(typeof(MenuType)))
+                foreach (MenuType menuType in (MenuType[])Enum.GetValues(typeof(MenuType)))
                 {
                     ListView listView = new ListView();
                     List<Category> categories = new List<Category>();
 
                     switch (menuType)
                     {
-                            case MenuType.Drinks:
-                                listView = ListDrinks;
-                                categories.AddRange(drinks);
-                                break;
-                            case MenuType.Dinner:
-                                listView = ListDinner;
-                                categories.AddRange(dinner);
-                                break;
-                            case MenuType.Lunch:
-                                listView = ListLunch;
-                                categories.AddRange(lunch);
-                                break;
+                        case MenuType.Drinks:
+                            listView = ListDrinks;
+                            categories.AddRange(drinks);
+                            break;
+                        case MenuType.Dinner:
+                            listView = ListDinner;
+                            categories.AddRange(dinner);
+                            break;
+                        case MenuType.Lunch:
+                            listView = ListLunch;
+                            categories.AddRange(lunch);
+                            break;
                     }
 
                     foreach (Category category in categories)
                     {
                         GetMenuItems(listView, menuType, category);
-                    }            
+                    }
                 }
             }
             catch (Exception ex)
@@ -148,6 +150,8 @@ namespace UI
             AddColumn(ListLunch, "", 375);
             AddColumn(ListLunch, "", 100);
         }
+
+
 
         private void AddColumn(ListView listView, string name, int width)
         {
@@ -317,6 +321,33 @@ namespace UI
             }
         }
 
+        private void BtnAddOrderItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckOrderdItems())
+                {
+                    OrderItem selectedOrderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+                    
+                    MenuItem menuItem = selectedOrderItem.MenuItem;
+
+                    if (selectedOrderItem.Quantity < menuItem.Stock)
+                    {
+                        selectedOrderItem.Quantity++;
+                        ListViewOrderdItems.SelectedItems[0].Text = selectedOrderItem.DisplayQuantityFormat();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not enough stock");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void BtnAddCommentOrderItem_Click(object sender, EventArgs e)
         {
             try
@@ -329,7 +360,7 @@ namespace UI
                     orderComment.ShowDialog();
                     ListViewOrderdItems.Refresh();
                     ShowComment(orderItem);
-                }           
+                }
             }
             catch (Exception ex)
             {
@@ -366,6 +397,8 @@ namespace UI
             }
             return -1;
         }
+
+
     }
 }
 
