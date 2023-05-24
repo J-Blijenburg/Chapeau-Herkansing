@@ -9,6 +9,7 @@ namespace Logic
         public OrderService() { 
             this.orderDAO = new OrderDAO();
         }
+        //Code By: Jens Begin *******************************************************
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
             return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
@@ -24,14 +25,11 @@ namespace Logic
             orderDAO.CreateOrder(order);
         }
 
+        //Code By: Jens End *********************************************************
+
         public List<OrderItem> GetOrderdItems(Table table)
         {
             return orderDAO.GetOrderdItems(table);
-        }
-
-        public void DeleteOrder(Order order)
-        {
-            orderDAO.DeleteOrder(order);
         }
 
         public List<OrderItem> GetKitchenOrders()

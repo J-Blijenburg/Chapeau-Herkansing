@@ -1,14 +1,11 @@
 ﻿using Model;
 using Logic;
-using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.ListViewItem;
 
 namespace UI
 {
+    //Code By: Jens Begin *******************************************************
     public partial class OrderOverView : Form
     {
-        //een plusje bij de menuitems zetten zodat je ze kan toevoegen aan de listview
         private Form previousForm;
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
@@ -26,22 +23,23 @@ namespace UI
             AddColumnsToListView();
         }
 
+        //Every menu item there is from the database will be displayed instantly
+        //Instead of loading them in the listview when the user clicks on the menu button
         private void DisplayAllMenuItems()
         {
             try
             {
                 //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-
                 //place all the categories in a list depending on the menu type
                 List<Category> drinks = new List<Category>() { Category.SoftDrinks, Category.Beers, Category.Wines, Category.Spirits, Category.HotDrinks };
                 List<Category> lunch = new List<Category>() { Category.Starters, Category.Mains, Category.Desserts };
                 List<Category> dinner = new List<Category>() { Category.Starters, Category.Entres, Category.Mains, Category.Desserts };
 
+                //Since we place all the items in the right list, we can loop through the menu types and categories
                 foreach (MenuType menuType in (MenuType[])Enum.GetValues(typeof(MenuType)))
                 {
                     ListView listView = new ListView();
                     List<Category> categories = new List<Category>();
-
                     switch (menuType)
                     {
                         case MenuType.Drinks:
@@ -75,7 +73,7 @@ namespace UI
             FillListViewMenuItems(listView, orderService.GetMenuItemsByMenuAndCategory(menuType.ToString(), category.ToString()), category);
         }
 
-        //fill the listview with the given menuitems
+        //every time a list of menuitems is added it will place the name of the category above the menuitems
         private void FillListViewMenuItems(ListView listView, List<MenuItem> menuItems, Category menuCategory)
         {
             try
@@ -100,7 +98,30 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+        //The given user and table will be displayed in the top right corner
+        private void DisplayEmployeeAndTable(Employee employee, Table table)
+        {
+            LblEmployee.Text = employee.FirstName;
+            LblTableNumber.Text = $"Table #{table.Number}";
+        }
 
+        //When the user changes the category it will show the right panel
+        private void BtnLunch_Click(object sender, EventArgs e)
+        {
+            ShowCorrectPanel(MenuType.Lunch);
+        }
+
+        private void BtnDinner_Click(object sender, EventArgs e)
+        {
+            ShowCorrectPanel(MenuType.Dinner);
+        }
+
+        private void BtnDrinks_Click(object sender, EventArgs e)
+        {
+            ShowCorrectPanel(MenuType.Drinks);
+        }
+
+        //When the user clicks on a category button it will display the right panel
         private void ShowCorrectPanel(MenuType panelToShow)
         {
             HideAllPanels();
@@ -120,8 +141,11 @@ namespace UI
                     button = BtnLunch;
                     break;
             }
+            //By changing the backcolor of the button the user will know which panel is active
             button.BackColor = ColorTranslator.FromHtml("#CAEADB");
         }
+
+        //To make sure the panels don't overlap each other, It will hide all the panels before showing the right one
         private void HideAllPanels()
         {
             PnlDrinks.Hide();
@@ -135,6 +159,7 @@ namespace UI
             BtnDrinks.BackColor = color;
         }
 
+        //when loading the orderviewform it will add all the columns to the listviews
         private void AddColumnsToListView()
         {
             //Add columns to the orderd items listview
@@ -151,39 +176,17 @@ namespace UI
             AddColumn(ListLunch, "", 100);
         }
 
-
-
         private void AddColumn(ListView listView, string name, int width)
         {
             listView.Columns.Add(name, width);
         }
 
-        private void BtnLunch_Click(object sender, EventArgs e)
-        {
-            ShowCorrectPanel(MenuType.Lunch);
-        }
-
-        private void BtnDinner_Click(object sender, EventArgs e)
-        {
-            ShowCorrectPanel(MenuType.Dinner);
-        }
-
-        private void BtnDrinks_Click(object sender, EventArgs e)
-        {
-            ShowCorrectPanel(MenuType.Drinks);
-        }
-        private void DisplayEmployeeAndTable(Employee employee, Table table)
-        {
-            LblEmployee.Text = employee.FirstName;
-            LblTableNumber.Text = $"Table #{table.Number}";
-        }
-        private void BtnPay_Click(object sender, EventArgs e)
+        //This form will be disposed and the previousform will be displayed again.
+        //This will make sure that there is only 1 form active
+        private void BtnAddOrder_Click(object sender, EventArgs e)
         {
             try
             {
-                //This form will be disposed and the previousform will be displayed again.
-                //This will make sure that there is only 1 form active
-
                 SendOrderItems(this.currentEmployee);
                 this.Dispose();
                 previousForm.Show();
@@ -194,6 +197,8 @@ namespace UI
             }
         }
 
+       //When the user doesn't have any items selected it will go back to the previous form
+       //without adding an order
         private void SendOrderItems(Employee employee)
         {
             try
@@ -217,8 +222,10 @@ namespace UI
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
+
+        //First a order will be created and then it will be send to the database
+        //If it is added to the database it will return an id and add it to the order
         private Order CreateOrder(Receipt receipt, Employee employee)
         {
 
@@ -235,6 +242,7 @@ namespace UI
             return order;
         }
 
+        //This method will be called when the user clicks on a menuitem
         private void ListViewRowClick(object sender, EventArgs e)
         {
             //check if the item has a color otherwise it is a title category
@@ -252,11 +260,9 @@ namespace UI
             {
                 bool itemExists = false;
                 MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
-
                 foreach (ListViewItem lvItem in ListViewOrderdItems.Items)
                 {
                     OrderItem orderItem = (OrderItem)lvItem.Tag;
-
                     if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
                     {
                         //TODO: What if multiple employees are working on the same order?
@@ -275,7 +281,6 @@ namespace UI
                         }
                     }
                 }
-
                 if (!itemExists)
                 {
                     AddOrderItemToListView(menuItem);
@@ -287,6 +292,7 @@ namespace UI
             }
         }
 
+        //every menuitem will be added as a orderitem to the listview
         private void AddOrderItemToListView(MenuItem menuItem)
         {
             OrderItem orderItem = new OrderItem("", menuItem, 1);
@@ -328,7 +334,7 @@ namespace UI
                 if (!CheckOrderdItems())
                 {
                     OrderItem selectedOrderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-                    
+
                     MenuItem menuItem = selectedOrderItem.MenuItem;
 
                     if (selectedOrderItem.Quantity < menuItem.Stock)
@@ -367,7 +373,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //When the user doesn't have any items selected it will show a message
         private bool CheckOrderdItems()
         {
             if (ListViewOrderdItems.SelectedItems.Count == 0)
@@ -384,6 +390,7 @@ namespace UI
             selectedItem.SubItems[GetColumnIndex(ListViewOrderdItems, "Comment")].Text = orderItem.Comment;
         }
 
+        //To Be sure to know the right index i user column name to get the index
         private int GetColumnIndex(ListView listView, string columnName)
         {
             int index = 0;
@@ -397,8 +404,8 @@ namespace UI
             }
             return -1;
         }
-
-
+        
     }
+    //Code By: Jens End *******************************************************
 }
 

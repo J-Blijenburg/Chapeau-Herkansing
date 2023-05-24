@@ -7,9 +7,10 @@ namespace DAL
 {
    public class OrderDAO : BaseDao
     {
+        //Code By: Jens Begin *******************************************************
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
-            string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price, MC.VAT, MC.Name, ME.Name, ME.StartTime, ME.EndTime " +
+            string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price" +
                 "FROM MenuItem AS MI " +
                 "JOIN MenuCategory AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
                 "JOIN Menu AS ME ON MC.MenuId = ME.MenuId " +
@@ -21,10 +22,10 @@ namespace DAL
                 new SqlParameter("@categoryName", category)
 
             };
-            return CreateMenuItems(ExecuteSelectQuery(query, sqlParameters));
+            return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
         }
 
-        private List<MenuItem> CreateMenuItems(DataTable dataTable)
+        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
         {
             List<MenuItem> list = new List<MenuItem>();
             foreach (DataRow dr in dataTable.Rows)
@@ -43,6 +44,7 @@ namespace DAL
 
         public void SendOrderItems(Order order)
         {
+            //After the order is created, the orderitems are added to the database
             string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
             foreach (OrderItem orderItem in order.OrderItems)
             {
@@ -73,6 +75,8 @@ namespace DAL
         
         public void CreateOrder(Order order)
         {
+            //When a order is added to the database return the ide of the order 
+            //And place it in the order object
             string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
@@ -84,6 +88,7 @@ namespace DAL
             };
             order.OrderId = ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
+        //Code By: Jens End *******************************************************
 
         public List<OrderItem> GetOrderdItems(Table table){
             string query = "SELECT OI.OrderItemId, OD.OrderId, EM.EmployeeId , EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role,RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EmployeeReceipt.EmployeeId, EmployeeReceipt.FirstName, EmployeeReceipt.LastName, EmployeeReceipt.EmployeeNumber, EmployeeReceipt.Password, EmployeeReceipt.IsActive, EmployeeReceipt.RegistrationDate, RoleReceipt.Role,TE.TableId,  TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, RT.IsHandled,PM.PaymentId, PM.IsPaid, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name, MU.MenuId, MU.Name, MU.StartTime, MU.EndTime, OI.Quantity " +
@@ -231,16 +236,6 @@ namespace DAL
                     return OrderStatus.Ordered;
       
             }
-        }
-
-        public void DeleteOrder(Order order)
-        {
-            string query = "DELETE FROM [Order] WHERE OrderId = @OrderId";
-            SqlParameter[] sqlParameters =
-            {
-                new SqlParameter("@OrderId", order.OrderId)
-            };
-            ExecuteEditQuery(query, sqlParameters);
         }
 
         public List<OrderItem> GetKitchenOrders()

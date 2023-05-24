@@ -141,6 +141,7 @@ namespace DAL
         /* For Insert/Update/Delete Queries */
         protected int ExecuteInsertQueryAndReturnId(string query, SqlParameter[] sqlParameters)
         {
+            //By using the executescalar method we can return the id of the inserted row
             SqlCommand command = new SqlCommand();
             Int32 newProdID = 0;
 

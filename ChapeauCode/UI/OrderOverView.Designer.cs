@@ -48,7 +48,7 @@
             BtnLunch = new CustomTools.RoundedButton();
             BtnAddCommentOrderItem = new CustomTools.RoundedButton();
             BtnRemoveOrderItem = new CustomTools.RoundedButton();
-            BtnPay = new CustomTools.RoundedButton();
+            BtnAddOrder = new CustomTools.RoundedButton();
             LblEmployee = new CustomTools.RoundedLabel();
             BtnAddOrderItem = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -288,19 +288,19 @@
             BtnRemoveOrderItem.UseVisualStyleBackColor = false;
             BtnRemoveOrderItem.Click += BtnRemoveOrderItem_Click;
             // 
-            // BtnPay
+            // BtnAddOrder
             // 
-            BtnPay.BackColor = Color.FromArgb(255, 179, 71);
-            BtnPay.FlatAppearance.BorderSize = 0;
-            BtnPay.FlatStyle = FlatStyle.Flat;
-            BtnPay.Font = new Font("Poppins", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnPay.Location = new Point(349, 1060);
-            BtnPay.Name = "BtnPay";
-            BtnPay.Size = new Size(207, 83);
-            BtnPay.TabIndex = 29;
-            BtnPay.Text = "ADD Order";
-            BtnPay.UseVisualStyleBackColor = false;
-            BtnPay.Click += BtnPay_Click;
+            BtnAddOrder.BackColor = Color.FromArgb(255, 179, 71);
+            BtnAddOrder.FlatAppearance.BorderSize = 0;
+            BtnAddOrder.FlatStyle = FlatStyle.Flat;
+            BtnAddOrder.Font = new Font("Poppins", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnAddOrder.Location = new Point(349, 1060);
+            BtnAddOrder.Name = "BtnAddOrder";
+            BtnAddOrder.Size = new Size(207, 83);
+            BtnAddOrder.TabIndex = 29;
+            BtnAddOrder.Text = "ADD Order";
+            BtnAddOrder.UseVisualStyleBackColor = false;
+            BtnAddOrder.Click += BtnAddOrder_Click;
             // 
             // LblEmployee
             // 
@@ -337,7 +337,7 @@
             ClientSize = new Size(569, 1162);
             Controls.Add(BtnAddOrderItem);
             Controls.Add(LblEmployee);
-            Controls.Add(BtnPay);
+            Controls.Add(BtnAddOrder);
             Controls.Add(BtnRemoveOrderItem);
             Controls.Add(BtnAddCommentOrderItem);
             Controls.Add(BtnLunch);
@@ -388,7 +388,7 @@
         private CustomTools.RoundedButton BtnLunch;
         private CustomTools.RoundedButton BtnAddCommentOrderItem;
         private CustomTools.RoundedButton BtnRemoveOrderItem;
-        private CustomTools.RoundedButton BtnPay;
+        private CustomTools.RoundedButton BtnAddOrder;
         private CustomTools.RoundedLabel LblEmployee;
         private CustomTools.RoundedButton BtnAddOrderItem;
     }
