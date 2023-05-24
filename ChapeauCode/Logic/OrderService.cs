@@ -33,5 +33,15 @@ namespace Logic
         {
             orderDAO.DeleteOrder(order);
         }
+
+        public void getKitchenOrders()
+        {
+            orderDAO.GetKitchenOrders();
+        }
+
+        public void getBarOrders()
+        {
+            orderDAO.GetBarOrders();
+        }
     }
 }
