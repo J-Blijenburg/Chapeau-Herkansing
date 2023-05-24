@@ -295,37 +295,52 @@ namespace DAL
 
         public List<OrderItem> GetBarOrders()
         {
-            string query = "SELECT oi.OrderID, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Drinks');";
+            string query = "SELECT oi.OrderID, oi.Comment oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Drinks');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
         {
             List<OrderItem> list = new List<OrderItem>();
-            foreach (DataRow dr in dataTable.Rows)
+            try
             {
-                OrderItem orderItem = new OrderItem()
+                if (dataTable != null)
                 {
-                    Order = new Order()
+                    foreach (DataRow dr in dataTable.Rows)
                     {
-                        OrderId = (int)dr["OrderId"],
-                        Status = (OrderStatus)(int)dr["Status"]
-
-                    },
-                    Quantity = (int)dr["Quantity"],
-                    MenuItem = new MenuItem()
-                    {
-                        Name = (string)dr["Dish"],
-                        Menu = new Menu()
+                        OrderItem orderItem = new OrderItem()
                         {
-                            Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
-                        }
-             
-                    },
-                };  
-                list.Add(orderItem);
+                            Order = new Order()
+                            {
+                                OrderId = (int)dr["OrderId"],
+                                Status = (OrderStatus)(int)dr["Status"],
+
+
+                            },
+                            Quantity = (int)dr["Quantity"],
+                            Comment = (string)dr["Comment"],
+                            MenuItem = new MenuItem()
+                            {
+                                Name = (string)dr["Dish"],
+                                Menu = new Menu()
+                                {
+                                    Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
+                                }
+
+                            },
+                        };
+                        list.Add(orderItem);
+                    }
+                }
+                return list;
             }
-            return list;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+
+
         }
     }
 }

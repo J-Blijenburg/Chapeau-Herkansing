@@ -15,11 +15,33 @@ namespace UI
     public partial class KitchenBar : Form
     {
         private OrderService orderService = new OrderService();
+        private Employee loggedInEmployeeType;
 
-        public KitchenBar()
+        public KitchenBar(Employee employee)
         {
             InitializeComponent();
-            GetOrderedItemsKitchen();
+
+            loggedInEmployeeType = employee;
+            txtBoxUser.Text = employee.GetFullName();
+            CheckLoginRole(employee);
+
+        }
+
+        private void CheckLoginRole(Employee employee)
+        {
+            
+                if (employee.Role == EmployeeRole.Bartender)
+                {
+                    GetOrderedItemsBar();
+                    txtTypeOfOrder.Text = "Bar orders";
+                }
+                else if (employee.Role == EmployeeRole.Chefkok)
+                {
+                    GetOrderedItemsKitchen();
+                    txtTypeOfOrder.Text = "Kitchen orders";
+                }
+            
+            
         }
 
         private void GetOrderedItemsKitchen()
@@ -27,7 +49,12 @@ namespace UI
             FillListViewOrders(lstViewOrders, orderService.GetKitchenOrders());
         }
 
-        //fill the listview with the given menuitems
+        private void GetOrderedItemsBar()
+        {
+            FillListViewOrders(lstViewOrders, orderService.GetBarOrders());
+        }
+
+
         private void FillListViewOrders(ListView listView, List<OrderItem> orderItems)
         {
             try

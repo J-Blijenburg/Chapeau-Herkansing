@@ -49,8 +49,11 @@ namespace UI
             switch (loggedInEmployee.Role)
             {
                 case EmployeeRole.Chefkok:
+                    employeeForm = new KitchenBar(loggedInEmployee);
+                    employeeForm.ShowDialog();
+                    break;
                 case EmployeeRole.Bartender:
-                    employeeForm = new KitchenBar();
+                    employeeForm = new KitchenBar(loggedInEmployee);
                     employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Waiter:
