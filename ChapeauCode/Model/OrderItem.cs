@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -28,6 +29,11 @@ namespace Model
         public string DisplayQuantityFormat()
         {
             return $"{Quantity}x";
+        }
+
+        public string toStringForKitchenAndBar()
+        {
+            return $"{Order.OrderId}, {Comment}, {Quantity} {MenuItem.Name}";
         }
     }
 }

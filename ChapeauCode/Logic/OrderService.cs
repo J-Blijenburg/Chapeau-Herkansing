@@ -34,14 +34,14 @@ namespace Logic
             orderDAO.DeleteOrder(order);
         }
 
-        public void getKitchenOrders()
+        public List<OrderItem> GetKitchenOrders()
         {
-            orderDAO.GetKitchenOrders();
+           return orderDAO.GetKitchenOrders();
         }
 
-        public void getBarOrders()
+        public List<OrderItem> GetBarOrders()
         {
-            orderDAO.GetBarOrders();
+           return orderDAO.GetBarOrders();
         }
     }
 }

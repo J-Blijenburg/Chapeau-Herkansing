@@ -289,7 +289,7 @@ namespace DAL
 
         public List<OrderItem> GetKitchenOrders()
         {
-            string query = "SELECT oi.OrderID, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Diner');";
+            string query = "SELECT oi.OrderID, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Diner');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
@@ -309,7 +309,8 @@ namespace DAL
                     Order = new Order()
                     {
                         OrderId = (int)dr["OrderId"],
-                        Status = StringToOrderStatus((string)dr["Status"])
+                        Status = (OrderStatus)(int)dr["Status"]
+
                     },
                     Quantity = (int)dr["Quantity"],
                     MenuItem = new MenuItem()
@@ -317,7 +318,7 @@ namespace DAL
                         Name = (string)dr["Dish"],
                         Menu = new Menu()
                         {
-                            Name = StringToMenuType((string)dr["Type"])
+                            Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
                         }
              
                     },
