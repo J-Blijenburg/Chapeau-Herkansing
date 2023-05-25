@@ -1,5 +1,6 @@
 ﻿using Model;
 using Logic;
+using System.Drawing;
 
 namespace UI
 {
@@ -21,7 +22,39 @@ namespace UI
             this.currentEmployee = employee;
             DisplayEmployeeAndTable(employee, table);
             AddColumnsToListView();
+            DisableMenuButtons();
         }
+
+        private void DisableMenuButtons()
+        {
+            List<Menu> menus = orderService.GetListOfMenu();
+            Button button = new Button();   
+
+            foreach (Menu menu in menus)
+            {
+                switch (menu.Name)
+                {
+                    case MenuType.Lunch:
+                        button = BtnLunch;
+                        break;
+                    case MenuType.Dinner:
+                        button = BtnDinner;
+                        break;
+                    case MenuType.Drinks:
+                        button = BtnDrinks;
+                        break;
+                }
+                       
+                if (!menu.CheckMenuTime())
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.LightGray;
+                    button.Text += "\n(Not Available)";
+                }
+            }
+        }
+
+        
 
         //Every menu item there is from the database will be displayed instantly
         //Instead of loading them in the listview when the user clicks on the menu button
@@ -153,10 +186,18 @@ namespace UI
             PnlDinner.Hide();
 
             Color color = ColorTranslator.FromHtml("#8AD2B0");
+            
+            CheckEnabledButton(BtnLunch, color);
+            CheckEnabledButton(BtnDinner, color);
+            CheckEnabledButton(BtnDrinks, color);
+        }
 
-            BtnLunch.BackColor = color;
-            BtnDinner.BackColor = color;
-            BtnDrinks.BackColor = color;
+        private void CheckEnabledButton(Button button, Color color)
+        {
+            if (button.Enabled)
+            {
+                BtnLunch.BackColor = color;
+            }
         }
 
         //when loading the orderviewform it will add all the columns to the listviews
@@ -390,7 +431,7 @@ namespace UI
             selectedItem.SubItems[GetColumnIndex(ListViewOrderdItems, "Comment")].Text = orderItem.Comment;
         }
 
-        //To Be sure to know the right index i user column name to get the index
+        //To know the right index of a column, the column name will be compared with the column names of the listview
         private int GetColumnIndex(ListView listView, string columnName)
         {
             int index = 0;

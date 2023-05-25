@@ -1,6 +1,7 @@
 ﻿using Model;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 
 namespace DAL
@@ -88,6 +89,52 @@ namespace DAL
             };
             order.OrderId = ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
+
+        public List<Menu> GetListOfMenu()
+        {
+            string query = "SELECT MenuId, Name, StartTime, EndTime FROM Menu";
+            SqlParameter[] sqlParameters;
+            sqlParameters = new SqlParameter[]
+            {
+            };
+            return CreateListOfMenu(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        private List<Menu> CreateListOfMenu(DataTable dataTable)
+        {
+            List<Menu> listOfMenus = new List<Menu>();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                Menu menu = new Menu()
+                {
+                    MenuId = (int)dr["MenuId"],
+                    Name = StringToMenuType((string)dr["Name"]),
+                    StartTime = new TimeOnly(((TimeSpan)dr["StartTime"]).Ticks),
+                    EndTime = new TimeOnly(((TimeSpan)dr["EndTime"]).Ticks)
+                };
+                listOfMenus.Add(menu);
+            }
+            return listOfMenus;
+        }
+
+        private MenuType StringToMenuType(string menuName)
+        {
+            MenuType menuType = new MenuType();
+            switch (menuName)
+            {
+                case "Lunch":
+                    menuType = MenuType.Lunch;
+                    break;
+                case "Dinner":
+                    menuType = MenuType.Dinner;
+                    break;
+                case "Drinks":
+                    menuType = MenuType.Drinks;
+                    break;
+            }
+            return menuType;
+        }
+
         //Code By: Jens End *******************************************************
 
         public List<OrderItem> GetOrderdItems(Table table){

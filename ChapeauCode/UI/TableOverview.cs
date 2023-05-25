@@ -14,16 +14,45 @@ namespace UI
 {
     public partial class TableOverview : Form
     {
-        private OrderService orderService;
+        private OrderService orderService = new OrderService();
         private Table table;
         public TableOverview(Table table)
         {
             InitializeComponent();
-            this.orderService = new OrderService();
+            DisableMenuButtons();
             this.table = table;
 
             
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
+        }
+
+        private void DisableMenuButtons()
+        {
+            List<Menu> menus = orderService.GetListOfMenu();
+            Button button = new Button();
+
+            foreach (Menu menu in menus)
+            {
+                switch (menu.Name)
+                {
+                    case MenuType.Lunch:
+                        button = BtnLunch;
+                        break;
+                    case MenuType.Dinner:
+                        button = BtnDinner;
+                        break;
+                    case MenuType.Drinks:
+                        button = BtnDrinks;
+                        break;
+                }
+
+                if (!menu.CheckMenuTime())
+                {
+                    button.Enabled = false;
+                    button.BackColor = Color.LightGray;
+                    button.Text += "\n(Not Available)";
+                }
+            }
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -60,6 +89,8 @@ namespace UI
             //This messagebox can be used to check how many Forms there are currently running
             //MessageBox.Show(Application.OpenForms.Count.ToString());
         }
+
+
 
         private List<OrderItem> GetOrderdItems(Table table)
         {
