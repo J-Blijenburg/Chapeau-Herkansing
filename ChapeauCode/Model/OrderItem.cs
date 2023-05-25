@@ -31,9 +31,5 @@ namespace Model
             return $"{Quantity}x";
         }
 
-        public string toStringForKitchenAndBar()
-        {
-            return $"{Order.OrderId}, {Comment}, {Quantity} {MenuItem.Name}";
-        }
     }
 }
