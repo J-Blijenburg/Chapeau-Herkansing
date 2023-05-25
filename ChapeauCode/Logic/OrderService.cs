@@ -25,6 +25,11 @@ namespace Logic
             orderDAO.CreateOrder(order);
         }
 
+        public List<Menu> GetListOfMenu()
+        {
+            return orderDAO.GetListOfMenu();
+        }
+
         //Code By: Jens End *********************************************************
 
         public List<OrderItem> GetOrderdItems(Table table)
