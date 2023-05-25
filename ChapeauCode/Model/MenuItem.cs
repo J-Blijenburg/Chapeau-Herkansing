@@ -10,10 +10,35 @@ namespace Model
     {
         public int MenuItemId { get; set; }
         public string Name { get; set; }
-        public int Stock { get; set; }
-        public double Price { get; set; }
+        private int Stock { get; set; }
+        private double Price { get; set; }
         public Menu Menu { get; set; }
 
+        public MenuItem GetMenuItem()
+        {
+            return this;
+        }
 
+        public bool CheckStock()
+        {
+            if (Stock > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public int GetStock()
+        {
+            return Stock;
+        }
+
+        public string GetPriceFormat()
+        {
+            return $"€ {Price.ToString("N2")}";
+        }
     }
 }

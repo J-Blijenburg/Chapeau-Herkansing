@@ -47,7 +47,7 @@ namespace DAL
         {
             //After the order is created, the orderitems are added to the database
             string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
-            foreach (OrderItem orderItem in order.OrderItems)
+            foreach (OrderItem orderItem in order.GetOrderItems())
             {
                 SqlParameter[] sqlParameters;
                 sqlParameters = new SqlParameter[]

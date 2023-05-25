@@ -3,13 +3,14 @@ using Model;
 
 namespace Logic
 {
+    //Code By: Jens Begin *******************************************************
+
     public class OrderService
     {
         OrderDAO orderDAO;
         public OrderService() { 
             this.orderDAO = new OrderDAO();
         }
-        //Code By: Jens Begin *******************************************************
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
             return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
