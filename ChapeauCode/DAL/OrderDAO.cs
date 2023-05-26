@@ -94,7 +94,8 @@ namespace DAL
 
         public List<Menu> GetListOfMenu()
         {
-            string query = "SELECT MenuId, Name, StartTime, EndTime FROM Menu";
+            string query = "SELECT MenuId, Name, StartTime, EndTime " +
+                "FROM Menu ";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
@@ -135,35 +136,6 @@ namespace DAL
                     break;
             }
             return menuType;
-        }
-
-        public Menu GetMenuByMenuType(MenuType menuType)
-        {
-            string query = "SELECT MU.MenuId, MU.Name, MU.StartTime, MU.EndTime " +
-                "FROM Menu AS MU " +
-                "WHERE MU.Name = @menuType";
-            SqlParameter[] sqlParameters;
-            sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@menuType", menuType.ToString()),
-            };
-
-            return CreateMenu(ExecuteSelectQuery(query, sqlParameters));
-        }
-
-        private Menu CreateMenu(DataTable dataTable)
-        {
-            Menu menu = new Menu();
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                menu.MenuId = (int)dr["MenuId"];
-                menu.Name = StringToMenuType((string)dr["Name"]);
-                menu.StartTime = new TimeOnly(((TimeSpan)dr["StartTime"]).Ticks);
-                menu.EndTime = new TimeOnly(((TimeSpan)dr["EndTime"]).Ticks);
-
-            }
-
-            return menu;
         }
 
         public List<MenuCategory> GetMenuCategoriesByMenu(Menu menu)

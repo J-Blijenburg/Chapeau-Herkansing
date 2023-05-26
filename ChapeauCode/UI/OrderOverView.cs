@@ -15,21 +15,24 @@ namespace UI
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
-            DisplayAllMenuItems();
+            List<Menu> menus = orderService.GetListOfMenu();
+            DisplayAllMenuItems(menus);
             ShowCorrectPanel(panelToShow);
+            
             this.previousForm = previousForm;
             this.table = table;
             this.currentEmployee = employee;
             DisplayEmployeeAndTable(employee, table);
             AddColumnsToListView();
-            DisableMenuButtons();
+            DisableMenuButtons(menus);
+
         }
 
-        private void DisableMenuButtons()
-        {
-            List<Menu> menus = orderService.GetListOfMenu();
-            Button button = new Button();   
 
+
+        private void DisableMenuButtons(List<Menu> menus)
+        {          
+            Button button = new Button();   
             foreach (Menu menu in menus)
             {
                 switch (menu.GetMenuType())
@@ -44,7 +47,9 @@ namespace UI
                         button = BtnDrinks;
                         break;
                 }
-                       
+                    
+                
+
                 if (!menu.CheckMenuTime())
                 {
                     button.Enabled = false;
@@ -58,36 +63,22 @@ namespace UI
 
         //Every menu item there is from the database will be displayed instantly
         //Instead of loading them in the listview when the user clicks on the menu button
-        private void DisplayAllMenuItems()
+        private void DisplayAllMenuItems(List<Menu> menus)
         {
             try
             {
-                //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-                //Since we place all the items in the right list, we can loop through the menu types and categories
-                foreach (MenuType menuType in (MenuType[])Enum.GetValues(typeof(MenuType)))
+                //TODO: voor zorgen dat ie vanuit de database de tijden filtert en niet vanuit de code
+                foreach (Menu menu in menus)
                 {
-                   
-                    Menu menu = orderService.GetMenuByMenuType(menuType);
                     menu.SetMenuCategories(orderService.GetMenuCategoriesByMenu(menu));
                     
                     
-                    ListView listView = new ListView();
-                    switch (menuType)
-                    {
-                        case MenuType.Drinks:
-                            listView = ListDrinks;
-                            break;
-                        case MenuType.Dinner:
-                            listView = ListDinner;
-                            break;
-                        case MenuType.Lunch:
-                            listView = ListLunch;
-                            break;
-                    }
+                    ListView listView = GetListViewByMenuType(menu.GetMenuType());
+                   
 
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
-                        GetMenuItems(listView, menuType, menuCategory.Name);
+                        GetMenuItems(listView, menu.GetMenuType(), menuCategory.Name);
                     }
                 }
             }
@@ -95,6 +86,23 @@ namespace UI
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+       private ListView GetListViewByMenuType(MenuType menuType)
+        {
+            ListView listView = new ListView();
+            switch (menuType)
+            {
+                case MenuType.Drinks:
+                    listView = ListDrinks;
+                    break;
+                case MenuType.Dinner:
+                    listView = ListDinner;
+                    break;
+                case MenuType.Lunch:
+                    listView = ListLunch;
+                    break;
+            }
+            return listView;
         }
 
         private void GetMenuItems(ListView listView, MenuType menuType, Category category)
@@ -192,7 +200,7 @@ namespace UI
         {
             if (button.Enabled)
             {
-                BtnLunch.BackColor = color;
+                button.BackColor = color;
             }
         }
 

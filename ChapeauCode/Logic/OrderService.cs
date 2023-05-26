@@ -32,11 +32,6 @@ namespace Logic
             return orderDAO.GetListOfMenu();
         }
 
-        public Menu GetMenuByMenuType(MenuType menuTypeName)
-        {
-            return orderDAO.GetMenuByMenuType(menuTypeName);
-        }
-
         public List<MenuCategory> GetMenuCategoriesByMenu(Menu menu)
         {
             return orderDAO.GetMenuCategoriesByMenu(menu);
