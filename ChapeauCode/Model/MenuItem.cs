@@ -10,11 +10,12 @@ namespace Model
     {
         public int MenuItemId { get; set; }
         public string Name { get; set; }
-        private int Stock { get; set; }
-        private double Price { get; set; }
+        public int Stock { get; set; }
+        public double Price { get; set; }
         public Menu Menu { get; set; }
         public MenuItem()
         {
+        }
 
         public MenuItem GetMenuItem()
         {
