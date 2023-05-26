@@ -32,5 +32,27 @@ namespace Model
             return $"{Quantity}x";
         }
 
+        public string GetComment()
+        {
+            return Comment;
+        }   
+
+        public int GetQuantity()
+        {
+            return Quantity;
+        }
+
+        public int AddQuantity(int quantity)
+        {
+            Quantity += quantity;
+            return Quantity;
+        }
+
+        public MenuItem GetMenuItem()
+        {
+            return MenuItem;
+        }
+        
+
     }
 }

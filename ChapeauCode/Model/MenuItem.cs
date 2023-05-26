@@ -48,5 +48,10 @@ namespace Model
         {
             Stock = stock;
         }
+
+        public string GetName()
+        {
+            return Name;
+        }
     }
 }

@@ -74,7 +74,7 @@ namespace UI
 
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
-                        GetMenuItems(listView, menu.GetMenuType(), menuCategory.Name);
+                        GetMenuItems(listView, menu.GetMenuType(), menuCategory.GetName());
                     }
                 }
             }
@@ -134,8 +134,8 @@ namespace UI
         //The given user and table will be displayed in the top right corner
         private void DisplayEmployeeAndTable(Employee employee, Table table)
         {
-            LblEmployee.Text = employee.FirstName;
-            LblTableNumber.Text = $"Table #{table.Number}";
+            LblEmployee.Text = employee.GetFirstName();
+            LblTableNumber.Text = $"Table #{table.GetNumber()}";
         }
 
         //When the user changes the category it will show the right panel
@@ -340,8 +340,8 @@ namespace UI
 
 
             ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());
-            listViewItem.SubItems.Add(orderItem.MenuItem.Name);
-            listViewItem.SubItems.Add(orderItem.Comment);
+            listViewItem.SubItems.Add(orderItem.MenuItem.GetName());
+            listViewItem.SubItems.Add(orderItem.GetComment());
             listViewItem.Tag = orderItem;
             ListViewOrderdItems.Items.Add(listViewItem);
         }
@@ -378,11 +378,11 @@ namespace UI
                 {
                     OrderItem selectedOrderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
 
-                    MenuItem menuItem = selectedOrderItem.MenuItem;
+                    MenuItem menuItem = selectedOrderItem.GetMenuItem();
 
-                    if (selectedOrderItem.Quantity < menuItem.GetStock())
+                    if (selectedOrderItem.GetQuantity() < menuItem.GetStock())
                     {
-                        selectedOrderItem.Quantity++;
+                        selectedOrderItem.AddQuantity(1);
                         ListViewOrderdItems.SelectedItems[0].Text = selectedOrderItem.DisplayQuantityFormat();
                     }
                     else
@@ -430,7 +430,7 @@ namespace UI
         private void ShowComment(OrderItem orderItem)
         {
             ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
-            selectedItem.SubItems[GetColumnIndex(ListViewOrderdItems, "Comment")].Text = orderItem.Comment;
+            selectedItem.SubItems[GetColumnIndex(ListViewOrderdItems, "Comment")].Text = orderItem.GetComment();
         }
 
         //To know the right index of a column, the column name will be compared with the column names of the listview

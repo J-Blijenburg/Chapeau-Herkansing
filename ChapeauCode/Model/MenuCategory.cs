@@ -12,5 +12,10 @@ namespace Model
         public double VAT { get; set; }
         public Category Name { get; set; }
         private List<MenuItem> MenuItems { get; set; }
+
+        public Category GetName()
+        {
+            return Name;
+        }
     }
 }

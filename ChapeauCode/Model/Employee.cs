@@ -22,5 +22,9 @@ namespace Model
         {
             return $"{FirstName} {LastName}";
         }
+        public string GetFirstName()
+        {
+            return FirstName;
+        }
     }
 }
