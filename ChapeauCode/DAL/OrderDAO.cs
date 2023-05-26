@@ -95,7 +95,9 @@ namespace DAL
         public List<Menu> GetListOfMenu()
         {
             string query = "SELECT MenuId, Name, StartTime, EndTime " +
-                "FROM Menu ";
+                "FROM Menu " +
+                "WHERE " +
+                "StartTime < CAST(GETUTCDATE() AS TIME) AND EndTime > CAST(GETUTCDATE() AS TIME);";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {

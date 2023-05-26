@@ -18,48 +18,44 @@ namespace UI
             List<Menu> menus = orderService.GetListOfMenu();
             DisplayAllMenuItems(menus);
             ShowCorrectPanel(panelToShow);
-            
             this.previousForm = previousForm;
             this.table = table;
             this.currentEmployee = employee;
             DisplayEmployeeAndTable(employee, table);
             AddColumnsToListView();
-            DisableMenuButtons(menus);
-
+            EnableMenuButtons(menus);
         }
 
 
 
-        private void DisableMenuButtons(List<Menu> menus)
-        {          
-            Button button = new Button();   
+        private void EnableMenuButtons(List<Menu> menus)
+        {
             foreach (Menu menu in menus)
             {
                 switch (menu.GetMenuType())
                 {
                     case MenuType.Lunch:
-                        button = BtnLunch;
+                        EnableButton(BtnLunch, menu);
                         break;
                     case MenuType.Dinner:
-                        button = BtnDinner;
+                        EnableButton(BtnDinner, menu);
                         break;
                     case MenuType.Drinks:
-                        button = BtnDrinks;
+                        EnableButton(BtnDrinks, menu);
                         break;
-                }
-                    
-                
-
-                if (!menu.CheckMenuTime())
-                {
-                    button.Enabled = false;
-                    button.BackColor = Color.LightGray;
-                    button.Text += "\n(Not Available)";
                 }
             }
         }
 
-        
+        private void EnableButton(Button button, Menu menu)
+        {
+            button.Enabled = true;
+            button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            button.Font = new Font(button.Font, FontStyle.Regular);
+            button.Text = menu.GetMenuType().ToString();
+        }
+
+
 
         //Every menu item there is from the database will be displayed instantly
         //Instead of loading them in the listview when the user clicks on the menu button
@@ -71,10 +67,10 @@ namespace UI
                 foreach (Menu menu in menus)
                 {
                     menu.SetMenuCategories(orderService.GetMenuCategoriesByMenu(menu));
-                    
-                    
+
+
                     ListView listView = GetListViewByMenuType(menu.GetMenuType());
-                   
+
 
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
@@ -87,7 +83,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-       private ListView GetListViewByMenuType(MenuType menuType)
+        private ListView GetListViewByMenuType(MenuType menuType)
         {
             ListView listView = new ListView();
             switch (menuType)
@@ -190,7 +186,7 @@ namespace UI
             PnlDinner.Hide();
 
             Color color = ColorTranslator.FromHtml("#8AD2B0");
-            
+
             CheckEnabledButton(BtnLunch, color);
             CheckEnabledButton(BtnDinner, color);
             CheckEnabledButton(BtnDrinks, color);
@@ -242,8 +238,8 @@ namespace UI
             }
         }
 
-       //When the user doesn't have any items selected it will go back to the previous form
-       //without adding an order
+        //When the user doesn't have any items selected it will go back to the previous form
+        //without adding an order
         private void SendOrderItems(Employee employee)
         {
             try
@@ -273,7 +269,7 @@ namespace UI
         //If it is added to the database it will return an id and add it to the order
         private Order CreateOrder(Receipt receipt, Employee employee)
         {
-            Order createdOrder =  new Order().CreateOrder(employee, receipt, OrderStatus.Ordered);
+            Order createdOrder = new Order().CreateOrder(employee, receipt, OrderStatus.Ordered);
             try
             {
                 orderService.CreateOrder(createdOrder);
@@ -451,7 +447,7 @@ namespace UI
             }
             return -1;
         }
-        
+
     }
     //Code By: Jens End *******************************************************
 }

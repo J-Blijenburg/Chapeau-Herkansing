@@ -223,40 +223,46 @@
             // 
             // BtnDrinks
             // 
-            BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDrinks.BackColor = Color.Silver;
+            BtnDrinks.Enabled = false;
             BtnDrinks.FlatAppearance.BorderSize = 0;
             BtnDrinks.FlatStyle = FlatStyle.Flat;
+            BtnDrinks.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnDrinks.Location = new Point(428, 138);
             BtnDrinks.Name = "BtnDrinks";
             BtnDrinks.Size = new Size(129, 83);
             BtnDrinks.TabIndex = 24;
-            BtnDrinks.Text = "Drinks";
+            BtnDrinks.Text = "Drinks\r\n Not Available";
             BtnDrinks.UseVisualStyleBackColor = false;
             BtnDrinks.Click += BtnDrinks_Click;
             // 
             // BtnDinner
             // 
-            BtnDinner.BackColor = Color.FromArgb(138, 210, 176);
+            BtnDinner.BackColor = Color.Silver;
+            BtnDinner.Enabled = false;
             BtnDinner.FlatAppearance.BorderSize = 0;
             BtnDinner.FlatStyle = FlatStyle.Flat;
+            BtnDinner.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnDinner.Location = new Point(226, 138);
             BtnDinner.Name = "BtnDinner";
             BtnDinner.Size = new Size(129, 83);
             BtnDinner.TabIndex = 25;
-            BtnDinner.Text = "Dinner";
+            BtnDinner.Text = "Dinner \r\nNot Available";
             BtnDinner.UseVisualStyleBackColor = false;
             BtnDinner.Click += BtnDinner_Click;
             // 
             // BtnLunch
             // 
-            BtnLunch.BackColor = Color.FromArgb(138, 210, 176);
+            BtnLunch.BackColor = Color.Silver;
+            BtnLunch.Enabled = false;
             BtnLunch.FlatAppearance.BorderSize = 0;
             BtnLunch.FlatStyle = FlatStyle.Flat;
+            BtnLunch.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnLunch.Location = new Point(23, 138);
             BtnLunch.Name = "BtnLunch";
             BtnLunch.Size = new Size(129, 83);
             BtnLunch.TabIndex = 26;
-            BtnLunch.Text = "Lunch";
+            BtnLunch.Text = "Lunch\r\nNot available\r\n";
             BtnLunch.UseVisualStyleBackColor = false;
             BtnLunch.Click += BtnLunch_Click;
             // 
