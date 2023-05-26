@@ -38,6 +38,7 @@ namespace DAL
                     Stock = (int)dr["Stock"],
                     Price = (double)dr["Price"],
                 };
+                
                 list.Add(menuItem);
             } 
             return list;
@@ -68,7 +69,7 @@ namespace DAL
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@stock", orderItem.MenuItem.Stock - orderItem.Quantity),
+                new SqlParameter("@stock", orderItem.MenuItem.GetStock() - orderItem.Quantity),
                 new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId)
             };
             ExecuteEditQuery(query, sqlParameters);

@@ -11,6 +11,6 @@ namespace Model
         public int menuCategoryId { get; set; }
         public double VAT { get; set; }
         public Category Name { get; set; }
-        public List<MenuItem> MenuItems { get; set; }
+        private List<MenuItem> MenuItems { get; set; }
     }
 }
