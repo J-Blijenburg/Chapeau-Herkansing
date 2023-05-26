@@ -32,7 +32,7 @@ namespace UI
 
             foreach (Menu menu in menus)
             {
-                switch (menu.Name)
+                switch (menu.GetMenuType())
                 {
                     case MenuType.Lunch:
                         button = BtnLunch;
@@ -63,35 +63,31 @@ namespace UI
             try
             {
                 //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-                //place all the categories in a list depending on the menu type
-                List<Category> drinks = new List<Category>() { Category.SoftDrinks, Category.Beers, Category.Wines, Category.Spirits, Category.HotDrinks };
-                List<Category> lunch = new List<Category>() { Category.Starters, Category.Mains, Category.Desserts };
-                List<Category> dinner = new List<Category>() { Category.Starters, Category.Entres, Category.Mains, Category.Desserts };
-
                 //Since we place all the items in the right list, we can loop through the menu types and categories
                 foreach (MenuType menuType in (MenuType[])Enum.GetValues(typeof(MenuType)))
                 {
+                   
+                    Menu menu = orderService.GetMenuByMenuType(menuType);
+                    menu.SetMenuCategories(orderService.GetMenuCategoriesByMenu(menu));
+                    
+                    
                     ListView listView = new ListView();
-                    List<Category> categories = new List<Category>();
                     switch (menuType)
                     {
                         case MenuType.Drinks:
                             listView = ListDrinks;
-                            categories.AddRange(drinks);
                             break;
                         case MenuType.Dinner:
                             listView = ListDinner;
-                            categories.AddRange(dinner);
                             break;
                         case MenuType.Lunch:
                             listView = ListLunch;
-                            categories.AddRange(lunch);
                             break;
                     }
 
-                    foreach (Category category in categories)
+                    foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
-                        GetMenuItems(listView, menuType, category);
+                        GetMenuItems(listView, menuType, menuCategory.Name);
                     }
                 }
             }

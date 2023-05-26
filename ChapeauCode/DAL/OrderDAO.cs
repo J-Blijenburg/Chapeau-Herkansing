@@ -1,6 +1,7 @@
 ﻿using Model;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace DAL
    public class OrderDAO : BaseDao
     {
         //Code By: Jens Begin *******************************************************
-        public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
+        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(string menu, string category)
         {
             string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price " +
                 "FROM MenuItem AS MI " +
@@ -134,6 +135,77 @@ namespace DAL
                     break;
             }
             return menuType;
+        }
+
+        public Menu GetMenuByMenuType(MenuType menuType)
+        {
+            string query = "SELECT MU.MenuId, MU.Name, MU.StartTime, MU.EndTime " +
+                "FROM Menu AS MU " +
+                "WHERE MU.Name = @menuType";
+            SqlParameter[] sqlParameters;
+            sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@menuType", menuType.ToString()),
+            };
+
+            return CreateMenu(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        private Menu CreateMenu(DataTable dataTable)
+        {
+            Menu menu = new Menu();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                menu.MenuId = (int)dr["MenuId"];
+                menu.Name = StringToMenuType((string)dr["Name"]);
+                menu.StartTime = new TimeOnly(((TimeSpan)dr["StartTime"]).Ticks);
+                menu.EndTime = new TimeOnly(((TimeSpan)dr["EndTime"]).Ticks);
+
+            }
+
+            return menu;
+        }
+
+        public List<MenuCategory> GetMenuCategoriesByMenu(Menu menu)
+        {
+            string query = "SELECT MC.MenuCategoryId, MC.VAT, MC.Name " +
+                "FROM MenuCategory AS MC " +
+                "JOIN MENU AS MU ON MC.MenuId = MU.MenuId " +
+                "WHERE MU.Name = @menu";
+            SqlParameter[] sqlParameters;
+            sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@menu", menu.Name.ToString())
+            };
+            return CreateListOfMenuCategory(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        private List<MenuCategory> CreateListOfMenuCategory(DataTable dataTable)
+        {
+            List<MenuCategory> listOfMenuCategories = new List<MenuCategory>();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                MenuCategory menuCategory = new MenuCategory()
+                {
+                    menuCategoryId = (int)dr["MenuCategoryId"],
+                    VAT = (double)dr["VAT"],
+                    Name = StringToCategory((string)dr["Name"])
+                };
+                listOfMenuCategories.Add(menuCategory);
+            }
+            return listOfMenuCategories;
+        }
+
+        private Category StringToCategory(string categoryName)
+        {
+            Category category = new Category();
+
+            if (Enum.TryParse(categoryName, out Category categoryType))
+            {
+                category =  categoryType;
+            }
+             
+            return category;
         }
 
         //Code By: Jens End *******************************************************

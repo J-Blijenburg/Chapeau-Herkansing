@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Model;
+using System.Drawing.Drawing2D;
 
 namespace Logic
 {
@@ -13,7 +14,7 @@ namespace Logic
         }
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
-            return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
+            return orderDAO.GetMenuItemsByMenuNameAndCategoryName(menu, category);
         }
 
         public void SendOrderItems(Order order)
@@ -29,6 +30,16 @@ namespace Logic
         public List<Menu> GetListOfMenu()
         {
             return orderDAO.GetListOfMenu();
+        }
+
+        public Menu GetMenuByMenuType(MenuType menuTypeName)
+        {
+            return orderDAO.GetMenuByMenuType(menuTypeName);
+        }
+
+        public List<MenuCategory> GetMenuCategoriesByMenu(Menu menu)
+        {
+            return orderDAO.GetMenuCategoriesByMenu(menu);
         }
 
         //Code By: Jens End *********************************************************
