@@ -19,11 +19,12 @@ namespace Model
 
         public OrderItem() { }
 
-        public OrderItem(string comment, MenuItem menuItem, int quantity)
+        public OrderItem CreateOrderItem(string comment, MenuItem menuItem, int quantity)
         {
             Comment = comment;
             MenuItem = menuItem;
             Quantity = quantity;
+            return this;
         }
 
         public string DisplayQuantityFormat()
@@ -31,9 +32,5 @@ namespace Model
             return $"{Quantity}x";
         }
 
-        public string toStringForKitchenAndBar()
-        {
-            return $"{Order.OrderId}, {Comment}, {Quantity} {MenuItem.Name}";
-        }
     }
 }

@@ -119,8 +119,8 @@ namespace UI
                 foreach (MenuItem menuItem in menuItems)
                 {
                     ListViewItem listViewItem = new ListViewItem(menuItem.Name);
-                    listViewItem.SubItems.Add($"€ {menuItem.Price.ToString("N2")}");
-                    listViewItem.SubItems.Add(menuItem.Stock.ToString());
+                    listViewItem.SubItems.Add(menuItem.GetPriceFormat());
+                    listViewItem.SubItems.Add(menuItem.GetStock().ToString());
                     listViewItem.Tag = menuItem;
                     listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");
                     listView.Items.Add(listViewItem);
@@ -254,7 +254,7 @@ namespace UI
                         OrderItem orderItem = (OrderItem)item.Tag;
                         orderItem.Order = order;
 
-                        order.OrderItems.Add(orderItem);
+                        order.AddOrderItemToOrder(orderItem);
                     }
                     orderService.SendOrderItems(order);
                 }
@@ -269,18 +269,17 @@ namespace UI
         //If it is added to the database it will return an id and add it to the order
         private Order CreateOrder(Receipt receipt, Employee employee)
         {
-
-            Order order = new Order(employee, receipt, DateTime.Now, OrderStatus.Ordered);
+            Order createdOrder =  new Order().CreateOrder(employee, receipt, OrderStatus.Ordered);
             try
             {
-                orderService.CreateOrder(order);
+                orderService.CreateOrder(createdOrder);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
 
-            return order;
+            return createdOrder;
         }
 
         //This method will be called when the user clicks on a menuitem
@@ -307,7 +306,7 @@ namespace UI
                     if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
                     {
                         //TODO: What if multiple employees are working on the same order?
-                        if (menuItem.Stock > orderItem.Quantity)
+                        if (menuItem.GetStock() > orderItem.Quantity)
                         {
                             orderItem.Quantity++;
                             lvItem.Text = orderItem.DisplayQuantityFormat();
@@ -336,7 +335,10 @@ namespace UI
         //every menuitem will be added as a orderitem to the listview
         private void AddOrderItemToListView(MenuItem menuItem)
         {
-            OrderItem orderItem = new OrderItem("", menuItem, 1);
+            OrderItem orderItem = new OrderItem();
+            orderItem.CreateOrderItem("", menuItem, 1);
+
+
             ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());
             listViewItem.SubItems.Add(orderItem.MenuItem.Name);
             listViewItem.SubItems.Add(orderItem.Comment);
@@ -378,7 +380,7 @@ namespace UI
 
                     MenuItem menuItem = selectedOrderItem.MenuItem;
 
-                    if (selectedOrderItem.Quantity < menuItem.Stock)
+                    if (selectedOrderItem.Quantity < menuItem.GetStock())
                     {
                         selectedOrderItem.Quantity++;
                         ListViewOrderdItems.SelectedItems[0].Text = selectedOrderItem.DisplayQuantityFormat();

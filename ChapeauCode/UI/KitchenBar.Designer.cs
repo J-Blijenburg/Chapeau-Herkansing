@@ -34,6 +34,7 @@
             Comment = new ColumnHeader();
             Quantity = new ColumnHeader();
             Description = new ColumnHeader();
+            Status = new ColumnHeader();
             lstViewSelectedOrder = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
@@ -54,15 +55,17 @@
             // 
             // lstViewOrders
             // 
-            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderID, Comment, Quantity, Description });
+            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderID, Comment, Quantity, Description, Status });
             lstViewOrders.FullRowSelect = true;
             lstViewOrders.GridLines = true;
-            lstViewOrders.Location = new Point(12, 189);
+            lstViewOrders.Location = new Point(14, 252);
+            lstViewOrders.Margin = new Padding(3, 4, 3, 4);
             lstViewOrders.Name = "lstViewOrders";
-            lstViewOrders.Size = new Size(808, 419);
+            lstViewOrders.Size = new Size(923, 557);
             lstViewOrders.TabIndex = 0;
             lstViewOrders.UseCompatibleStateImageBehavior = false;
             lstViewOrders.View = View.Details;
+            lstViewOrders.SelectedIndexChanged += lstViewOrders_SelectedIndexChanged;
             // 
             // OrderID
             // 
@@ -82,16 +85,22 @@
             // Description
             // 
             Description.Text = "Description";
-            Description.Width = 200;
+            Description.Width = 260;
+            // 
+            // Status
+            // 
+            Status.Text = "Status";
+            Status.Width = 0;
             // 
             // lstViewSelectedOrder
             // 
             lstViewSelectedOrder.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
             lstViewSelectedOrder.FullRowSelect = true;
             lstViewSelectedOrder.GridLines = true;
-            lstViewSelectedOrder.Location = new Point(826, 349);
+            lstViewSelectedOrder.Location = new Point(944, 465);
+            lstViewSelectedOrder.Margin = new Padding(3, 4, 3, 4);
             lstViewSelectedOrder.Name = "lstViewSelectedOrder";
-            lstViewSelectedOrder.Size = new Size(589, 259);
+            lstViewSelectedOrder.Size = new Size(673, 344);
             lstViewSelectedOrder.TabIndex = 1;
             lstViewSelectedOrder.UseCompatibleStateImageBehavior = false;
             lstViewSelectedOrder.View = View.Details;
@@ -110,10 +119,11 @@
             // 
             textBox1.BackColor = Color.FromArgb(255, 128, 0);
             textBox1.Font = new Font("Arial Narrow", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
-            textBox1.Location = new Point(826, 293);
+            textBox1.Location = new Point(944, 391);
+            textBox1.Margin = new Padding(3, 4, 3, 4);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(589, 50);
+            textBox1.Size = new Size(673, 65);
             textBox1.TabIndex = 2;
             textBox1.Text = "View order status";
             textBox1.TextAlign = HorizontalAlignment.Center;
@@ -121,74 +131,81 @@
             // label1
             // 
             label1.BorderStyle = BorderStyle.Fixed3D;
-            label1.Location = new Point(826, 235);
+            label1.Location = new Point(944, 313);
             label1.Name = "label1";
-            label1.Size = new Size(2, 55);
+            label1.Size = new Size(2, 73);
             label1.TabIndex = 3;
             // 
             // label3
             // 
             label3.BorderStyle = BorderStyle.Fixed3D;
-            label3.Location = new Point(1412, 235);
+            label3.Location = new Point(1614, 313);
             label3.Name = "label3";
-            label3.Size = new Size(2, 55);
+            label3.Size = new Size(2, 73);
             label3.TabIndex = 5;
             // 
             // label4
             // 
             label4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label4.BorderStyle = BorderStyle.Fixed3D;
-            label4.Location = new Point(826, 288);
+            label4.Location = new Point(944, 384);
             label4.Name = "label4";
-            label4.Size = new Size(589, 2);
+            label4.Size = new Size(673, 3);
             label4.TabIndex = 6;
             // 
             // label2
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label2.BorderStyle = BorderStyle.Fixed3D;
-            label2.Location = new Point(826, 235);
+            label2.Location = new Point(944, 313);
             label2.Name = "label2";
-            label2.Size = new Size(589, 2);
+            label2.Size = new Size(673, 3);
             label2.TabIndex = 7;
             // 
             // btnInPrep
             // 
-            btnInPrep.Location = new Point(848, 246);
+            btnInPrep.Location = new Point(969, 328);
+            btnInPrep.Margin = new Padding(3, 4, 3, 4);
             btnInPrep.Name = "btnInPrep";
-            btnInPrep.Size = new Size(126, 36);
+            btnInPrep.Size = new Size(144, 48);
             btnInPrep.TabIndex = 8;
             btnInPrep.Text = "In preparation";
             btnInPrep.UseVisualStyleBackColor = true;
+            btnInPrep.Click += btnInPrep_Click;
             // 
             // btnPrepared
             // 
             btnPrepared.BackColor = Color.FromArgb(255, 128, 0);
-            btnPrepared.Location = new Point(1064, 246);
+            btnPrepared.Location = new Point(1216, 328);
+            btnPrepared.Margin = new Padding(3, 4, 3, 4);
             btnPrepared.Name = "btnPrepared";
-            btnPrepared.Size = new Size(126, 36);
+            btnPrepared.Size = new Size(144, 48);
             btnPrepared.TabIndex = 9;
             btnPrepared.Text = "Prepared";
             btnPrepared.UseVisualStyleBackColor = false;
+            btnPrepared.Click += btnPrepared_Click;
             // 
             // btnServed
             // 
             btnServed.BackColor = Color.FromArgb(0, 192, 0);
-            btnServed.Location = new Point(1267, 246);
+            btnServed.Location = new Point(1448, 328);
+            btnServed.Margin = new Padding(3, 4, 3, 4);
             btnServed.Name = "btnServed";
-            btnServed.Size = new Size(126, 36);
+            btnServed.Size = new Size(144, 48);
             btnServed.TabIndex = 10;
             btnServed.Text = "Served";
             btnServed.UseVisualStyleBackColor = false;
+            btnServed.Click += btnServed_Click;
             // 
             // textBox2
             // 
             textBox2.BackColor = Color.FromArgb(255, 128, 0);
             textBox2.Font = new Font("Arial Narrow", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            textBox2.Location = new Point(826, 189);
+            textBox2.Location = new Point(944, 252);
+            textBox2.Margin = new Padding(3, 4, 3, 4);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(589, 43);
+            textBox2.Size = new Size(673, 56);
             textBox2.TabIndex = 11;
             textBox2.Text = "Change order status";
             textBox2.TextAlign = HorizontalAlignment.Center;
@@ -197,10 +214,11 @@
             // 
             txtTypeOfOrder.BackColor = Color.FromArgb(255, 128, 0);
             txtTypeOfOrder.Font = new Font("Arial Narrow", 36F, FontStyle.Bold, GraphicsUnit.Point);
-            txtTypeOfOrder.Location = new Point(12, 71);
+            txtTypeOfOrder.Location = new Point(14, 95);
+            txtTypeOfOrder.Margin = new Padding(3, 4, 3, 4);
             txtTypeOfOrder.Multiline = true;
             txtTypeOfOrder.Name = "txtTypeOfOrder";
-            txtTypeOfOrder.Size = new Size(1402, 64);
+            txtTypeOfOrder.Size = new Size(1602, 84);
             txtTypeOfOrder.TabIndex = 12;
             txtTypeOfOrder.Text = "{typeOfOrder}";
             txtTypeOfOrder.TextAlign = HorizontalAlignment.Center;
@@ -209,10 +227,11 @@
             // 
             txtBoxUser.BackColor = Color.FromArgb(255, 128, 0);
             txtBoxUser.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            txtBoxUser.Location = new Point(1267, 33);
+            txtBoxUser.Location = new Point(1448, 44);
+            txtBoxUser.Margin = new Padding(3, 4, 3, 4);
             txtBoxUser.Multiline = true;
             txtBoxUser.Name = "txtBoxUser";
-            txtBoxUser.Size = new Size(147, 32);
+            txtBoxUser.Size = new Size(167, 41);
             txtBoxUser.TabIndex = 13;
             txtBoxUser.Text = "{user}";
             txtBoxUser.TextAlign = HorizontalAlignment.Center;
@@ -220,19 +239,20 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(12, 4);
+            pictureBox1.Location = new Point(14, 5);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(115, 61);
+            pictureBox1.Size = new Size(131, 81);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
             // 
             // KitchenBar
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1427, 665);
+            ClientSize = new Size(1631, 887);
             Controls.Add(pictureBox1);
             Controls.Add(txtBoxUser);
             Controls.Add(txtTypeOfOrder);
@@ -248,7 +268,7 @@
             Controls.Add(lstViewSelectedOrder);
             Controls.Add(lstViewOrders);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2);
+            Margin = new Padding(2, 3, 2, 3);
             MaximizeBox = false;
             Name = "KitchenBar";
             StartPosition = FormStartPosition.CenterScreen;
@@ -284,5 +304,6 @@
         private ColumnHeader Comment;
         private ColumnHeader Quantity;
         private ColumnHeader Description;
+        private ColumnHeader Status;
     }
 }

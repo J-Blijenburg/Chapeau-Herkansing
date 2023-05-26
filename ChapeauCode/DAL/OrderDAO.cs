@@ -48,7 +48,7 @@ namespace DAL
         {
             //After the order is created, the orderitems are added to the database
             string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
-            foreach (OrderItem orderItem in order.OrderItems)
+            foreach (OrderItem orderItem in order.GetOrderItems())
             {
                 SqlParameter[] sqlParameters;
                 sqlParameters = new SqlParameter[]
@@ -288,7 +288,7 @@ namespace DAL
 
         public List<OrderItem> GetKitchenOrders()
         {
-            string query = "SELECT oi.OrderID, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Diner');";
+            string query = "SELECT oi.OrderID, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
@@ -296,6 +296,15 @@ namespace DAL
         {
             string query = "SELECT oi.OrderID, oi.Comment oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Drinks');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
+        }
+
+        public void UpdateOrderStatus(int orderId, OrderStatus orderStatus)
+        {
+            string query = "UPDATE [Order] SET Status = @status WHERE OrderId = @orderId";
+            SqlParameter[] sqlParameters = new SqlParameter[2];
+            sqlParameters[0] = new SqlParameter("@status", orderStatus);
+            sqlParameters[1] = new SqlParameter("@orderId", orderId);
+            ExecuteEditQuery(query, sqlParameters);
         }
 
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
