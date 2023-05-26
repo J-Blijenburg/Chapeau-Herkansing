@@ -19,40 +19,39 @@ namespace UI
         public TableOverview(Table table)
         {
             InitializeComponent();
-            DisableMenuButtons();
+            EnableMenuButtons();
             this.table = table;
 
-            
+
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
         }
 
-        private void DisableMenuButtons()
+        private void EnableMenuButtons()
         {
             List<Menu> menus = orderService.GetListOfMenu();
-            Button button = new Button();
-
             foreach (Menu menu in menus)
             {
-                switch (menu.Name)
+                switch (menu.GetMenuType())
                 {
                     case MenuType.Lunch:
-                        button = BtnLunch;
+                        EnableButton(BtnLunch, menu);
                         break;
                     case MenuType.Dinner:
-                        button = BtnDinner;
+                        EnableButton(BtnDinner, menu);
                         break;
                     case MenuType.Drinks:
-                        button = BtnDrinks;
+                        EnableButton(BtnDrinks, menu);
                         break;
                 }
-
-                if (!menu.CheckMenuTime())
-                {
-                    button.Enabled = false;
-                    button.BackColor = Color.LightGray;
-                    button.Text += "\n(Not Available)";
-                }
             }
+        }
+
+        private void EnableButton(Button button, Menu menu)
+        {
+            button.Enabled = true;
+            button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            button.Font = new Font(button.Font, FontStyle.Regular);
+            button.Text = menu.GetMenuType().ToString();
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -76,7 +75,7 @@ namespace UI
             Employee employee = new Employee();
             employee.FirstName = "Jens";
             employee.EmployeeId = 1;
-            
+
             OrderOverView order = new OrderOverView(this, panelToShow, table, employee);
             this.Hide();
 
@@ -84,7 +83,7 @@ namespace UI
             order.ShowDialog();
 
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
-            
+
 
             //This messagebox can be used to check how many Forms there are currently running
             //MessageBox.Show(Application.OpenForms.Count.ToString());
