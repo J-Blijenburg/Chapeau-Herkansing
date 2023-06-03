@@ -12,6 +12,12 @@ using System.Windows.Forms;
 
 namespace UI
 {
+
+    //TODO
+    //barmedewerkers/keukenmedewerkers zouden inzicht moeten hebben in hoe lang een bestelling al open staat
+    //eerdere drank/eet-bestellingen  van dezelfde dag moeten ook oproepbaar zijn (filter ‘bestellingen openstaand’ en ‘bestellingen gereed’);
+
+
     public partial class KitchenBar : Form
     {
         private OrderService orderService = new OrderService();
@@ -80,11 +86,12 @@ namespace UI
 
                 foreach (OrderItem orderItem in orderItems)
                 {
-                    ListViewItem listViewItem = new ListViewItem(orderItem.Order.OrderId.ToString());
+                    ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
                     listViewItem.SubItems.Add(orderItem.Comment.ToString());
                     listViewItem.SubItems.Add(orderItem.Quantity.ToString());
                     listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
-                    listViewItem.SubItems.Add(orderItem.Order.Status.ToString());
+                    listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
+                    listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
                     listViewItem.Tag = orderItem;
                     listView.Items.Add(listViewItem);
                 }
@@ -104,11 +111,13 @@ namespace UI
             foreach (ListViewItem selectedItem in selectedItems)
             {
                 ListViewItem newItem;
-                int columnIntegerOrderId = GetColumnIndex(lstViewOrders, "Order ID");
+                int columnIntegerOrderItemId = GetColumnIndex(lstViewOrders, "OrderItemID");
+                int columnIntegerOrderId = GetColumnIndex(lstViewOrders, "OrderId");
                 int columnIntegerStatus = GetColumnIndex(lstViewOrders, "Status");
 
-                newItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderId].Text);
+                newItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
                 newItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
+                newItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
 
                 lstViewSelectedOrder.Items.Add(newItem);
             }
@@ -150,12 +159,16 @@ namespace UI
         {
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
-                ListViewItem selectedItem = lstViewSelectedOrder.SelectedItems[0];
-                int orderId = int.Parse(selectedItem.SubItems[0].Text);
-                orderService.UpdateOrderItemStatus(orderId, status);
+                int columnIntegerOrderId = GetColumnIndex(lstViewSelectedOrder, "OrderId");
+                int columnIntegerOrderItemId = GetColumnIndex(lstViewSelectedOrder, "OrderItemId");
+
+                int orderId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
+                int orderItemId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
+
+                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
-                GetOrderedItemsKitchen();
+                CheckLoginRoleAndFillListView(loggedInEmployeeType);
             }
             else
             {

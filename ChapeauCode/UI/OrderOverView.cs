@@ -336,7 +336,7 @@ namespace UI
         private void AddOrderItemToListView(MenuItem menuItem)
         {
             OrderItem orderItem = new OrderItem();
-            orderItem.CreateOrderItem("", menuItem, 1);
+            orderItem.CreateOrderItem("", menuItem, 1, OrderStatus.Ordered);
 
 
             ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());

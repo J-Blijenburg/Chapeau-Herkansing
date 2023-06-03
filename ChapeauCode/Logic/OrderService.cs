@@ -55,9 +55,9 @@ namespace Logic
            return orderDAO.GetBarOrders();
         }
 
-        public void UpdateOrderItemStatus(int orderId, OrderStatus orderStatus)
+        public void UpdateOrderItemStatus(int orderId, OrderStatus orderStatus, int orderItemId)
         {
-            orderDAO.UpdateOrderStatus(orderId, orderStatus);
+            orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {
