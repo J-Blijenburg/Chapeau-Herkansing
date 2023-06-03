@@ -9,20 +9,30 @@ namespace Model
         public Receipt Receipt { get; set; }
         public DateTime OrderDateTime { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+        private List<OrderItem> OrderItems { get; set; }
 
         public Order()
         {
 
         }
 
-        public Order(Employee employee, Receipt receipt, DateTime orderDateTime, OrderStatus status)
-        {
+        public Order CreateOrder(Employee employee, Receipt receipt, OrderStatus status) {
             Employee = employee;
             Receipt = receipt;
-            OrderDateTime = orderDateTime;
+            OrderDateTime = DateTime.Now;
             Status = status;
             OrderItems = new List<OrderItem>();
+            
+            return this;
+        }
+        public void AddOrderItemToOrder(OrderItem orderItem)
+        {
+            OrderItems.Add(orderItem);
+        }
+
+        public List<OrderItem> GetOrderItems()
+        {
+              return OrderItems;
         }
     }
 }

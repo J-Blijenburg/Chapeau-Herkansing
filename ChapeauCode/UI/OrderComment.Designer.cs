@@ -29,55 +29,62 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderComment));
-            button1 = new Button();
             TxtComment = new TextBox();
-            BtnAddComment = new Button();
+            BtnBack = new CustomTools.RoundedButton();
+            BtnAddComment = new CustomTools.RoundedButton();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(255, 179, 71);
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.Location = new Point(-10, 10);
-            button1.Name = "button1";
-            button1.Size = new Size(92, 38);
-            button1.TabIndex = 0;
-            button1.Text = "BACK";
-            button1.UseVisualStyleBackColor = false;
             // 
             // TxtComment
             // 
             TxtComment.AccessibleName = "";
             TxtComment.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            TxtComment.Location = new Point(82, 172);
+            TxtComment.Location = new Point(117, 287);
+            TxtComment.Margin = new Padding(4, 5, 4, 5);
             TxtComment.Multiline = true;
             TxtComment.Name = "TxtComment";
             TxtComment.PlaceholderText = "Message...";
-            TxtComment.Size = new Size(250, 100);
+            TxtComment.Size = new Size(355, 164);
             TxtComment.TabIndex = 1;
+            // 
+            // BtnBack
+            // 
+            BtnBack.BackColor = Color.FromArgb(255, 179, 71);
+            BtnBack.FlatAppearance.BorderSize = 0;
+            BtnBack.FlatStyle = FlatStyle.Flat;
+            BtnBack.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnBack.Location = new Point(-26, 17);
+            BtnBack.Name = "BtnBack";
+            BtnBack.Size = new Size(131, 63);
+            BtnBack.TabIndex = 3;
+            BtnBack.Text = "BACK";
+            BtnBack.UseVisualStyleBackColor = false;
+            BtnBack.Click += BtnBack_Click;
             // 
             // BtnAddComment
             // 
             BtnAddComment.BackColor = Color.FromArgb(255, 179, 71);
+            BtnAddComment.FlatAppearance.BorderSize = 0;
+            BtnAddComment.FlatStyle = FlatStyle.Flat;
             BtnAddComment.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnAddComment.Location = new Point(107, 284);
+            BtnAddComment.Location = new Point(153, 473);
             BtnAddComment.Name = "BtnAddComment";
-            BtnAddComment.Size = new Size(200, 50);
-            BtnAddComment.TabIndex = 2;
-            BtnAddComment.Text = "ADD";
+            BtnAddComment.Size = new Size(286, 83);
+            BtnAddComment.TabIndex = 4;
+            BtnAddComment.Text = "ADD Comment";
             BtnAddComment.UseVisualStyleBackColor = false;
             BtnAddComment.Click += BtnAddComment_Click;
             // 
             // OrderComment
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(398, 697);
+            ClientSize = new Size(569, 1162);
             Controls.Add(BtnAddComment);
+            Controls.Add(BtnBack);
             Controls.Add(TxtComment);
-            Controls.Add(button1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4, 5, 4, 5);
             Name = "OrderComment";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "OrderComment";
@@ -89,6 +96,7 @@
 
         private Button button1;
         private TextBox TxtComment;
-        private Button BtnAddComment;
+        private CustomTools.RoundedButton BtnBack;
+        private CustomTools.RoundedButton BtnAddComment;
     }
 }

@@ -1,8 +1,11 @@
 ﻿using DAL;
 using Model;
+using System.Drawing.Drawing2D;
 
 namespace Logic
 {
+    //Code By: Jens Begin *******************************************************
+
     public class OrderService
     {
         OrderDAO orderDAO;
@@ -11,7 +14,7 @@ namespace Logic
         }
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {
-            return orderDAO.GetMenuItemsByMenuAndCategory(menu, category);
+            return orderDAO.GetMenuItemsByMenuNameAndCategoryName(menu, category);
         }
 
         public void SendOrderItems(Order order)
@@ -24,14 +27,36 @@ namespace Logic
             orderDAO.CreateOrder(order);
         }
 
+        public List<Menu> GetListOfMenu()
+        {
+            return orderDAO.GetListOfMenu();
+        }
+
+        public List<MenuCategory> GetMenuCategoriesByMenu(Menu menu)
+        {
+            return orderDAO.GetMenuCategoriesByMenu(menu);
+        }
+
+        //Code By: Jens End *********************************************************
+
         public List<OrderItem> GetOrderdItems(Table table)
         {
             return orderDAO.GetOrderdItems(table);
         }
 
-        public void DeleteOrder(Order order)
+        public List<OrderItem> GetKitchenOrders()
         {
-            orderDAO.DeleteOrder(order);
+           return orderDAO.GetKitchenOrders();
+        }
+
+        public List<OrderItem> GetBarOrders()
+        {
+           return orderDAO.GetBarOrders();
+        }
+
+        public void UpdateOrderItemStatus(int orderId, OrderStatus orderStatus)
+        {
+            orderDAO.UpdateOrderStatus(orderId, orderStatus);
         }
     }
 }

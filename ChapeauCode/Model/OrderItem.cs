@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -18,21 +19,40 @@ namespace Model
 
         public OrderItem() { }
 
-        public OrderItem(string comment, MenuItem menuItem, int quantity)
+        public OrderItem CreateOrderItem(string comment, MenuItem menuItem, int quantity)
         {
             Comment = comment;
             MenuItem = menuItem;
             Quantity = quantity;
+            return this;
         }
 
-        public void UpdateQuantity(int quantity)
+        public string DisplayQuantityFormat()
         {
-            this.Quantity = quantity;
+            return $"{Quantity}x";
         }
 
-        public void UpdateComment(string comment)
+        public string GetComment()
         {
-            this.Comment = comment;
+            return Comment;
+        }   
+
+        public int GetQuantity()
+        {
+            return Quantity;
         }
+
+        public int AddQuantity(int quantity)
+        {
+            Quantity += quantity;
+            return Quantity;
+        }
+
+        public MenuItem GetMenuItem()
+        {
+            return MenuItem;
+        }
+        
+
     }
 }

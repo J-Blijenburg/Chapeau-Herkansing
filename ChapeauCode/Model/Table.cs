@@ -13,5 +13,9 @@ namespace Model
         public TableStatus Status { get; set; }
         public int UndeliveredOrdersCount { get; set; }
 
+        public int GetNumber()
+        {
+            return Number;
+        }   
     }
 }

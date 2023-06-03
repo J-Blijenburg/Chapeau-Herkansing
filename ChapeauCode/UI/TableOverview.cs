@@ -14,16 +14,44 @@ namespace UI
 {
     public partial class TableOverview : Form
     {
-        private OrderService orderService;
+        private OrderService orderService = new OrderService();
         private Table table;
         public TableOverview(Table table)
         {
             InitializeComponent();
-            this.orderService = new OrderService();
+            EnableMenuButtons();
             this.table = table;
 
-            
+
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
+        }
+
+        private void EnableMenuButtons()
+        {
+            List<Menu> menus = orderService.GetListOfMenu();
+            foreach (Menu menu in menus)
+            {
+                switch (menu.GetMenuType())
+                {
+                    case MenuType.Lunch:
+                        EnableButton(BtnLunch, menu);
+                        break;
+                    case MenuType.Dinner:
+                        EnableButton(BtnDinner, menu);
+                        break;
+                    case MenuType.Drinks:
+                        EnableButton(BtnDrinks, menu);
+                        break;
+                }
+            }
+        }
+
+        private void EnableButton(Button button, Menu menu)
+        {
+            button.Enabled = true;
+            button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            button.Font = new Font(button.Font, FontStyle.Regular);
+            button.Text = menu.GetMenuType().ToString();
         }
 
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -47,7 +75,7 @@ namespace UI
             Employee employee = new Employee();
             employee.FirstName = "Jens";
             employee.EmployeeId = 1;
-            
+
             OrderOverView order = new OrderOverView(this, panelToShow, table, employee);
             this.Hide();
 
@@ -55,11 +83,13 @@ namespace UI
             order.ShowDialog();
 
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
-            
+
 
             //This messagebox can be used to check how many Forms there are currently running
             //MessageBox.Show(Application.OpenForms.Count.ToString());
         }
+
+
 
         private List<OrderItem> GetOrderdItems(Table table)
         {

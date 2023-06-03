@@ -2,7 +2,7 @@
 {
     public enum OrderStatus
     {
-        //de volgorde van dit enum is belangrijk voor meer logica
+        //The database is created with this logica order
         Ordered = 1, Preparing, Delivered, ReadyToBeServed
     }
 }

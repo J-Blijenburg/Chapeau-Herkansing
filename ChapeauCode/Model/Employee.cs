@@ -16,5 +16,15 @@ namespace Model
         public bool IsActive { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public EmployeeRole Role { get; set; }
+
+
+        public string GetFullName()
+        {
+            return $"{FirstName} {LastName}";
+        }
+        public string GetFirstName()
+        {
+            return FirstName;
+        }
     }
 }
