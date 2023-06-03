@@ -204,7 +204,7 @@ namespace DAL
         //    {
         //        new SqlParameter("@TableNumber", table.Number)
         //    };
-            
+
         //    return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
         //}
 
@@ -283,25 +283,25 @@ namespace DAL
 
         //    return orderItems;
         //}
-        public List<OrderItem> GetOrderedItems(Table table) {
+        public List<OrderItem> GetOrderedItems(Table table)
+        {
             string query = "SELECT OI.OrderItemId, OD.OrderId, EM.FirstName, EM.LastName, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name AS MenuItemName, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name AS MenuCategoryName, OI.Quantity " +
-            "FROM [OrderItem] AS OI " +
-            "JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
-            "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
-            "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
-            "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
-            "JOIN [Table] AS TE ON RT.TableId = TE.TableId " +
-            "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
-            "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
-            "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
+              "FROM [OrderItem] AS OI " +
+              "JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
+              "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
+              "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
+              "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
+              "JOIN [Table] AS TE ON RT.TableId = TE.TableId " +
+              "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
+              "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
+              "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
 
-            SqlParameter[] sqlParameters = new SqlParameter[]
-    {
-        new SqlParameter("@TableNumber", table.Number)
-    };
-    
-    return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
-}
+            SqlParameter[] sqlParameters = new SqlParameter[] {
+            new SqlParameter("@TableNumber", table.Number)
+            };
+
+            return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
+        }
 
         private List<OrderItem> CreateOrderItems(DataTable dataTable)
         {
@@ -312,16 +312,18 @@ namespace DAL
                 OrderItem orderItem = new OrderItem()
                 {
                     OrderItemId = (int)dataRow["OrderItemId"],
-                    Order = new Order() {
-                OrderId = (int)dataRow["OrderId"],
-                Employee = new Employee() {
-                    FirstName = (string)dataRow["FirstName"],
-                    LastName = (string)dataRow["LastName"],
-                },
-                OrderDateTime = DateTime.Now,
-                Status = StringToOrderStatus((string)dataRow["Status"])
-            },
-            Comment = (string)dataRow["Comment"],
+                    Order = new Order()
+                    {
+                        OrderId = (int)dataRow["OrderId"],
+                        Employee = new Employee()
+                        {
+                            FirstName = (string)dataRow["FirstName"],
+                            LastName = (string)dataRow["LastName"],
+                        },
+                        OrderDateTime = DateTime.Now,
+                        Status = StringToOrderStatus((string)dataRow["Status"])
+                    },
+                    Comment = (string)dataRow["Comment"],
                     MenuItem = new MenuItem()
                     {
                         MenuItemId = (int)dataRow["MenuItemId"],
@@ -337,7 +339,7 @@ namespace DAL
                     },
 
                     Quantity = (int)dataRow["Quantity"]
-        };
+                };
                 orderItems.Add(orderItem);
             }
 
