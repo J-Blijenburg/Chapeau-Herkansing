@@ -382,16 +382,12 @@ namespace DAL
         {
             switch (orderStatus)
             {
-                case "Ordered":
-                    return OrderStatus.Ordered;
-                case "Preparing":
-                    return OrderStatus.Preparing;
-                case "Delivered":
-                    return OrderStatus.Delivered;
-                case "ReadyToBeServed":
-                    return OrderStatus.ReadyToBeServed;
+                case "InProgress":
+                    return OrderStatus.InProgress;
+                case "Finished":
+                    return OrderStatus.Finished;
                 default:
-                    return OrderStatus.Ordered;
+                    return OrderStatus.InProgress;
       
             }
         }
@@ -408,7 +404,7 @@ namespace DAL
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public void UpdateOrderStatus(int orderId, OrderStatus orderStatus, int orderItemId)
+        public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             string query = @"UPDATE [OrderItem]
                      SET [OrderItemStatus] = @status
@@ -421,7 +417,7 @@ namespace DAL
                      )
                      BEGIN
                          UPDATE [Order]
-                         SET Status = 3
+                         SET Status = 2
                          WHERE OrderId = @OrderId;
                      END";
 
@@ -448,7 +444,7 @@ namespace DAL
                             Quantity = (int)dr["Quantity"],
                             Comment = (string)dr["Comment"],
                             OrderItemId = (int)dr["OrderItemId"],
-                            OrderItemStatus = (OrderStatus)(int)dr["OrderItemStatus"],
+                            OrderItemStatus = (OrderItemStatus)(int)dr["OrderItemStatus"],
                             Order = new Order()
                             {
                                 OrderId = (int)dr["OrderId"],

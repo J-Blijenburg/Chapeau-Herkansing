@@ -11,7 +11,7 @@ namespace Model
     public class OrderItem
     {
         public int OrderItemId { get; set; }
-        public OrderStatus OrderItemStatus { get; set; }
+        public OrderItemStatus OrderItemStatus { get; set; }
         //doordat er nu een list is in order is dit niet meer nodig de order order zegmaar
         public Order Order { get; set; }
         public string Comment { get; set; }
@@ -20,7 +20,7 @@ namespace Model
 
         public OrderItem() { }
 
-        public OrderItem CreateOrderItem(string comment, MenuItem menuItem, int quantity, OrderStatus status)
+        public OrderItem CreateOrderItem(string comment, MenuItem menuItem, int quantity, OrderItemStatus status)
         {
             Comment = comment;
             MenuItem = menuItem;

@@ -141,21 +141,21 @@ namespace UI
 
         private void btnInPrep_Click(object sender, EventArgs e)
         {
-            UpdateOrderStatus(OrderStatus.Preparing);
+            UpdateOrderStatus(Model.OrderItemStatus.Preparing);
 
         }
 
         private void btnPrepared_Click(object sender, EventArgs e)
         {
-            UpdateOrderStatus(OrderStatus.ReadyToBeServed);
+            UpdateOrderStatus(Model.OrderItemStatus.ReadyToBeServed);
         }
 
         private void btnServed_Click(object sender, EventArgs e)
         {
-            UpdateOrderStatus(OrderStatus.Delivered);
+            UpdateOrderStatus(Model.OrderItemStatus.Delivered);
         }
 
-        private void UpdateOrderStatus(OrderStatus status)
+        private void UpdateOrderStatus(OrderItemStatus status)
         {
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {

@@ -55,7 +55,7 @@ namespace Logic
            return orderDAO.GetBarOrders();
         }
 
-        public void UpdateOrderItemStatus(int orderId, OrderStatus orderStatus, int orderItemId)
+        public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
