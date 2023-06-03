@@ -8,6 +8,7 @@ namespace Logic
 
     public class OrderService
     {
+        private const decimal VATRate = 0.15M;
         OrderDAO orderDAO;
         public OrderService() { 
             this.orderDAO = new OrderDAO();
@@ -41,7 +42,7 @@ namespace Logic
 
         public List<OrderItem> GetOrderdItems(Table table)
         {
-            return orderDAO.GetOrderdItems(table);
+            return orderDAO.GetOrderedItems(table);
         }
 
         public List<OrderItem> GetKitchenOrders()
@@ -57,6 +58,61 @@ namespace Logic
         public void UpdateOrderItemStatus(int orderId, OrderStatus orderStatus)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus);
+        }
+        public double CalculateTotalVat(List<OrderItem> orderItems)
+        {
+            double totalVat = 0;
+
+            foreach (var item in orderItems)
+            {
+                if (item.MenuItem.MenuCategory != null)
+                {
+                    double vatRate = item.MenuItem.MenuCategory.VAT / 100.0;
+                    double itemVat = item.MenuItem.Price * item.Quantity * vatRate;
+                    totalVat += itemVat;
+                }
+            }
+
+            return totalVat;
+        }
+        public decimal CalculateLowVat(List<OrderItem> orderItems)
+        {
+            decimal lowVat = 0;
+            decimal lowVatRate = 0.06M;
+
+            foreach (var item in orderItems)
+            {
+                if ((decimal)(item.MenuItem.MenuCategory.VAT / 100.0) == lowVatRate)
+                    lowVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / 100.0);
+            }
+
+            return lowVat;
+        }
+
+        public decimal CalculateHighVat(List<OrderItem> orderItems)
+        {
+            decimal highVat = 0;
+            decimal highVatRate = 0.21M;
+
+            foreach (var item in orderItems)
+            {
+                if ((decimal)(item.MenuItem.MenuCategory.VAT / 100.0) == highVatRate)
+                    highVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / 100.0);
+            }
+
+            return highVat;
+        }
+
+        public decimal CalculateTotalPrice(List<OrderItem> orderItems)
+        {
+            decimal totalPrice = 0;
+
+            foreach (var item in orderItems)
+            {
+                totalPrice += (decimal)item.MenuItem.Price * item.Quantity;
+            }
+
+            return totalPrice;
         }
     }
 }

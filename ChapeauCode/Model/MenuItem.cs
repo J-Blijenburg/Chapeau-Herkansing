@@ -13,6 +13,7 @@ namespace Model
         public int Stock { get; set; }
         public double Price { get; set; }
         public Menu Menu { get; set; }
+        public MenuCategory MenuCategory { get; set; }
         public MenuItem()
         {
         }
