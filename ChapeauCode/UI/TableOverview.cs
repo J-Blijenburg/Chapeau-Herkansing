@@ -108,6 +108,10 @@ namespace UI
                 listViewItem.Tag = orderItem;
                 listView.Items.Add(listViewItem);
             }
+            double totalVat = (double)orderService.CalculateTotalVat(orderItems);
+            double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
+            LblVatPrice.Text = $"€ {totalVat.ToString("N2")}";
+            LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }
     }
 }

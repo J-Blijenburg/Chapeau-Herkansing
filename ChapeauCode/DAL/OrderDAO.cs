@@ -161,7 +161,7 @@ namespace DAL
             {
                 MenuCategory menuCategory = new MenuCategory()
                 {
-                    menuCategoryId = (int)dr["MenuCategoryId"],
+                    MenuCategoryId = (int)dr["MenuCategoryId"],
                     VAT = (double)dr["VAT"],
                     Name = StringToCategory((string)dr["Name"])
                 };
@@ -184,29 +184,124 @@ namespace DAL
 
         //Code By: Jens End *******************************************************
 
-        public List<OrderItem> GetOrderdItems(Table table){
-            string query = "SELECT OI.OrderItemId, OD.OrderId, EM.EmployeeId , EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role,RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EmployeeReceipt.EmployeeId, EmployeeReceipt.FirstName, EmployeeReceipt.LastName, EmployeeReceipt.EmployeeNumber, EmployeeReceipt.Password, EmployeeReceipt.IsActive, EmployeeReceipt.RegistrationDate, RoleReceipt.Role,TE.TableId,  TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, RT.IsHandled,PM.PaymentId, PM.IsPaid, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name, MU.MenuId, MU.Name, MU.StartTime, MU.EndTime, OI.Quantity " +
-                "FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
-                "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
-                "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
-                "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
-                "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
-                "JOIN [Employee] AS EmployeeReceipt ON RT.EmployeeId = EmployeeReceipt.EmployeeId " +
-                "JOIN [EmployeeRole] AS RoleReceipt ON EmployeeReceipt.Role = RoleReceipt.EmployeeRoleId " +
-                "JOIN [Table] AS TE ON RT.TableId = TE.TableId JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
-                "JOIN [Payment] AS PM ON RT.PaymentId = PM.PaymentId " +
-                "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
-                "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
-                "JOIN [Menu] AS MU ON MC.MenuId = MU.MenuId " +
-                "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
-            SqlParameter[] sqlParameters;
-            sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@TableNumber", table.Number)
-            };
+        //public List<OrderItem> GetOrderdItems(Table table){
+        //    string query = "SELECT OI.OrderItemId, OD.OrderId, EM.EmployeeId , EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role,RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EmployeeReceipt.EmployeeId, EmployeeReceipt.FirstName, EmployeeReceipt.LastName, EmployeeReceipt.EmployeeNumber, EmployeeReceipt.Password, EmployeeReceipt.IsActive, EmployeeReceipt.RegistrationDate, RoleReceipt.Role,TE.TableId,  TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, RT.IsHandled,PM.PaymentId, PM.IsPaid, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name, MU.MenuId, MU.Name, MU.StartTime, MU.EndTime, OI.Quantity " +
+        //        "FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
+        //        "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
+        //        "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
+        //        "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
+        //        "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
+        //        "JOIN [Employee] AS EmployeeReceipt ON RT.EmployeeId = EmployeeReceipt.EmployeeId " +
+        //        "JOIN [EmployeeRole] AS RoleReceipt ON EmployeeReceipt.Role = RoleReceipt.EmployeeRoleId " +
+        //        "JOIN [Table] AS TE ON RT.TableId = TE.TableId JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
+        //        "JOIN [Payment] AS PM ON RT.PaymentId = PM.PaymentId " +
+        //        "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
+        //        "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
+        //        "JOIN [Menu] AS MU ON MC.MenuId = MU.MenuId " +
+        //        "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
+        //    SqlParameter[] sqlParameters;
+        //    sqlParameters = new SqlParameter[]
+        //    {
+        //        new SqlParameter("@TableNumber", table.Number)
+        //    };
             
-            return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
-        }
+        //    return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
+        //}
+
+        //private List<OrderItem> CreateOrderItems(DataTable dataTable)
+        //{
+        //    List<OrderItem> orderItems = new List<OrderItem>();
+
+        //    foreach (DataRow dataRow in dataTable.Rows)
+        //    {
+        //        OrderItem orderItem = new OrderItem()
+        //        {
+        //            OrderItemId = (int)dataRow["OrderItemId"],
+        //            Order = new Order()
+        //            {
+        //                OrderId = (int)dataRow["OrderId"],
+        //                Employee = new Employee()
+        //                {
+        //                    EmployeeId = (int)dataRow["EmployeeId"],
+        //                    FirstName = (string)dataRow["FirstName"],
+        //                    LastName = (string)dataRow["LastName"],
+        //                    EmployeeNumber = (int)dataRow["EmployeeNumber"],
+        //                    Password = (string)dataRow["Password"],
+        //                    IsActive = (bool)dataRow["IsActive"],
+        //                    RegistrationDate = DateTime.Now,
+        //                    Role = StringToEmployeeRole((string)dataRow["Role"])
+        //                },
+        //                Receipt = new Receipt()
+        //                {
+        //                    ReceiptId = (int)dataRow["ReceiptId"],
+        //                    ReceiptDateTime = DateTime.Now,
+        //                    Feedback = (string)dataRow["Feedback"],
+        //                    Employee = new Employee()
+        //                    {
+        //                        EmployeeId = (int)dataRow["EmployeeId"],
+        //                        FirstName = (string)dataRow["FirstName"],
+        //                        LastName = (string)dataRow["LastName"],
+        //                        EmployeeNumber = (int)dataRow["EmployeeNumber"],
+        //                        Password = (string)dataRow["Password"],
+        //                        IsActive = (bool)dataRow["IsActive"],
+        //                        RegistrationDate = DateTime.Now,
+        //                        Role =  StringToEmployeeRole((string)dataRow["Role"])
+        //                    },
+        //                    Table = new Table()
+        //                    {
+        //                        TableId = (int)dataRow["TableId"],
+        //                        Number = (int)dataRow["Number"],
+        //                        Status = StringToTableStatus((string)dataRow["Status"])
+        //                    },
+        //                    LowVatPrice = (double)dataRow["LowVatPrice"],
+        //                    HighVatPrice = (double)dataRow["HighVatPrice"],
+        //                    TotalPrice = (double)dataRow["TotalPrice"],
+        //                    Tip = (double)dataRow["Tip"],
+        //                    IsHandled = (bool)dataRow["IsHandled"],
+        //                    Payment = new Payment()
+        //                    {
+        //                        PaymentId = (int)dataRow["PaymentId"],
+        //                        IsPaid = (bool)dataRow["IsPaid"]
+        //                    }
+        //                },
+        //                OrderDateTime = DateTime.Now,
+        //                Status = StringToOrderStatus((string)dataRow["Status"])
+
+        //            },
+        //            Comment = (string)dataRow["Comment"],
+        //            MenuItem = new MenuItem()
+        //            {
+        //                MenuItemId = (int)dataRow["MenuItemId"],
+        //                Name = (string)dataRow["Name"],
+        //                Stock = (int)dataRow["Stock"],
+        //                Price = (double)dataRow["Price"],
+        //            },
+        //            Quantity = (int)dataRow["Quantity"]
+        //        };
+        //        orderItems.Add(orderItem);
+        //    }
+
+        //    return orderItems;
+        //}
+        public List<OrderItem> GetOrderedItems(Table table) {
+            string query = "SELECT OI.OrderItemId, OD.OrderId, EM.FirstName, EM.LastName, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name AS MenuItemName, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name AS MenuCategoryName, OI.Quantity " +
+            "FROM [OrderItem] AS OI " +
+            "JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
+            "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
+            "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
+            "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
+            "JOIN [Table] AS TE ON RT.TableId = TE.TableId " +
+            "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
+            "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
+            "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+    {
+        new SqlParameter("@TableNumber", table.Number)
+    };
+    
+    return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
+}
 
         private List<OrderItem> CreateOrderItems(DataTable dataTable)
         {
@@ -217,72 +312,38 @@ namespace DAL
                 OrderItem orderItem = new OrderItem()
                 {
                     OrderItemId = (int)dataRow["OrderItemId"],
-                    Order = new Order()
-                    {
-                        OrderId = (int)dataRow["OrderId"],
-                        Employee = new Employee()
-                        {
-                            EmployeeId = (int)dataRow["EmployeeId"],
-                            FirstName = (string)dataRow["FirstName"],
-                            LastName = (string)dataRow["LastName"],
-                            EmployeeNumber = (int)dataRow["EmployeeNumber"],
-                            Password = (string)dataRow["Password"],
-                            IsActive = (bool)dataRow["IsActive"],
-                            RegistrationDate = DateTime.Now,
-                            Role = StringToEmployeeRole((string)dataRow["Role"])
-                        },
-                        Receipt = new Receipt()
-                        {
-                            ReceiptId = (int)dataRow["ReceiptId"],
-                            ReceiptDateTime = DateTime.Now,
-                            Feedback = (string)dataRow["Feedback"],
-                            Employee = new Employee()
-                            {
-                                EmployeeId = (int)dataRow["EmployeeId"],
-                                FirstName = (string)dataRow["FirstName"],
-                                LastName = (string)dataRow["LastName"],
-                                EmployeeNumber = (int)dataRow["EmployeeNumber"],
-                                Password = (string)dataRow["Password"],
-                                IsActive = (bool)dataRow["IsActive"],
-                                RegistrationDate = DateTime.Now,
-                                Role =  StringToEmployeeRole((string)dataRow["Role"])
-                            },
-                            Table = new Table()
-                            {
-                                TableId = (int)dataRow["TableId"],
-                                Number = (int)dataRow["Number"],
-                                Status = StringToTableStatus((string)dataRow["Status"])
-                            },
-                            LowVatPrice = (double)dataRow["LowVatPrice"],
-                            HighVatPrice = (double)dataRow["HighVatPrice"],
-                            TotalPrice = (double)dataRow["TotalPrice"],
-                            Tip = (double)dataRow["Tip"],
-                            IsHandled = (bool)dataRow["IsHandled"],
-                            Payment = new Payment()
-                            {
-                                PaymentId = (int)dataRow["PaymentId"],
-                                IsPaid = (bool)dataRow["IsPaid"]
-                            }
-                        },
-                        OrderDateTime = DateTime.Now,
-                        Status = StringToOrderStatus((string)dataRow["Status"])
-
-                    },
-                    Comment = (string)dataRow["Comment"],
+                    Order = new Order() {
+                OrderId = (int)dataRow["OrderId"],
+                Employee = new Employee() {
+                    FirstName = (string)dataRow["FirstName"],
+                    LastName = (string)dataRow["LastName"],
+                },
+                OrderDateTime = DateTime.Now,
+                Status = StringToOrderStatus((string)dataRow["Status"])
+            },
+            Comment = (string)dataRow["Comment"],
                     MenuItem = new MenuItem()
                     {
                         MenuItemId = (int)dataRow["MenuItemId"],
-                        Name = (string)dataRow["Name"],
+                        Name = (string)dataRow["MenuItemName"],
                         Stock = (int)dataRow["Stock"],
                         Price = (double)dataRow["Price"],
+                        MenuCategory = new MenuCategory()
+                        {
+                            MenuCategoryId = (int)dataRow["MenuCategoryId"],
+                            VAT = (double)dataRow["VAT"],
+                            Name = (Category)Enum.Parse(typeof(Category), dataRow["MenuCategoryName"].ToString())
+                        }
                     },
+
                     Quantity = (int)dataRow["Quantity"]
-                };
+        };
                 orderItems.Add(orderItem);
             }
 
             return orderItems;
         }
+
         private EmployeeRole StringToEmployeeRole(string role)
         {
             switch (role)
