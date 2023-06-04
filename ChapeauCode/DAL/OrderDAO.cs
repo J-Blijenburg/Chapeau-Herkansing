@@ -394,7 +394,7 @@ namespace DAL
 
         public List<OrderItem> GetKitchenOrders()
         {
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
+            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
@@ -449,7 +449,7 @@ namespace DAL
                             {
                                 OrderId = (int)dr["OrderId"],
                                 Status = (OrderStatus)(int)dr["Status"],
-
+                                OrderDateTime = (DateTime)dr["OrderDateTime"]
 
                             },
                     

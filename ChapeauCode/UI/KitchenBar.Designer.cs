@@ -33,6 +33,7 @@
             OrderItemId = new ColumnHeader();
             Comment = new ColumnHeader();
             Quantity = new ColumnHeader();
+            TimeInSystem = new ColumnHeader();
             Description = new ColumnHeader();
             OrderItemStatus = new ColumnHeader();
             OrderId = new ColumnHeader();
@@ -57,7 +58,7 @@
             // 
             // lstViewOrders
             // 
-            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, Comment, Quantity, Description, OrderItemStatus, OrderId });
+            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, Comment, Quantity, TimeInSystem, Description, OrderItemStatus, OrderId });
             lstViewOrders.FullRowSelect = true;
             lstViewOrders.GridLines = true;
             lstViewOrders.Location = new Point(12, 189);
@@ -81,12 +82,17 @@
             // Quantity
             // 
             Quantity.Text = "Quantity";
-            Quantity.Width = 200;
+            Quantity.Width = 90;
+            // 
+            // TimeInSystem
+            // 
+            TimeInSystem.Text = "Elapsed Time (H:M:S)";
+            TimeInSystem.Width = 120;
             // 
             // Description
             // 
             Description.Text = "Description";
-            Description.Width = 260;
+            Description.Width = 250;
             // 
             // OrderItemStatus
             // 
@@ -307,5 +313,6 @@
         private ColumnHeader OrderItemId;
         private ColumnHeader OrderId;
         private ColumnHeader columnHeader7;
+        private ColumnHeader TimeInSystem;
     }
 }
