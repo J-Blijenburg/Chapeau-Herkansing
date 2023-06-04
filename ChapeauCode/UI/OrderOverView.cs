@@ -269,7 +269,7 @@ namespace UI
         //If it is added to the database it will return an id and add it to the order
         private Order CreateOrder(Receipt receipt, Employee employee)
         {
-            Order createdOrder = new Order().CreateOrder(employee, receipt, OrderStatus.Ordered);
+            Order createdOrder = new Order().CreateOrder(employee, receipt, OrderStatus.InProgress);
             try
             {
                 orderService.CreateOrder(createdOrder);
@@ -336,7 +336,7 @@ namespace UI
         private void AddOrderItemToListView(MenuItem menuItem)
         {
             OrderItem orderItem = new OrderItem();
-            orderItem.CreateOrderItem("", menuItem, 1);
+            orderItem.CreateOrderItem("", menuItem, 1, OrderItemStatus.Ordered);
 
 
             ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());

@@ -48,7 +48,7 @@ namespace DAL
         public void SendOrderItems(Order order)
         {
             //After the order is created, the orderitems are added to the database
-            string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity) VALUES (@orderId, @comment, @menuItemId, @quantity)";
+            string query = "INSERT INTO OrderItem (OrderId, Comment, MenuItemId, Quantity, OrderItemStatus) VALUES (@orderId, @comment, @menuItemId, @quantity, @orderItemStatus)";
             foreach (OrderItem orderItem in order.GetOrderItems())
             {
                 SqlParameter[] sqlParameters;
@@ -57,7 +57,8 @@ namespace DAL
                     new SqlParameter("@orderId", orderItem.Order.OrderId),
                     new SqlParameter("@comment", orderItem.Comment),
                     new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId),
-                    new SqlParameter("@quantity", orderItem.Quantity)
+                    new SqlParameter("@quantity", orderItem.Quantity),
+                    new SqlParameter("@orderItemStatus", orderItem.OrderItemStatus)
                 };
                 UpdateQuantity(orderItem);
                 ExecuteEditQuery(query, sqlParameters);
@@ -381,40 +382,53 @@ namespace DAL
         {
             switch (orderStatus)
             {
-                case "Ordered":
-                    return OrderStatus.Ordered;
-                case "Preparing":
-                    return OrderStatus.Preparing;
-                case "Delivered":
-                    return OrderStatus.Delivered;
-                case "ReadyToBeServed":
-                    return OrderStatus.ReadyToBeServed;
+                case "InProgress":
+                    return OrderStatus.InProgress;
+                case "Finished":
+                    return OrderStatus.Finished;
                 default:
-                    return OrderStatus.Ordered;
+                    return OrderStatus.InProgress;
       
             }
         }
 
         public List<OrderItem> GetKitchenOrders()
         {
-            string query = "SELECT oi.OrderID, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
+            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
         public List<OrderItem> GetBarOrders()
         {
-            string query = "SELECT oi.OrderID, oi.Comment oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE o.Status <> 3 AND (c.Name = 'Drinks');";
+            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Drinks');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public void UpdateOrderStatus(int orderId, OrderStatus orderStatus)
+        public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
-            string query = "UPDATE [Order] SET Status = @status WHERE OrderId = @orderId";
-            SqlParameter[] sqlParameters = new SqlParameter[2];
+            string query = @"UPDATE [OrderItem]
+                     SET [OrderItemStatus] = @status
+                     WHERE [OrderItemId] = @OrderItemId;
+
+                     IF NOT EXISTS (
+                         SELECT 1
+                         FROM [OrderItem]
+                         WHERE OrderId = @orderId AND OrderItemStatus <> 3
+                     )
+                     BEGIN
+                         UPDATE [Order]
+                         SET Status = 2
+                         WHERE OrderId = @OrderId;
+                     END";
+
+            SqlParameter[] sqlParameters = new SqlParameter[3];
             sqlParameters[0] = new SqlParameter("@status", orderStatus);
-            sqlParameters[1] = new SqlParameter("@orderId", orderId);
+            sqlParameters[1] = new SqlParameter("@OrderItemId", orderItemId);
+            sqlParameters[2] = new SqlParameter("@orderId", orderId);
+
             ExecuteEditQuery(query, sqlParameters);
         }
+
 
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
         {
@@ -427,6 +441,10 @@ namespace DAL
                     {
                         OrderItem orderItem = new OrderItem()
                         {
+                            Quantity = (int)dr["Quantity"],
+                            Comment = (string)dr["Comment"],
+                            OrderItemId = (int)dr["OrderItemId"],
+                            OrderItemStatus = (OrderItemStatus)(int)dr["OrderItemStatus"],
                             Order = new Order()
                             {
                                 OrderId = (int)dr["OrderId"],
@@ -434,8 +452,7 @@ namespace DAL
 
 
                             },
-                            Quantity = (int)dr["Quantity"],
-                            Comment = (string)dr["Comment"],
+                    
                             MenuItem = new MenuItem()
                             {
                                 Name = (string)dr["Dish"],
@@ -453,7 +470,7 @@ namespace DAL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                
                 return null;
             }
 
