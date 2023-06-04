@@ -16,14 +16,17 @@ namespace UI
     {
         private OrderService orderService = new OrderService();
         private Table table;
-        public TableOverview(Table table)
+        private Employee currentEmployee;
+        public TableOverview(Table table, Employee currentEmployee)
         {
             InitializeComponent();
             EnableMenuButtons();
             this.table = table;
 
-
             FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
+            this.currentEmployee = currentEmployee;
+            LblEmployee.Text = currentEmployee.FirstName;
+            LblTableNumber.Text = $"Table {table.Number.ToString()}";
         }
 
         private void EnableMenuButtons()
@@ -52,31 +55,29 @@ namespace UI
             button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             button.Font = new Font(button.Font, FontStyle.Regular);
             button.Text = menu.GetMenuType().ToString();
+            button.Click += MenuButton_Click;   
         }
-
-        private void BtnLunch_Click(object sender, EventArgs e)
+        private void MenuButton_Click(object sender, EventArgs e)
         {
-            OpenOrderForm(MenuType.Lunch);
-        }
+            Button clickedButton = sender as Button;
 
-        private void BtnDinner_Click(object sender, EventArgs e)
-        {
-            OpenOrderForm(MenuType.Dinner);
+            switch (clickedButton.Name)
+            {
+                case "BtnLunch":
+                    OpenOrderForm(MenuType.Lunch);
+                    break;
+                case "BtnDinner":
+                    OpenOrderForm(MenuType.Dinner);
+                    break;
+                case "BtnDrinks":
+                    OpenOrderForm(MenuType.Drinks);
+                    break;
+            }
         }
-
-        private void BtnDrinks_Click(object sender, EventArgs e)
-        {
-            OpenOrderForm(MenuType.Drinks);
-        }
-
         private void OpenOrderForm(MenuType panelToShow)
         {
-            //When creating a new orderForm this form will hide and will be used again after the orderform is disposed
-            Employee employee = new Employee();
-            employee.FirstName = "Jens";
-            employee.EmployeeId = 1;
+            OrderOverView order = new OrderOverView(this, panelToShow, table, currentEmployee);
 
-            OrderOverView order = new OrderOverView(this, panelToShow, table, employee);
             this.Hide();
 
             //Since there is no need of using both the forms at the same time, the orderform will be shown as a dialog preventing the user from using the tableoverview form
@@ -100,7 +101,9 @@ namespace UI
         {
             listView.Clear();
 
-            listView.Columns.Add("Name", 375);
+            listView.Columns.Add("Name", 150);
+            listView.Columns.Add("Price", 100);
+            listView.Columns.Add("Quantity", 75);
 
             foreach (OrderItem orderItem in orderItems)
             {

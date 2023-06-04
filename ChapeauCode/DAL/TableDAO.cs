@@ -11,16 +11,17 @@ namespace DAL
         public List<Table> GetTables()
         {
             string query = @"SELECT [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status] as [TableStatus],
-                             COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
-                             FROM [Table]
-                             LEFT JOIN [Receipt] ON [Table].[TableId] = [Receipt].[TableId]
-                             LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] = @DeliveredStatus
-                             LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
-                             GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
+                 COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
+                 FROM [Table]
+                 LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
+                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus
+                 LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
+                 GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
+    new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
             };
+
 
             return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }

@@ -69,7 +69,6 @@
             BtnLunch.TabIndex = 1;
             BtnLunch.Text = "Lunch\r\nNot Available\r\n";
             BtnLunch.UseVisualStyleBackColor = false;
-            BtnLunch.Click += BtnLunch_Click;
             // 
             // BtnDinner
             // 
@@ -84,7 +83,6 @@
             BtnDinner.TabIndex = 2;
             BtnDinner.Text = "Dinner\r\nNot Available\r\n";
             BtnDinner.UseVisualStyleBackColor = false;
-            BtnDinner.Click += BtnDinner_Click;
             // 
             // BtnDrinks
             // 
@@ -99,7 +97,6 @@
             BtnDrinks.TabIndex = 3;
             BtnDrinks.Text = "Drinks\r\nNot Available\r\n";
             BtnDrinks.UseVisualStyleBackColor = false;
-            BtnDrinks.Click += BtnDrinks_Click;
             // 
             // LblTableNumber
             // 

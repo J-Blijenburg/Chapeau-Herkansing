@@ -42,14 +42,14 @@ namespace DAL
         private int InsertReceipt(Receipt receipt)
         {
             //https://stackoverflow.com/questions/20117825/executescalar-call-throwing-exception-object-reference-not-set-to-an-instance-o
-            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableId, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableId, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId); SELECT CAST(scope_identity() AS int)";
+            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableNumber, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableNumber, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@ReceiptDateTime", receipt.ReceiptDateTime),
                 new SqlParameter("@Feedback", receipt.Feedback),
                 new SqlParameter("@EmployeeId", receipt.Employee.EmployeeId),
-                new SqlParameter("@TableId", receipt.Table.Number),
+                new SqlParameter("@TableNumber", receipt.Table.Number),
                 new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
                 new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
                 new SqlParameter("@TotalPrice", receipt.TotalPrice),
@@ -70,13 +70,13 @@ namespace DAL
                 "FROM [Receipt] AS RT " +
                 "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
                 "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
-                "JOIN [Table] AS TE ON RT.TableId = TE.TableId " +
+                "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
                 "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
                 "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
-                "WHERE TE.Number = @TableId AND RT.IsHandled = 0";
+                "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-        new SqlParameter("@TableId", table.Number)
+        new SqlParameter("@TableNumber", table.Number)
             };
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
