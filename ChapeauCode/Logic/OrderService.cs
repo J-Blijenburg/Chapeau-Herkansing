@@ -55,6 +55,16 @@ namespace Logic
            return orderDAO.GetBarOrders();
         }
 
+        public List<OrderItem> GetFinishedKitchenOrders()
+        {
+            return orderDAO.GetFinishedKitchenOrders();
+        }
+
+        public List<OrderItem> GetFinishedBarOrders()
+        {
+            return orderDAO.GetFinishedBarOrders();
+        }
+
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);

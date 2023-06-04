@@ -13,11 +13,6 @@ using System.Windows.Forms;
 namespace UI
 {
 
-    //TODO
-    //barmedewerkers/keukenmedewerkers zouden inzicht moeten hebben in hoe lang een bestelling al open staat
-    //eerdere drank/eet-bestellingen  van dezelfde dag moeten ook oproepbaar zijn (filter ‘bestellingen openstaand’ en ‘bestellingen gereed’);
-
-
     public partial class KitchenBar : Form
     {
         private OrderService orderService = new OrderService();
@@ -27,9 +22,9 @@ namespace UI
         public KitchenBar(Employee employee)
         {
             InitializeComponent();
-            CheckLoginRoleAndFillListView(employee);
             loggedInEmployeeType = employee;
             txtBoxUser.Text = employee.GetFullName();
+            CheckRoleAndSetLabels(employee);
 
             //initialize the timer
             timer = new System.Windows.Forms.Timer();
@@ -46,24 +41,22 @@ namespace UI
 
         private void RefreshListView()
         {
-            CheckLoginRoleAndFillListView(loggedInEmployeeType);
+           
+
         }
 
-        private void CheckLoginRoleAndFillListView(Employee employee)
+
+        private void CheckRoleAndSetLabels(Employee employee)
         {
 
             if (employee.Role == EmployeeRole.Bartender)
             {
-                GetOrderedItemsBar();
                 txtTypeOfOrder.Text = "Bar orders";
             }
-            else if (employee.Role == EmployeeRole.Chefkok)
+            else
             {
-                GetOrderedItemsKitchen();
                 txtTypeOfOrder.Text = "Kitchen orders";
             }
-
-
         }
 
         private void GetOrderedItemsKitchen()
@@ -74,8 +67,22 @@ namespace UI
 
         private void GetOrderedItemsBar()
         {
+
             lstViewOrders.Items.Clear();
             FillListViewOrders(lstViewOrders, orderService.GetBarOrders());
+        }
+
+        private void GetFinishedItemsKitchen()
+        {
+            lstViewOrders.Items.Clear();
+            FillListViewOrders(lstViewOrders, orderService.GetFinishedKitchenOrders());
+        }
+
+        private void GetFinishedItemsBar()
+        {
+
+            lstViewOrders.Items.Clear();
+            FillListViewOrders(lstViewOrders, orderService.GetFinishedBarOrders());
         }
 
 
@@ -83,8 +90,6 @@ namespace UI
         {
             try
             {
-
-
 
                 foreach (OrderItem orderItem in orderItems)
                 {
@@ -158,7 +163,8 @@ namespace UI
                 orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
-                CheckLoginRoleAndFillListView(loggedInEmployeeType);
+                CheckRoleAndGetOrderdItems();
+                CheckRoleAndGetFinishedOrders();
             }
             else
             {
@@ -187,6 +193,50 @@ namespace UI
             DateTime dateNow = DateTime.Now;
             TimeSpan diff = dateNow.Subtract(value);
             return diff;
+        }
+
+        private void rdbFinishedOrders_CheckedChanged(object sender, EventArgs e)
+        {
+            disableButtons();
+            CheckRoleAndGetFinishedOrders();
+        }
+
+
+        private void rdbRunningOrders_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckRoleAndGetOrderdItems();
+        }
+
+
+        private void CheckRoleAndGetFinishedOrders()
+        {
+            if (loggedInEmployeeType.Role == EmployeeRole.Chefkok)
+            {
+                GetFinishedItemsKitchen();
+            }
+            else
+            {
+                GetFinishedItemsBar();
+            }
+        }
+
+        private void CheckRoleAndGetOrderdItems()
+        {
+            if (loggedInEmployeeType.Role == EmployeeRole.Bartender)
+            {
+                GetOrderedItemsBar();
+            }
+            else
+            {
+                GetOrderedItemsKitchen();
+            }
+        }
+         
+        private void disableButtons()
+        {
+            btnInPrep.Enabled = false;
+            btnPrepared.Enabled = false;
+            btnServed.Enabled = false;
         }
     }
 }

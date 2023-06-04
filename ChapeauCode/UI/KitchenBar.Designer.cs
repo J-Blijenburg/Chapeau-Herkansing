@@ -53,6 +53,8 @@
             txtTypeOfOrder = new TextBox();
             txtBoxUser = new TextBox();
             pictureBox1 = new PictureBox();
+            rdbFinishedOrders = new RadioButton();
+            rdbRunningOrders = new RadioButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -253,12 +255,36 @@
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
             // 
+            // rdbFinishedOrders
+            // 
+            rdbFinishedOrders.AutoSize = true;
+            rdbFinishedOrders.Location = new Point(12, 141);
+            rdbFinishedOrders.Name = "rdbFinishedOrders";
+            rdbFinishedOrders.Size = new Size(105, 19);
+            rdbFinishedOrders.TabIndex = 15;
+            rdbFinishedOrders.Text = "Finished orders";
+            rdbFinishedOrders.UseVisualStyleBackColor = true;
+            rdbFinishedOrders.CheckedChanged += rdbFinishedOrders_CheckedChanged;
+            // 
+            // rdbRunningOrders
+            // 
+            rdbRunningOrders.AutoSize = true;
+            rdbRunningOrders.Location = new Point(12, 166);
+            rdbRunningOrders.Name = "rdbRunningOrders";
+            rdbRunningOrders.Size = new Size(106, 19);
+            rdbRunningOrders.TabIndex = 16;
+            rdbRunningOrders.Text = "Running orders";
+            rdbRunningOrders.UseVisualStyleBackColor = true;
+            rdbRunningOrders.CheckedChanged += rdbRunningOrders_CheckedChanged;
+            // 
             // KitchenBar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1427, 665);
+            Controls.Add(rdbRunningOrders);
+            Controls.Add(rdbFinishedOrders);
             Controls.Add(pictureBox1);
             Controls.Add(txtBoxUser);
             Controls.Add(txtTypeOfOrder);
@@ -314,5 +340,7 @@
         private ColumnHeader OrderId;
         private ColumnHeader columnHeader7;
         private ColumnHeader TimeInSystem;
+        private RadioButton rdbFinishedOrders;
+        private RadioButton rdbRunningOrders;
     }
 }
