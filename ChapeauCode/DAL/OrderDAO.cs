@@ -292,7 +292,7 @@ namespace DAL
               "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
               "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
               "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
-              "JOIN [Table] AS TE ON RT.TableId = TE.TableId " +
+              "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
               "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
               "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
               "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";

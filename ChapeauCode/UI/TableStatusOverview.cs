@@ -94,7 +94,7 @@ namespace UI
 
         private void goToTableBtn_Click(object sender, EventArgs e)
         {
-            TableOverview tableOverview = new TableOverview(selectedTable);
+            TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee);
             tableOverview.ShowDialog();
         }
     }
