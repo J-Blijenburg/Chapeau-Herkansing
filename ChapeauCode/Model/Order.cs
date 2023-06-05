@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    public class Order
+    public class Order : Receipt
     {
         public int OrderId { get; set; }
         public Employee Employee { get; set; }
@@ -16,7 +16,6 @@ namespace Model
         {
 
         }
-
         public Order CreateOrder(Employee employee, Receipt receipt, OrderStatus status) {
             Employee = employee;
             Receipt = receipt;
@@ -30,7 +29,6 @@ namespace Model
         {
             OrderItems.Add(orderItem);
         }
-
         public List<OrderItem> GetOrderItems()
         {
               return OrderItems;

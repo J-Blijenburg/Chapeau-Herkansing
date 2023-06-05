@@ -20,5 +20,13 @@ namespace Model
         public bool IsHandled { get; set; }
         public Payment Payment { get; set; }
         private List<Order> Orders { get; set; }
+        public Order FindOrderByReceipt(Receipt receipt)
+        {
+            
+            var order = Orders.FirstOrDefault(o => o.Receipt.ReceiptId == receipt.ReceiptId);
+
+            // If no matching Order is found, this will return null. You may want to handle this case specifically
+            return order;
+        }
     }
 }

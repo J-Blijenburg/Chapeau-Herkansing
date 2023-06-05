@@ -135,7 +135,7 @@ namespace UI
         private void DisplayEmployeeAndTable(Employee employee, Table table)
         {
             LblEmployee.Text = employee.GetFirstName();
-            LblTableNumber.Text = $"Table #{table.GetNumber()}";
+            LblTableNumber.Text = $"Table #{table.Number}";
         }
 
         //When the user changes the category it will show the right panel

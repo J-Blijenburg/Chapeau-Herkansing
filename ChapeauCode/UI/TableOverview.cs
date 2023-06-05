@@ -104,11 +104,19 @@ namespace UI
             listView.Columns.Add("Name", 150);
             listView.Columns.Add("Price", 100);
             listView.Columns.Add("Quantity", 75);
+            listView.Columns.Add("Subtotal", 75);
 
             foreach (OrderItem orderItem in orderItems)
             {
-                ListViewItem listViewItem = new ListViewItem(orderItem.MenuItem.Name);
-                listViewItem.Tag = orderItem;
+                ListViewItem listViewItem = new ListViewItem(new[]
+        {
+            orderItem.MenuItem.Name,
+            orderItem.MenuItem.Price.ToString("N2"),
+            orderItem.Quantity.ToString(),
+            orderItem.SubTotal.ToString("N2")
+        })
+                { Tag = orderItem };
+
                 listView.Items.Add(listViewItem);
             }
             double totalVat = (double)orderService.CalculateTotalVat(orderItems);

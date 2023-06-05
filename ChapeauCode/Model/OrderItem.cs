@@ -14,9 +14,24 @@ namespace Model
         public OrderItemStatus OrderItemStatus { get; set; }
         //doordat er nu een list is in order is dit niet meer nodig de order order zegmaar
         public Order Order { get; set; }
-        public string Comment { get; set; }
+        public string Comment { get; set; } 
         public MenuItem MenuItem { get; set; }
         public int Quantity { get; set; }
+
+        public double SubTotal
+        {
+            get
+            {
+                if (MenuItem == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return Quantity * MenuItem.Price;
+                }
+            }
+        }
 
         public OrderItem() { }
 
