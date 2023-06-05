@@ -69,9 +69,10 @@ namespace Logic
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
+        //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {
-            double totalVat = 0;
+            double totalVat = 0; //const maken ?
 
             foreach (var item in orderItems)
             {
@@ -88,7 +89,7 @@ namespace Logic
         public decimal CalculateLowVat(List<OrderItem> orderItems)
         {
             decimal lowVat = 0;
-            decimal lowVatRate = 0.06M;
+            decimal lowVatRate = 0.06M; //const van maken
 
             foreach (var item in orderItems)
             {
@@ -101,8 +102,8 @@ namespace Logic
 
         public decimal CalculateHighVat(List<OrderItem> orderItems)
         {
-            decimal highVat = 0;
-            decimal highVatRate = 0.21M;
+            decimal highVat = 0; //const maken
+            decimal highVatRate = 0.21M; //const maken
 
             foreach (var item in orderItems)
             {
@@ -115,7 +116,7 @@ namespace Logic
 
         public decimal CalculateTotalPrice(List<OrderItem> orderItems)
         {
-            decimal totalPrice = 0;
+            decimal totalPrice = 0; //const maken ? 
 
             foreach (var item in orderItems)
             {
