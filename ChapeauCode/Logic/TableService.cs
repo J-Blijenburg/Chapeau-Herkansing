@@ -23,8 +23,20 @@ namespace Logic
         }
         public void UpdateTableStatus(int tableNumber, TableStatus newStatus)
         {
+            Table table = tableDAO.GetTable(tableNumber);
+
+            if (table == null)
+            {
+                throw new Exception($"Table with number {tableNumber} not found");
+            }
+            if (newStatus == TableStatus.Open && table.UndeliveredOrdersCount > 0)
+            {
+                throw new Exception("Can't set table to 'Free' because there are active orders");
+            }
+
             tableDAO.UpdateTableStatus(tableNumber, newStatus);
         }
+
         public Color GetColorForTable(Table table)
         {
             if (table.UndeliveredOrdersCount > 0)
