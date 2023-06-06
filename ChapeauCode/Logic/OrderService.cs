@@ -10,8 +10,10 @@ namespace Logic
     {
         private const decimal VATRate = 0.15M;
         OrderDAO orderDAO;
+        private TableService tableService;
         public OrderService() { 
             this.orderDAO = new OrderDAO();
+            this.tableService = new TableService();
         }
         public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
         {

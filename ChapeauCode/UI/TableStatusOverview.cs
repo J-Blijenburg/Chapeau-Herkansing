@@ -33,12 +33,13 @@ namespace UI
 
             SetLabels();
             SubscribeToEvents();
-            UpdateButtonSelection();
+           
         }
         private void SetLabels()
         {
             employeeNameLbl.Text = this.loggedInEmployee.FirstName;
             tableNumberLbl.Text = $"Table {this.selectedTable.Number}";
+            UpdateButtonSelection();
         }
 
         private void SubscribeToEvents()
@@ -53,6 +54,7 @@ namespace UI
             freeBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Open ? 2 : 0;
             occupiedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Occupied ? 2 : 0;
             reservedBtn.FlatAppearance.BorderSize = selectedTable.Status == TableStatus.Reserved ? 2 : 0;
+            goToTableBtn.Enabled = selectedTable.Status == TableStatus.Occupied || selectedTable.Status == TableStatus.Reserved;
         }
         private void ChangeTableStatusButton_Click(object sender, EventArgs e)
         {
