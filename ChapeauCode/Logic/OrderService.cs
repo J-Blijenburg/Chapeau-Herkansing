@@ -51,24 +51,24 @@ namespace Logic
             return orderDAO.GetOrderItemsByReceiptId(receiptId);
         }
 
-        public List<OrderItem> GetKitchenOrders()
+        public List<OrderItem> GetKitchenOrderItems()
         {
-           return orderDAO.GetKitchenOrders();
+           return orderDAO.GetKitchenOrderItems();
         }
 
-        public List<OrderItem> GetBarOrders()
+        public List<OrderItem> GetBarOrderItems()
         {
-           return orderDAO.GetBarOrders();
+           return orderDAO.GetBarOrderItems();
         }
 
-        public List<OrderItem> GetFinishedKitchenOrders()
+        public List<OrderItem> GetFinishedKitchenOrderItems()
         {
-            return orderDAO.GetFinishedKitchenOrders();
+            return orderDAO.GetFinishedKitchenOrderItems();
         }
 
-        public List<OrderItem> GetFinishedBarOrders()
+        public List<OrderItem> GetFinishedBarOrderItems()
         {
-            return orderDAO.GetFinishedBarOrders();
+            return orderDAO.GetFinishedBarOrderItems();
         }
 
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)

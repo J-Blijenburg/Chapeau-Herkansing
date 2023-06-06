@@ -16,15 +16,15 @@ namespace UI
     public partial class KitchenBar : Form
     {
         private OrderService orderService = new OrderService();
-        private Employee loggedInEmployeeType;
+        private Employee loggedInEmployee;
         private System.Windows.Forms.Timer timer;
 
         public KitchenBar(Employee employee)
         {
             InitializeComponent();
-            loggedInEmployeeType = employee;
+            loggedInEmployee = employee;
             txtBoxUser.Text = employee.GetFullName();
-            CheckRoleAndSetLabels(employee);
+            CheckRoleAndSetLabels(employee.Role);
 
             //initialize the timer
             timer = new System.Windows.Forms.Timer();
@@ -41,15 +41,21 @@ namespace UI
 
         private void RefreshListView()
         {
-           
-
+            if (rdbRunningOrders.Checked)
+            {
+                GetOrderedItems(loggedInEmployee.Role);
+            }
+            else if (rdbFinishedOrders.Checked)
+            {
+                GetFinishedItems(loggedInEmployee.Role);
+            }
         }
 
 
-        private void CheckRoleAndSetLabels(Employee employee)
+        private void CheckRoleAndSetLabels(EmployeeRole employeeRole)
         {
 
-            if (employee.Role == EmployeeRole.Bartender)
+            if (employeeRole == EmployeeRole.Bartender)
             {
                 txtTypeOfOrder.Text = "Bar orders";
             }
@@ -59,30 +65,32 @@ namespace UI
             }
         }
 
-        private void GetOrderedItemsKitchen()
+        private void GetOrderedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetKitchenOrders());
+
+            if (employeeRole == EmployeeRole.Bartender)
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetBarOrderItems());
+            }
+            else
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetKitchenOrderItems());
+            }
         }
 
-        private void GetOrderedItemsBar()
-        {
-
-            lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetBarOrders());
-        }
-
-        private void GetFinishedItemsKitchen()
+        private void GetFinishedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetFinishedKitchenOrders());
-        }
 
-        private void GetFinishedItemsBar()
-        {
-
-            lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetFinishedBarOrders());
+            if (employeeRole == EmployeeRole.Bartender)
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedBarOrderItems());
+            }
+            else
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedKitchenOrderItems());
+            }
         }
 
 
@@ -120,16 +128,16 @@ namespace UI
 
             foreach (ListViewItem selectedItem in selectedItems)
             {
-                ListViewItem newItem;
+                ListViewItem listViewItem;
                 int columnIntegerOrderItemId = GetColumnIndex(lstViewOrders, "OrderItemID");
                 int columnIntegerOrderId = GetColumnIndex(lstViewOrders, "OrderId");
                 int columnIntegerStatus = GetColumnIndex(lstViewOrders, "Status");
 
-                newItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
-                newItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
-                newItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
+                listViewItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
+                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
+                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
 
-                lstViewSelectedOrder.Items.Add(newItem);
+                lstViewSelectedOrder.Items.Add(listViewItem);
             }
         }
 
@@ -163,8 +171,8 @@ namespace UI
                 orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
-                CheckRoleAndGetOrderdItems();
-                CheckRoleAndGetFinishedOrders();
+                GetOrderedItems(loggedInEmployee.Role);
+                GetFinishedItems(loggedInEmployee.Role);
             }
             else
             {
@@ -197,46 +205,22 @@ namespace UI
 
         private void rdbFinishedOrders_CheckedChanged(object sender, EventArgs e)
         {
-            disableButtons();
-            CheckRoleAndGetFinishedOrders();
+            ToggleButtons(false);
+            GetFinishedItems(loggedInEmployee.Role);
         }
 
 
         private void rdbRunningOrders_CheckedChanged(object sender, EventArgs e)
         {
-            CheckRoleAndGetOrderdItems();
+            ToggleButtons(true);
+            GetOrderedItems(loggedInEmployee.Role);
         }
 
-
-        private void CheckRoleAndGetFinishedOrders()
+        private void ToggleButtons(bool enabled)
         {
-            if (loggedInEmployeeType.Role == EmployeeRole.Chefkok)
-            {
-                GetFinishedItemsKitchen();
-            }
-            else
-            {
-                GetFinishedItemsBar();
-            }
-        }
-
-        private void CheckRoleAndGetOrderdItems()
-        {
-            if (loggedInEmployeeType.Role == EmployeeRole.Bartender)
-            {
-                GetOrderedItemsBar();
-            }
-            else
-            {
-                GetOrderedItemsKitchen();
-            }
-        }
-         
-        private void disableButtons()
-        {
-            btnInPrep.Enabled = false;
-            btnPrepared.Enabled = false;
-            btnServed.Enabled = false;
+            btnInPrep.Enabled = enabled;
+            btnPrepared.Enabled = enabled;
+            btnServed.Enabled = enabled;
         }
     }
 }

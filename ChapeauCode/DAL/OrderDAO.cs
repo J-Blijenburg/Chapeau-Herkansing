@@ -302,19 +302,19 @@ namespace DAL
             }
         }
 
-        public List<OrderItem> GetKitchenOrders()
+        public List<OrderItem> GetKitchenOrderItems()
         {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetBarOrders()
+        public List<OrderItem> GetBarOrderItems()
         {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Drinks');";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetFinishedKitchenOrders()
+        public List<OrderItem> GetFinishedKitchenOrderItems()
         {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
@@ -322,11 +322,12 @@ namespace DAL
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Lunch' OR c.Name = 'Dinner')";
+                           "WHERE o.Status = 2 AND (c.Name = 'Lunch' OR c.Name = 'Dinner')" +
+                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetFinishedBarOrders()
+        public List<OrderItem> GetFinishedBarOrderItems()
         {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
@@ -334,7 +335,8 @@ namespace DAL
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Drinks')";
+                           "WHERE o.Status = 2 AND (c.Name = 'Drinks')" +
+                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
