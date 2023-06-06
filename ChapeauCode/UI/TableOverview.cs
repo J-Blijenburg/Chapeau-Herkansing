@@ -14,38 +14,51 @@ namespace UI
 {
     public partial class TableOverview : Form
     {
-        private OrderService orderService = new OrderService();
+        private OrderService orderService;
+        private ReceiptService receiptService;
         private Table table;
         private Employee currentEmployee;
         public TableOverview(Table table, Employee currentEmployee)
         {
             InitializeComponent();
-            EnableMenuButtons();
             this.table = table;
-
-            FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
             this.currentEmployee = currentEmployee;
-            LblEmployee.Text = currentEmployee.FirstName;
-            LblTableNumber.Text = $"Table {table.Number.ToString()}";
-        }
+            orderService = new OrderService();
+            receiptService = new ReceiptService();
 
+            this.SetLabels();
+            EnableMenuButtons();
+            UpdateOrderItemsListView();
+        }
+        private void SetLabels()
+        {
+            LblEmployee.Text = this.currentEmployee.FirstName;
+            LblTableNumber.Text = $"Table {this.table.Number}";
+        }
         private void EnableMenuButtons()
         {
-            List<Menu> menus = orderService.GetListOfMenu();
-            foreach (Menu menu in menus)
+            try
             {
-                switch (menu.GetMenuType())
+                List<Menu> menus = orderService.GetListOfMenu();
+                foreach (Menu menu in menus)
                 {
-                    case MenuType.Lunch:
-                        EnableButton(BtnLunch, menu);
-                        break;
-                    case MenuType.Dinner:
-                        EnableButton(BtnDinner, menu);
-                        break;
-                    case MenuType.Drinks:
-                        EnableButton(BtnDrinks, menu);
-                        break;
+                    switch (menu.GetMenuType())
+                    {
+                        case MenuType.Lunch:
+                            EnableButton(BtnLunch, menu);
+                            break;
+                        case MenuType.Dinner:
+                            EnableButton(BtnDinner, menu);
+                            break;
+                        case MenuType.Drinks:
+                            EnableButton(BtnDrinks, menu);
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while enabling the menu buttons: {ex.Message}");
             }
         }
 
@@ -59,70 +72,87 @@ namespace UI
         }
         private void MenuButton_Click(object sender, EventArgs e)
         {
-            Button clickedButton = sender as Button;
+                Button clickedButton = sender as Button;
 
-            switch (clickedButton.Name)
-            {
-                case "BtnLunch":
-                    OpenOrderForm(MenuType.Lunch);
-                    break;
-                case "BtnDinner":
-                    OpenOrderForm(MenuType.Dinner);
-                    break;
-                case "BtnDrinks":
-                    OpenOrderForm(MenuType.Drinks);
-                    break;
-            }
+                switch (clickedButton.Name)
+                {
+                    case "BtnLunch":
+                        OpenOrderForm(MenuType.Lunch);
+                        break;
+                    case "BtnDinner":
+                        OpenOrderForm(MenuType.Dinner);
+                        break;
+                    case "BtnDrinks":
+                        OpenOrderForm(MenuType.Drinks);
+                        break;
+                }
+            
         }
         private void OpenOrderForm(MenuType panelToShow)
         {
-            OrderOverView order = new OrderOverView(this, panelToShow, table, currentEmployee);
-
-            this.Hide();
-
-            //Since there is no need of using both the forms at the same time, the orderform will be shown as a dialog preventing the user from using the tableoverview form
-            order.ShowDialog();
-
-            FillListViewOrderdItems(ListViewOrderdItems, GetOrderdItems(table));
-
-
-            //This messagebox can be used to check how many Forms there are currently running
-            //MessageBox.Show(Application.OpenForms.Count.ToString());
+            OrderOverView orderForm = CreateOrderForm(panelToShow);
+            orderForm.ShowDialog();
+            UpdateOrderItemsListView();
         }
-
-
-
-        private List<OrderItem> GetOrderdItems(Table table)
+        private OrderOverView CreateOrderForm(MenuType panelToShow)
         {
-            return orderService.GetOrderdItems(table);
+            return new OrderOverView(this, panelToShow, this.table, currentEmployee);
         }
-
-        private void FillListViewOrderdItems(ListView listView, List<OrderItem> orderItems)
+        private void UpdateOrderItemsListView()
+        {
+                Receipt receipt = receiptService.GetReceipt(this.table);
+                var orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId);
+                FillListViewOrderedItems(ListViewOrderdItems, orderItems);
+        }
+        private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)
+        {
+            try
+            {
+                ClearListView(listView);
+                AddColumnsToListView(listView);
+                AddItemsToListView(listView, orderItems);
+                UpdateTotalVatAndPriceLabels(orderItems);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+        }
+        private void ClearListView(ListView listView)
         {
             listView.Clear();
-
+        }
+        private void AddColumnsToListView(ListView listView)
+        {
             listView.Columns.Add("Name", 150);
             listView.Columns.Add("Price", 100);
             listView.Columns.Add("Quantity", 75);
             listView.Columns.Add("Subtotal", 75);
+        }
 
+        private void AddItemsToListView(ListView listView, List<OrderItem> orderItems)
+        {
             foreach (OrderItem orderItem in orderItems)
             {
                 ListViewItem listViewItem = new ListViewItem(new[]
-        {
-            orderItem.MenuItem.Name,
-            orderItem.MenuItem.Price.ToString("N2"),
-            orderItem.Quantity.ToString(),
-            orderItem.SubTotal.ToString("N2")
-        })
+                {
+                    orderItem.MenuItem.Name,
+                    orderItem.MenuItem.Price.ToString("N2"),
+                    orderItem.Quantity.ToString(),
+                    orderItem.SubTotal.ToString("N2")
+                })
                 { Tag = orderItem };
 
                 listView.Items.Add(listViewItem);
             }
+        }
+        private void UpdateTotalVatAndPriceLabels(List<OrderItem> orderItems)
+        {
             double totalVat = (double)orderService.CalculateTotalVat(orderItems);
             double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
             LblVatPrice.Text = $"€ {totalVat.ToString("N2")}";
             LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }
+
     }
 }
