@@ -19,7 +19,7 @@ namespace DAL
                  GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-    new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
+                new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
             };
 
 

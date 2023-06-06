@@ -69,7 +69,11 @@ namespace Model
         {
             return MenuItem;
         }
-        
+        public Order getOrder()
+        {
+            return Order;
+        }
+
 
     }
 }

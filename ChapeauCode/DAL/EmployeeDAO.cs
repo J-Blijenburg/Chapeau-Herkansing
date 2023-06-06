@@ -24,26 +24,24 @@ namespace DAL
         //Hulp methode om datatable om te zetten in medewerker
         private Employee ReadTable(DataTable dataTable)
         {
-            Employee employee = null;
-            foreach (DataRow dr in dataTable.Rows)
+            if (dataTable != null && dataTable.Rows.Count > 0)
             {
-                employee = new Employee()
+                DataRow dr = dataTable.Rows[0];
+
+                return new Employee()
                 {
                     EmployeeId = (int)dr["EmployeeId"],
                     FirstName = (string)dr["FirstName"],
                     LastName = (string)dr["LastName"],
                     EmployeeNumber = (int)dr["EmployeeNumber"],
                     Password = (string)dr["Password"],
-                    IsActive = (bool)dr["IsActive"],    
+                    IsActive = (bool)dr["IsActive"],
                     RegistrationDate = dr["RegistrationDate"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["RegistrationDate"],
                     Role = (EmployeeRole)dr["Role"]
                 };
-                break;
             }
-            return employee;
+            return null;
         }
-
-
 
 
     }

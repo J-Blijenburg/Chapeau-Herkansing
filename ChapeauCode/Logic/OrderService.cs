@@ -44,6 +44,10 @@ namespace Logic
         {
             return orderDAO.GetOrderedItems(table);
         }
+        public List<OrderItem> GetOrderdItemsByReceiptId(int receiptId)
+        {
+            return orderDAO.GetOrderItemsByReceiptId(receiptId);
+        }
 
         public List<OrderItem> GetKitchenOrders()
         {
