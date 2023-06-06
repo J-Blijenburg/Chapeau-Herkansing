@@ -21,7 +21,7 @@ namespace DAL
             };
             return ReadTable(ExecuteSelectQuery(query, sqlParameters));
         }
-        //Hulp methode om datatable om te zetten in medewerker
+        
         private Employee ReadTable(DataTable dataTable)
         {
             if (dataTable != null && dataTable.Rows.Count > 0)
