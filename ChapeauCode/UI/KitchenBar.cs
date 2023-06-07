@@ -62,11 +62,11 @@ namespace UI
 
             if (employeeRole == EmployeeRole.Bartender)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems("bar"));
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Drinks));
             }
             else
             {
-                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems("kitchen"));
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Dinner));
             }
         }
 
@@ -76,11 +76,11 @@ namespace UI
 
             if (employeeRole == EmployeeRole.Bartender)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems("bar"));
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Drinks));
             }
             else
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems("kitchen"));
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Dinner));
             }
         }
 

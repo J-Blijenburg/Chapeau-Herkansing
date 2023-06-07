@@ -53,12 +53,12 @@ namespace Logic
 
    
 
-        public List<OrderItem> GetRunningOrderItems(string type)
+        public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
             return orderDAO.GetRunningOrderItems(type);
         }
 
-        public List<OrderItem> GetFinishedOrderItems(string type)
+        public List<OrderItem> GetFinishedOrderItems(MenuType type)
         {
             return orderDAO.GetFinshedOrderItems(type);
         }

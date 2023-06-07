@@ -304,7 +304,7 @@ namespace DAL
 
         
 
-        public List<OrderItem> GetRunningOrderItems(string type)
+        public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
 
@@ -318,7 +318,7 @@ namespace DAL
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetFinshedOrderItems(string type)
+        public List<OrderItem> GetFinshedOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
 
@@ -335,28 +335,29 @@ namespace DAL
 
 
 
-        private static string GetTypeOfOrderForQuery(string type)
+        private static string GetTypeOfOrderForQuery(MenuType type)
         {
+            string query = "";
             switch (type)
             {
-                case "kitchen":
+                case MenuType.Dinner:
+                case MenuType.Lunch:
                     {
-                        type = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                        query = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
                         break;
                     }
-                case "bar":
+                case MenuType.Drinks:
                     {
-                        type = "c.Name = 'Drinks'";
+                        query = "c.Name = 'Drinks'";
                         break;
                     }
                 default:
-                    {   ///by default get food items
-                        type = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                    {  
                         break;
                     }
             }
 
-            return type;
+            return query;
         }
 
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
