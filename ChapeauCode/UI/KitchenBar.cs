@@ -1,14 +1,5 @@
 ﻿using Logic;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace UI
 {
@@ -71,11 +62,11 @@ namespace UI
 
             if (employeeRole == EmployeeRole.Bartender)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetBarOrderItems());
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems("bar"));
             }
             else
             {
-                FillListViewOrders(lstViewOrders, orderService.GetKitchenOrderItems());
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems("kitchen"));
             }
         }
 
@@ -85,11 +76,11 @@ namespace UI
 
             if (employeeRole == EmployeeRole.Bartender)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedBarOrderItems());
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems("bar"));
             }
             else
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedKitchenOrderItems());
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems("kitchen"));
             }
         }
 
