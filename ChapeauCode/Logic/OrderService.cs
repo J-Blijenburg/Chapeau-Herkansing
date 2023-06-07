@@ -51,30 +51,24 @@ namespace Logic
             return orderDAO.GetOrderItemsByReceiptId(receiptId);
         }
 
-        public List<OrderItem> GetKitchenOrderItems()
+   
+
+        public List<OrderItem> GetRunningOrderItems(string type)
         {
-           return orderDAO.GetKitchenOrderItems();
+            return orderDAO.GetRunningOrderItems(type);
         }
 
-        public List<OrderItem> GetBarOrderItems()
+        public List<OrderItem> GetFinishedOrderItems(string type)
         {
-           return orderDAO.GetBarOrderItems();
-        }
-
-        public List<OrderItem> GetFinishedKitchenOrderItems()
-        {
-            return orderDAO.GetFinishedKitchenOrderItems();
-        }
-
-        public List<OrderItem> GetFinishedBarOrderItems()
-        {
-            return orderDAO.GetFinishedBarOrderItems();
+            return orderDAO.GetFinshedOrderItems(type);
         }
 
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
+
+
         //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {

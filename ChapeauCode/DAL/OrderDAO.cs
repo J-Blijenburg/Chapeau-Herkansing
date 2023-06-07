@@ -302,42 +302,61 @@ namespace DAL
             }
         }
 
-        public List<OrderItem> GetKitchenOrderItems()
-        {
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
-            return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
-        }
+        
 
-        public List<OrderItem> GetBarOrderItems()
+        public List<OrderItem> GetRunningOrderItems(string type)
         {
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Drinks');";
-            return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
-        }
+            string queryString = GetTypeOfOrderForQuery(type);
 
-        public List<OrderItem> GetFinishedKitchenOrderItems()
-        {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Lunch' OR c.Name = 'Dinner')" +
-                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
+                           "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetFinishedBarOrderItems()
+        public List<OrderItem> GetFinshedOrderItems(string type)
         {
+            string queryString = GetTypeOfOrderForQuery(type);
+
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Drinks')" +
+                           "WHERE o.Status = 2 AND (" + queryString + ")" +
                            "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
+        }
+
+
+
+        private static string GetTypeOfOrderForQuery(string type)
+        {
+            switch (type)
+            {
+                case "kitchen":
+                    {
+                        type = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                        break;
+                    }
+                case "bar":
+                    {
+                        type = "c.Name = 'Drinks'";
+                        break;
+                    }
+                default:
+                    {   ///by default get food items
+                        type = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                        break;
+                    }
+            }
+
+            return type;
         }
 
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
