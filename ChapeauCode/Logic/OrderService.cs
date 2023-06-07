@@ -89,7 +89,7 @@ namespace Logic
                     totalVat += itemVat;
                 }
             }
-
+            
             return totalVat;
         }
         public decimal CalculateLowVat(List<OrderItem> orderItems)
