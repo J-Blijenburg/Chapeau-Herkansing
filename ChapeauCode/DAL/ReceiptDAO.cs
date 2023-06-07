@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using Model;
 
 namespace DAL
@@ -63,6 +65,32 @@ namespace DAL
 
             //Het was nog een twijfel geval wat handiger was. Alleen het id return of het gehele object returnen.
         }
+ 
+        // TODO update receipt in the db, with an update set query
+        public Receipt UpdateReceipt(Table table)
+        {
+            string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, RT.IsHandled, PT.PaymentId, PT.IsPaid " +
+                "FROM [Receipt] AS RT " +
+                "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
+                "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
+                "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
+                "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
+                "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
+                "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+        new SqlParameter("@TableNumber", table.Number)
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            if (dataTable.Rows.Count == 0)
+            {
+                return CreateReceipt(table);
+            }
+            return CreateExistingReceipt(dataTable);
+        }
+        
 
         public Receipt GetReceiptByTable(Table table)
         {

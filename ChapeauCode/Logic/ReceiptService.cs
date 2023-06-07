@@ -20,6 +20,11 @@ namespace Logic
         {
             return receiptDAO.GetReceiptByTable(table);
         }
+        public Receipt UpdateReceipt(Table table)
+        {
+            return receiptDAO.UpdateReceipt(table);
+        }
+
 
 
     }

@@ -15,6 +15,7 @@ namespace Model
         public Table Table { get; set; }
         public double LowVatPrice { get; set; }
         public double HighVatPrice { get; set; }
+        public double TotalVat { get; set; }
         public double TotalPrice { get; set; }
         public double Tip { get; set; }
         public bool IsHandled { get; set; }
