@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class KitchenBar
+    partial class KitchenBarView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenBar));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenBarView));
             lstViewOrders = new ListView();
             OrderItemId = new ColumnHeader();
             Comment = new ColumnHeader();

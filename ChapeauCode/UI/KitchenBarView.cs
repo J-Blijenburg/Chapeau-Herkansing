@@ -4,13 +4,13 @@ using Model;
 namespace UI
 {
 
-    public partial class KitchenBar : Form
+    public partial class KitchenBarView : Form
     {
         private OrderService orderService = new OrderService();
         private Employee loggedInEmployee;
         private System.Windows.Forms.Timer timer;
 
-        public KitchenBar(Employee employee)
+        public KitchenBarView(Employee employee)
         {
             InitializeComponent();
             loggedInEmployee = employee;
