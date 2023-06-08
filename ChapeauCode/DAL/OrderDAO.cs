@@ -95,10 +95,11 @@ namespace DAL
 
         public List<Menu> GetListOfMenu()
         {
+            //https://azureops.org/articles/get-local-date-in-azure-sql-database/
+            //Get every menu from the database where the current time is between the start and end time of the menu
             string query = "SELECT MenuId, Name, StartTime, EndTime " +
                 "FROM Menu " +
-                "WHERE " +
-                "StartTime < CAST(GETUTCDATE() AS TIME) AND EndTime > CAST(GETUTCDATE() AS TIME);";
+                "WHERE StartTime < CAST(SYSDATETIMEOFFSET() AT TIME ZONE 'W. Europe Standard Time' AS TIME) AND EndTime > CAST(SYSDATETIMEOFFSET() AT TIME ZONE 'W. Europe Standard Time' AS TIME)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
