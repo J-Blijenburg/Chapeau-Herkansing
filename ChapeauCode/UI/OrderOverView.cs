@@ -8,13 +8,15 @@ namespace UI
     public partial class OrderOverView : Form
     {
         private Form previousForm;
-        private OrderService orderService = new OrderService();
-        private ReceiptService receiptService = new ReceiptService();
+        private OrderService orderService;
+        private ReceiptService receiptService;
         private Table table;
         private Employee currentEmployee;
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
+            orderService = new OrderService();
+            receiptService = new ReceiptService();
             List<Menu> menus = orderService.GetListOfMenu();
             DisplayAllMenuItems(menus);
             ShowCorrectPanel(panelToShow);
@@ -27,7 +29,7 @@ namespace UI
         }
 
 
-
+        //check which Menu button is imported and enable the button
         private void EnableMenuButtons(List<Menu> menus)
         {
             foreach (Menu menu in menus)
@@ -55,23 +57,16 @@ namespace UI
             button.Text = menu.GetMenuType().ToString();
         }
 
-
-
         //Every menu item there is from the database will be displayed instantly
         //Instead of loading them in the listview when the user clicks on the menu button
         private void DisplayAllMenuItems(List<Menu> menus)
         {
             try
             {
-                //TODO: voor zorgen dat ie vanuit de database de tijden filtert en niet vanuit de code
                 foreach (Menu menu in menus)
                 {
                     menu.SetMenuCategories(orderService.GetMenuCategoriesByMenu(menu));
-
-
                     ListView listView = GetListViewByMenuType(menu.GetMenuType());
-
-
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
                         GetMenuItems(listView, menu.GetMenuType(), menuCategory.GetName());

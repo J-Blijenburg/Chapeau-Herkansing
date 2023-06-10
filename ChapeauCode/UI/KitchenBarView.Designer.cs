@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class KitchenBar
+    partial class KitchenBarView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenBar));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenBarView));
             lstViewOrders = new ListView();
             OrderItemId = new ColumnHeader();
             Comment = new ColumnHeader();
             Quantity = new ColumnHeader();
+            TimeInSystem = new ColumnHeader();
             Description = new ColumnHeader();
             OrderItemStatus = new ColumnHeader();
             OrderId = new ColumnHeader();
@@ -52,12 +53,14 @@
             txtTypeOfOrder = new TextBox();
             txtBoxUser = new TextBox();
             pictureBox1 = new PictureBox();
+            rdbFinishedOrders = new RadioButton();
+            rdbRunningOrders = new RadioButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // lstViewOrders
             // 
-            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, Comment, Quantity, Description, OrderItemStatus, OrderId });
+            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, Comment, Quantity, TimeInSystem, Description, OrderItemStatus, OrderId });
             lstViewOrders.FullRowSelect = true;
             lstViewOrders.GridLines = true;
             lstViewOrders.Location = new Point(12, 189);
@@ -81,12 +84,17 @@
             // Quantity
             // 
             Quantity.Text = "Quantity";
-            Quantity.Width = 200;
+            Quantity.Width = 90;
+            // 
+            // TimeInSystem
+            // 
+            TimeInSystem.Text = "Elapsed Time (H:M:S)";
+            TimeInSystem.Width = 120;
             // 
             // Description
             // 
             Description.Text = "Description";
-            Description.Width = 260;
+            Description.Width = 250;
             // 
             // OrderItemStatus
             // 
@@ -247,12 +255,36 @@
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
             // 
+            // rdbFinishedOrders
+            // 
+            rdbFinishedOrders.AutoSize = true;
+            rdbFinishedOrders.Location = new Point(12, 141);
+            rdbFinishedOrders.Name = "rdbFinishedOrders";
+            rdbFinishedOrders.Size = new Size(105, 19);
+            rdbFinishedOrders.TabIndex = 15;
+            rdbFinishedOrders.Text = "Finished orders";
+            rdbFinishedOrders.UseVisualStyleBackColor = true;
+            rdbFinishedOrders.CheckedChanged += rdbFinishedOrders_CheckedChanged;
+            // 
+            // rdbRunningOrders
+            // 
+            rdbRunningOrders.AutoSize = true;
+            rdbRunningOrders.Location = new Point(12, 166);
+            rdbRunningOrders.Name = "rdbRunningOrders";
+            rdbRunningOrders.Size = new Size(106, 19);
+            rdbRunningOrders.TabIndex = 16;
+            rdbRunningOrders.Text = "Running orders";
+            rdbRunningOrders.UseVisualStyleBackColor = true;
+            rdbRunningOrders.CheckedChanged += rdbRunningOrders_CheckedChanged;
+            // 
             // KitchenBar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1427, 665);
+            Controls.Add(rdbRunningOrders);
+            Controls.Add(rdbFinishedOrders);
             Controls.Add(pictureBox1);
             Controls.Add(txtBoxUser);
             Controls.Add(txtTypeOfOrder);
@@ -307,5 +339,8 @@
         private ColumnHeader OrderItemId;
         private ColumnHeader OrderId;
         private ColumnHeader columnHeader7;
+        private ColumnHeader TimeInSystem;
+        private RadioButton rdbFinishedOrders;
+        private RadioButton rdbRunningOrders;
     }
 }

@@ -51,20 +51,24 @@ namespace Logic
             return orderDAO.GetOrderedItemsByReceiptId(receiptId);
         }
 
-        public List<OrderItem> GetKitchenOrders()
+   
+
+        public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
-           return orderDAO.GetKitchenOrders();
+            return orderDAO.GetRunningOrderItems(type);
         }
 
-        public List<OrderItem> GetBarOrders()
+        public List<OrderItem> GetFinishedOrderItems(MenuType type)
         {
-           return orderDAO.GetBarOrders();
+            return orderDAO.GetFinshedOrderItems(type);
         }
 
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
+
+
         //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {
@@ -79,7 +83,7 @@ namespace Logic
                     totalVat += itemVat;
                 }
             }
-
+            
             return totalVat;
         }
         public decimal CalculateLowVat(List<OrderItem> orderItems)

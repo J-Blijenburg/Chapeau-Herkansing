@@ -14,9 +14,14 @@ namespace Model
         public OrderItemStatus OrderItemStatus { get; set; }
         //doordat er nu een list is in order is dit niet meer nodig de order order zegmaar
         public Order Order { get; set; }
-        public string Comment { get; set; } 
+        public string Comment { get; set; }
         public MenuItem MenuItem { get; set; }
         public int Quantity { get; set; }
+
+        public double TotalVat { get; set; }
+
+
+
 
         public double SubTotal
         {
@@ -33,7 +38,11 @@ namespace Model
             }
         }
 
-        public OrderItem() { }
+        public OrderItem()
+        {
+
+
+        }
 
         public OrderItem CreateOrderItem(string comment, MenuItem menuItem, int quantity, OrderItemStatus status)
         {
@@ -52,7 +61,7 @@ namespace Model
         public string GetComment()
         {
             return Comment;
-        }   
+        }
 
         public int GetQuantity()
         {
@@ -72,6 +81,16 @@ namespace Model
         public Order getOrder()
         {
             return Order;
+        }
+
+        public int CalculateTotalStock()
+        {
+            return MenuItem.GetStock() - Quantity;
+        }
+
+        public int GetMenuItemId()
+        {
+            return MenuItem.MenuItemId;
         }
 
 

@@ -1,35 +1,21 @@
 ﻿using Logic;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace UI
 {
 
-    //TODO
-    //barmedewerkers/keukenmedewerkers zouden inzicht moeten hebben in hoe lang een bestelling al open staat
-    //eerdere drank/eet-bestellingen  van dezelfde dag moeten ook oproepbaar zijn (filter ‘bestellingen openstaand’ en ‘bestellingen gereed’);
-
-
-    public partial class KitchenBar : Form
+    public partial class KitchenBarView : Form
     {
         private OrderService orderService = new OrderService();
-        private Employee loggedInEmployeeType;
+        private Employee loggedInEmployee;
         private System.Windows.Forms.Timer timer;
 
-        public KitchenBar(Employee employee)
+        public KitchenBarView(Employee employee)
         {
             InitializeComponent();
-            CheckLoginRoleAndFillListView(employee);
-            loggedInEmployeeType = employee;
+            loggedInEmployee = employee;
             txtBoxUser.Text = employee.GetFullName();
+            CheckRoleAndSetLabels(employee.Role);
 
             //initialize the timer
             timer = new System.Windows.Forms.Timer();
@@ -46,36 +32,56 @@ namespace UI
 
         private void RefreshListView()
         {
-            CheckLoginRoleAndFillListView(loggedInEmployeeType);
+            if (rdbRunningOrders.Checked)
+            {
+                GetOrderedItems(loggedInEmployee.Role);
+            }
+            else if (rdbFinishedOrders.Checked)
+            {
+                GetFinishedItems(loggedInEmployee.Role);
+            }
         }
 
-        private void CheckLoginRoleAndFillListView(Employee employee)
+
+        private void CheckRoleAndSetLabels(EmployeeRole employeeRole)
         {
 
-            if (employee.Role == EmployeeRole.Bartender)
+            if (employeeRole == EmployeeRole.Bartender)
             {
-                GetOrderedItemsBar();
                 txtTypeOfOrder.Text = "Bar orders";
             }
-            else if (employee.Role == EmployeeRole.Chefkok)
+            else
             {
-                GetOrderedItemsKitchen();
                 txtTypeOfOrder.Text = "Kitchen orders";
             }
-
-
         }
 
-        private void GetOrderedItemsKitchen()
+        private void GetOrderedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetKitchenOrders());
+
+            if (employeeRole == EmployeeRole.Bartender)
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Drinks));
+            }
+            else
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Dinner));
+            }
         }
 
-        private void GetOrderedItemsBar()
+        private void GetFinishedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
-            FillListViewOrders(lstViewOrders, orderService.GetBarOrders());
+
+            if (employeeRole == EmployeeRole.Bartender)
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Drinks));
+            }
+            else
+            {
+                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Dinner));
+            }
         }
 
 
@@ -86,9 +92,12 @@ namespace UI
 
                 foreach (OrderItem orderItem in orderItems)
                 {
+                    TimeSpan timeDiff = Subtract(orderItem.Order.OrderDateTime);
+
                     ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
                     listViewItem.SubItems.Add(orderItem.Comment.ToString());
                     listViewItem.SubItems.Add(orderItem.Quantity.ToString());
+                    listViewItem.SubItems.Add($"{timeDiff.Hours:00}:{timeDiff.Minutes:00}:{timeDiff.Seconds:00}");
                     listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
                     listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
                     listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
@@ -110,16 +119,16 @@ namespace UI
 
             foreach (ListViewItem selectedItem in selectedItems)
             {
-                ListViewItem newItem;
+                ListViewItem listViewItem;
                 int columnIntegerOrderItemId = GetColumnIndex(lstViewOrders, "OrderItemID");
                 int columnIntegerOrderId = GetColumnIndex(lstViewOrders, "OrderId");
                 int columnIntegerStatus = GetColumnIndex(lstViewOrders, "Status");
 
-                newItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
-                newItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
-                newItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
+                listViewItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
+                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
+                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
 
-                lstViewSelectedOrder.Items.Add(newItem);
+                lstViewSelectedOrder.Items.Add(listViewItem);
             }
         }
 
@@ -139,6 +148,29 @@ namespace UI
         }
 
 
+
+        private void UpdateOrderStatus(OrderItemStatus status)
+        {
+            if (lstViewSelectedOrder.SelectedItems.Count > 0)
+            {
+                int columnIntegerOrderId = GetColumnIndex(lstViewSelectedOrder, "OrderId");
+                int columnIntegerOrderItemId = GetColumnIndex(lstViewSelectedOrder, "OrderItemId");
+
+                int orderId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
+                int orderItemId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
+
+                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
+                lstViewOrders.Items.Clear();
+                lstViewSelectedOrder.Items.Clear();
+                GetOrderedItems(loggedInEmployee.Role);
+                GetFinishedItems(loggedInEmployee.Role);
+            }
+            else
+            {
+                MessageBox.Show("Please select an order");
+            }
+        }
+
         private void btnInPrep_Click(object sender, EventArgs e)
         {
             UpdateOrderStatus(Model.OrderItemStatus.Preparing);
@@ -155,27 +187,31 @@ namespace UI
             UpdateOrderStatus(Model.OrderItemStatus.Delivered);
         }
 
-        private void UpdateOrderStatus(OrderItemStatus status)
+        private TimeSpan Subtract(DateTime value)
         {
-            if (lstViewSelectedOrder.SelectedItems.Count > 0)
-            {
-                int columnIntegerOrderId = GetColumnIndex(lstViewSelectedOrder, "OrderId");
-                int columnIntegerOrderItemId = GetColumnIndex(lstViewSelectedOrder, "OrderItemId");
+            DateTime dateNow = DateTime.Now;
+            TimeSpan diff = dateNow.Subtract(value);
+            return diff;
+        }
 
-                int orderId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
-                int orderItemId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
-
-                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
-                lstViewOrders.Items.Clear();
-                lstViewSelectedOrder.Items.Clear();
-                CheckLoginRoleAndFillListView(loggedInEmployeeType);
-            }
-            else
-            {
-                MessageBox.Show("Please select an order");
-            }
+        private void rdbFinishedOrders_CheckedChanged(object sender, EventArgs e)
+        {
+            ToggleButtons(false);
+            GetFinishedItems(loggedInEmployee.Role);
         }
 
 
+        private void rdbRunningOrders_CheckedChanged(object sender, EventArgs e)
+        {
+            ToggleButtons(true);
+            GetOrderedItems(loggedInEmployee.Role);
+        }
+
+        private void ToggleButtons(bool enabled)
+        {
+            btnInPrep.Enabled = enabled;
+            btnPrepared.Enabled = enabled;
+            btnServed.Enabled = enabled;
+        }
     }
 }

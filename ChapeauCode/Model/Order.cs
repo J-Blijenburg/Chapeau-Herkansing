@@ -9,7 +9,6 @@ namespace Model
         public Receipt Receipt { get; set; }
         public DateTime OrderDateTime { get; set; }
         public OrderStatus Status { get; set; }
-
         private List<OrderItem> OrderItems { get; set; }
 
         public Order()
@@ -27,7 +26,10 @@ namespace Model
         }
         public void AddOrderItemToOrder(OrderItem orderItem)
         {
-            OrderItems.Add(orderItem);
+            if (orderItem is not null)
+            {
+                OrderItems.Add(orderItem);
+            }
         }
         public List<OrderItem> GetOrderItems()
         {

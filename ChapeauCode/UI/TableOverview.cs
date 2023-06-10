@@ -68,25 +68,25 @@ namespace UI
             button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
             button.Font = new Font(button.Font, FontStyle.Regular);
             button.Text = menu.GetMenuType().ToString();
-            button.Click += MenuButton_Click;   
+            button.Click += MenuButton_Click;
         }
         private void MenuButton_Click(object sender, EventArgs e)
         {
-                Button clickedButton = sender as Button;
+            Button clickedButton = sender as Button;
 
-                switch (clickedButton.Name)
-                {
-                    case "BtnLunch":
-                        OpenOrderForm(MenuType.Lunch);
-                        break;
-                    case "BtnDinner":
-                        OpenOrderForm(MenuType.Dinner);
-                        break;
-                    case "BtnDrinks":
-                        OpenOrderForm(MenuType.Drinks);
-                        break;
-                }
-            
+            switch (clickedButton.Name)
+            {
+                case "BtnLunch":
+                    OpenOrderForm(MenuType.Lunch);
+                    break;
+                case "BtnDinner":
+                    OpenOrderForm(MenuType.Dinner);
+                    break;
+                case "BtnDrinks":
+                    OpenOrderForm(MenuType.Drinks);
+                    break;
+            }
+
         }
         private void OpenOrderForm(MenuType panelToShow)
         {
@@ -154,5 +154,12 @@ namespace UI
             LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }
 
+        private void BtnPayment_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Bill bill = new Bill(table, currentEmployee);
+            bill.ShowDialog();
+
+        }
     }
 }

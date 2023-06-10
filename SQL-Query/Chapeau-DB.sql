@@ -20,7 +20,8 @@ CREATE TABLE [PaymentMethod](
 
 CREATE TABLE [Payment](
 	PaymentId int identity(1,1) NOT NULL primary key,
-	IsPaid BIT
+	IsPaid BIT,
+	PaymentMethodId int FOREIGN KEY REFERENCES PaymentMethod(PaymentMethodId)
 );
 
 /*This is the ENUM to selected the employee role*/
@@ -110,6 +111,7 @@ VALUES
 
 INSERT INTO [PaymentMethod]
 VALUES
+('Not Paid'),
 ('CreditCard'),
 ('Cash'),
 ('Pin');
