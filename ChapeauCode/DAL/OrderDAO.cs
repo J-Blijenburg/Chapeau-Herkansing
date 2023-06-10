@@ -25,7 +25,45 @@ namespace DAL
 
             };
             return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
-        }  
+        }
+        public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
+        {
+            string query = @"SELECT OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name AS MenuCategoryName, SUM(OI.Quantity) as TotalQuantity FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId JOIN [Table] AS TE ON RT.TableNumber = TE.Number JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId WHERE OD.ReceiptId = @ReceiptId AND RT.IsHandled = 0 GROUP BY OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name";
+
+            SqlParameter[] sqlParameters = { new SqlParameter("@ReceiptId", receiptId) };
+
+            return CreateListOfOrderItems(ExecuteSelectQuery(query, sqlParameters));
+        }
+        private List<OrderItem> CreateListOfOrderItems(DataTable dataTable)
+        {
+            List<OrderItem> orderItems = new List<OrderItem>();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                OrderItem orderItem = new OrderItem
+                {
+                    Order = new Order { Receipt = new Receipt { ReceiptId = (int)row["ReceiptId"] } },
+                    MenuItem = new MenuItem {
+                        MenuItemId = (int)row["MenuItemId"],
+                        Name = row["Name"].ToString(),
+                        Price = (double)row["Price"],
+                    MenuCategory = new MenuCategory()
+                    {
+                        MenuCategoryId = (int)row["MenuCategoryId"],
+                        VAT = (double)row["VAT"],
+                        Name = (Category)Enum.Parse(typeof(Category), row["MenuCategoryName"].ToString())
+                    }
+                    },
+
+                    Quantity = (int)row["TotalQuantity"]
+
+                };
+
+
+                orderItems.Add(orderItem);
+            }
+
+            return orderItems;
+        }
 
         private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
         {
