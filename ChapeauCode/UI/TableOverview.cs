@@ -101,7 +101,7 @@ namespace UI
         private void UpdateOrderItemsListView()
         {
                 Receipt receipt = receiptService.GetReceipt(this.table);
-                var orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId);
+                var orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId);
                 FillListViewOrderedItems(ListViewOrderdItems, orderItems);
         }
         private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)

@@ -11,12 +11,10 @@ namespace Logic
     public class TableService
     {
         private TableDAO tableDAO;
-
         public TableService()
         {
             tableDAO = new TableDAO();
         }
-
         public List<Table> GetAllTables()
         {
             return tableDAO.GetTables();

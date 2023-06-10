@@ -26,7 +26,7 @@ namespace DAL
             };
             return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
         }
-        public List<OrderItem> GetOrderItemsByReceiptId(int receiptId)
+        public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
             string query = @"SELECT OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name AS MenuCategoryName, SUM(OI.Quantity) as TotalQuantity FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId JOIN [Table] AS TE ON RT.TableNumber = TE.Number JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId WHERE OD.ReceiptId = @ReceiptId AND RT.IsHandled = 0 GROUP BY OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name";
 
