@@ -61,7 +61,7 @@ namespace UI
             receipt = receiptService.GetReceipt(this.table);
 
                     
-            orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId);
+            orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId);
 
             double totalVat = (double)orderService.CalculateTotalVat(orderItems);
             receipt.TotalVat = totalVat;
