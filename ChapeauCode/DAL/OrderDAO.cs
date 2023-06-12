@@ -301,7 +301,8 @@ namespace DAL
         }
 
         
-
+        
+        //get all running order items from the database 
         public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
@@ -316,6 +317,7 @@ namespace DAL
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
+        //get all finished order items from the database
         public List<OrderItem> GetFinshedOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
@@ -326,13 +328,13 @@ namespace DAL
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (" + queryString + ")" +
+                           "WHERE oi.OrderItemStatus = 3 AND (" + queryString + ")" +
                            "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
 
-
+        //Method to get the type of order for the query using the enum MenuType
         private static string GetTypeOfOrderForQuery(MenuType type)
         {
             string query = "";
@@ -358,6 +360,8 @@ namespace DAL
             return query;
         }
 
+        //Method to update the status of an order item,
+        //if the status of all order items is finished, the status of the whole order will be changed to finished
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             string query = @"UPDATE [OrderItem]
@@ -387,8 +391,7 @@ namespace DAL
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
         {
             List<OrderItem> list = new List<OrderItem>();
-            try
-            {
+          
                 if (dataTable != null)
                 {
                     foreach (DataRow dr in dataTable.Rows)
@@ -421,12 +424,8 @@ namespace DAL
                     }
                 }
                 return list;
-            }
-            catch (Exception e)
-            {
-                
-                return null;
-            }
+           
+          
 
 
         }

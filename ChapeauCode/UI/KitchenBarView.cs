@@ -32,6 +32,12 @@ namespace UI
 
         private void RefreshListView()
         {
+            CheckWhichTypeOfOrdersToGet();
+        }
+
+        //gets the items based on the selected radio button
+        private void CheckWhichTypeOfOrdersToGet()
+        {
             if (rdbRunningOrders.Checked)
             {
                 GetOrderedItems(loggedInEmployee.Role);
@@ -42,7 +48,7 @@ namespace UI
             }
         }
 
-
+        //checks the role of the logged in employee and sets the labels accordingly
         private void CheckRoleAndSetLabels(EmployeeRole employeeRole)
         {
 
@@ -56,6 +62,7 @@ namespace UI
             }
         }
 
+        //gets the running order items based on the employee role
         private void GetOrderedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
@@ -70,6 +77,7 @@ namespace UI
             }
         }
 
+        //gets the finished order items based on the employee role
         private void GetFinishedItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
@@ -87,11 +95,11 @@ namespace UI
 
         private void FillListViewOrders(ListView listView, List<OrderItem> orderItems)
         {
-            try
-            {
-
+        
+                //filling the listview with the order items
                 foreach (OrderItem orderItem in orderItems)
                 {
+                    //calculating the time difference between the order time and the current time
                     TimeSpan timeDiff = Subtract(orderItem.Order.OrderDateTime);
 
                     ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
@@ -104,11 +112,8 @@ namespace UI
                     listViewItem.Tag = orderItem;
                     listView.Items.Add(listViewItem);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            
+            
         }
 
         private void lstViewOrders_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,6 +122,7 @@ namespace UI
 
             lstViewSelectedOrder.Items.Clear();
 
+            //filling the listview with the selected order item from the listview with all order items
             foreach (ListViewItem selectedItem in selectedItems)
             {
                 ListViewItem listViewItem;
@@ -132,7 +138,7 @@ namespace UI
             }
         }
 
-
+        //method by jens
         private int GetColumnIndex(ListView listView, string columnName)
         {
             int index = 0;
@@ -151,6 +157,7 @@ namespace UI
 
         private void UpdateOrderStatus(OrderItemStatus status)
         {
+            //checks if an order is selected and updates the status of the order item to the selected status 
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
                 int columnIntegerOrderId = GetColumnIndex(lstViewSelectedOrder, "OrderId");
@@ -162,8 +169,7 @@ namespace UI
                 orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
-                GetOrderedItems(loggedInEmployee.Role);
-                GetFinishedItems(loggedInEmployee.Role);
+                CheckWhichTypeOfOrdersToGet();
             }
             else
             {
@@ -171,6 +177,7 @@ namespace UI
             }
         }
 
+        //buttons for updating the status of the order item
         private void btnInPrep_Click(object sender, EventArgs e)
         {
             UpdateOrderStatus(Model.OrderItemStatus.Preparing);
@@ -187,6 +194,7 @@ namespace UI
             UpdateOrderStatus(Model.OrderItemStatus.Delivered);
         }
 
+        // method to calculate the time difference between the current time and the time the order was placed
         private TimeSpan Subtract(DateTime value)
         {
             DateTime dateNow = DateTime.Now;
@@ -207,6 +215,7 @@ namespace UI
             GetOrderedItems(loggedInEmployee.Role);
         }
 
+        // turn buttons on or off based on the selected radio button
         private void ToggleButtons(bool enabled)
         {
             btnInPrep.Enabled = enabled;

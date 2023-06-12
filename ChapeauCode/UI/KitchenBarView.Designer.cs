@@ -260,9 +260,9 @@
             rdbFinishedOrders.AutoSize = true;
             rdbFinishedOrders.Location = new Point(12, 141);
             rdbFinishedOrders.Name = "rdbFinishedOrders";
-            rdbFinishedOrders.Size = new Size(105, 19);
+            rdbFinishedOrders.Size = new Size(132, 19);
             rdbFinishedOrders.TabIndex = 15;
-            rdbFinishedOrders.Text = "Finished orders";
+            rdbFinishedOrders.Text = "Finished order items";
             rdbFinishedOrders.UseVisualStyleBackColor = true;
             rdbFinishedOrders.CheckedChanged += rdbFinishedOrders_CheckedChanged;
             // 
@@ -271,13 +271,13 @@
             rdbRunningOrders.AutoSize = true;
             rdbRunningOrders.Location = new Point(12, 166);
             rdbRunningOrders.Name = "rdbRunningOrders";
-            rdbRunningOrders.Size = new Size(106, 19);
+            rdbRunningOrders.Size = new Size(133, 19);
             rdbRunningOrders.TabIndex = 16;
-            rdbRunningOrders.Text = "Running orders";
+            rdbRunningOrders.Text = "Running order items";
             rdbRunningOrders.UseVisualStyleBackColor = true;
             rdbRunningOrders.CheckedChanged += rdbRunningOrders_CheckedChanged;
             // 
-            // KitchenBar
+            // KitchenBarView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -302,7 +302,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
             MaximizeBox = false;
-            Name = "KitchenBar";
+            Name = "KitchenBarView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "KitchenBar";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
