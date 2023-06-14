@@ -15,7 +15,7 @@ namespace Logic
             this.orderDAO = new OrderDAO();
             this.tableService = new TableService();
         }
-        public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
+        public List<MenuItem> GetMenuItemsByMenuAndCategory(Menu menu, MenuCategory category)
         {
             return orderDAO.GetMenuItemsByMenuNameAndCategoryName(menu, category);
         }

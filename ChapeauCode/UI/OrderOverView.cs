@@ -1,6 +1,8 @@
 ﻿using Model;
 using Logic;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 
 namespace UI
@@ -13,20 +15,56 @@ namespace UI
         private ReceiptService receiptService;
         private Table table;
         private Employee currentEmployee;
+        private List<OrderItem> listOfOrderItems;
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
             InitializeComponent();
             orderService = new OrderService();
             receiptService = new ReceiptService();
+            listOfOrderItems = new List<OrderItem>();
             List<Menu> menus = orderService.GetListOfMenu();
+
+            DisplayEmployeeAndTable(employee, table);
+            AddColumnsToListView();
+
             DisplayAllMenuItems(menus);
             ShowCorrectPanel(panelToShow);
+            EnableMenuButtons(menus);
+
             this.previousForm = previousForm;
             this.table = table;
             this.currentEmployee = employee;
-            DisplayEmployeeAndTable(employee, table);
-            AddColumnsToListView();
-            EnableMenuButtons(menus);
+        }
+
+        //****The following code is mostly focused on displaying the right items*****
+
+        //The given user and table will be displayed in the top right corner
+        private void DisplayEmployeeAndTable(Employee employee, Table table)
+        {
+            LblEmployee.Text = employee.GetFirstName();
+            LblTableNumber.Text = $"Table #{table.Number}";
+        }
+
+        //when loading the orderviewform it will add all the columns to the listviews
+        private void AddColumnsToListView()
+        {
+            //Add columns to the orderd items listview
+            AddColumn(ListViewOrderdItems, "Amount", 100);
+            AddColumn(ListViewOrderdItems, "Name", 300);
+            AddColumn(ListViewOrderdItems, "Comment", 100);
+
+            //Add columns to the menu listviews
+            AddColumn(ListDinner, "", 375);
+            AddColumn(ListDinner, "", 100);
+            AddColumn(ListDrinks, "", 375);
+            AddColumn(ListDrinks, "", 100);
+            AddColumn(ListLunch, "", 375);
+            AddColumn(ListLunch, "", 100);
+        }
+
+        private void AddColumn(ListView listView, string name, int width)
+        {
+            listView.Columns.Add(name, width);
         }
 
 
@@ -70,7 +108,7 @@ namespace UI
                     ListView listView = GetListViewByMenuType(menu.GetMenuType());
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
-                        GetMenuItems(listView, menu.GetMenuType(), menuCategory.GetName());
+                        FillListViewMenuItems(listView, orderService.GetMenuItemsByMenuAndCategory(menu, menuCategory), menuCategory.Name);
                     }
                 }
             }
@@ -95,11 +133,6 @@ namespace UI
                     break;
             }
             return listView;
-        }
-
-        private void GetMenuItems(ListView listView, MenuType menuType, Category category)
-        {
-            FillListViewMenuItems(listView, orderService.GetMenuItemsByMenuAndCategory(menuType.ToString(), category.ToString()), category);
         }
 
         //every time a list of menuitems is added it will place the name of the category above the menuitems
@@ -127,12 +160,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-        //The given user and table will be displayed in the top right corner
-        private void DisplayEmployeeAndTable(Employee employee, Table table)
-        {
-            LblEmployee.Text = employee.GetFirstName();
-            LblTableNumber.Text = $"Table #{table.Number}";
-        }
+        
 
         //When the user changes the category it will show the right panel
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -196,27 +224,159 @@ namespace UI
             }
         }
 
-        //when loading the orderviewform it will add all the columns to the listviews
-        private void AddColumnsToListView()
-        {
-            //Add columns to the orderd items listview
-            AddColumn(ListViewOrderdItems, "Amount", 100);
-            AddColumn(ListViewOrderdItems, "Name", 300);
-            AddColumn(ListViewOrderdItems, "Comment", 100);
+        //*****The following is for add/update/remove orderd items *****
 
-            //Add columns to the menu listviews
-            AddColumn(ListDinner, "", 375);
-            AddColumn(ListDinner, "", 100);
-            AddColumn(ListDrinks, "", 375);
-            AddColumn(ListDrinks, "", 100);
-            AddColumn(ListLunch, "", 375);
-            AddColumn(ListLunch, "", 100);
+        //This method will be called when the user clicks on a menuitem
+        private void ListViewRowClick(object sender, EventArgs e)
+        {
+            //check if the item has a color otherwise it is a title category
+            ListView listView = (ListView)sender;
+
+            if (!listView.SelectedItems[0].BackColor.IsKnownColor)
+            {
+                MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
+
+                UpdateOrderItem(menuItem);
+                LoadOrderItemsIntoListView();
+            }
         }
 
-        private void AddColumn(ListView listView, string name, int width)
+        private void UpdateOrderItem(MenuItem menuItem)
         {
-            listView.Columns.Add(name, width);
+            //Goes through every selected order items and adjust the quantity when item is already in the List<OrderItem>
+            //else it creates and add that item
+            bool itemExists = false;
+    
+            foreach (OrderItem orderItem in listOfOrderItems)
+            {
+                if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
+                {
+                    CheckAndUpdateQuantity(menuItem, orderItem);
+                    itemExists = true;  
+                }
+            }
+
+            if (!itemExists)
+            {
+                CreateOrderItem(menuItem);
+            }
         }
+
+        private void CreateOrderItem(MenuItem menuItem)
+        {
+            OrderItem orderItem = new OrderItem();
+            orderItem.CreateOrderItem("", menuItem, 1, OrderItemStatus.Ordered);
+
+            //also add it to the list of orderitems
+            listOfOrderItems.Add(orderItem);
+        }
+
+        private void BtnRemoveOrderItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckOrderdItems())
+                {
+                    OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+                    orderItem.Quantity--;
+                    if (orderItem.Quantity == 0)
+                    {
+                        listOfOrderItems.Remove(orderItem);
+                    }
+                    LoadOrderItemsIntoListView();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        private void BtnAddQuantity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckOrderdItems())
+                {
+                    //Update the quantity in the List<OrderItem> and reload the listview
+                    OrderItem selectedOrderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+                    MenuItem menuItem = selectedOrderItem.GetMenuItem();
+
+                    CheckAndUpdateQuantity(menuItem, selectedOrderItem);
+                    LoadOrderItemsIntoListView();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CheckAndUpdateQuantity(MenuItem menuItem, OrderItem orderItem)
+        {
+            if (menuItem.GetStock() > orderItem.Quantity)
+            {
+                orderItem.AddQuantity(1);
+            }
+            else
+            {
+                MessageBox.Show("Not enough stock");
+            }
+        }
+
+        private void BtnAddCommentOrderItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckOrderdItems())
+                {
+                    OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
+                    OrderComment orderComment = new OrderComment(this, orderItem);
+                    this.Hide();
+                    orderComment.ShowDialog();
+
+                    LoadOrderItemsIntoListView();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        //Every orderd item that has been placed into the List<OrderItem>, will be shown in a ListView
+        private void LoadOrderItemsIntoListView()
+        {
+            ListViewOrderdItems.Items.Clear();
+
+            foreach (OrderItem orderItem in listOfOrderItems)
+            {
+                AddListViewItem(ListViewOrderdItems, orderItem);
+            }
+        }
+
+        private void AddListViewItem(ListView listView, OrderItem orderItem)
+        {
+            ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());
+            listViewItem.SubItems.Add(orderItem.MenuItem.GetName());
+            listViewItem.SubItems.Add(orderItem.GetComment());
+            listViewItem.Tag = orderItem;
+            listView.Items.Add(listViewItem);
+        }
+
+        //When the user doesn't have any items selected it will show a message
+        private bool CheckOrderdItems()
+        {
+            if (ListViewOrderdItems.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please, select an item!");
+                return true;
+            }
+            return false;
+        }
+
+        //******The following code is focused on placing a order *********
 
         //This form will be disposed and the previousform will be displayed again.
         //This will make sure that there is only 1 form active
@@ -231,25 +391,6 @@ namespace UI
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        //The user has an option to cancel the entire order but it will ask for confirmation
-        private void BtnCancelOrder_Click(object sender, EventArgs e)
-        {
-            //https://stackoverflow.com/questions/3036829/how-do-i-create-a-message-box-with-yes-no-choices-and-a-dialogresult
-            //Apparantly MessageboxButtons will be displayed in dutch instead of english
-            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel the order", "Cancel Order", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                ShowPreviousForm(); 
-            }
-
-        }
-
-        private void ShowPreviousForm()
-        {
-            this.Dispose();
-            previousForm.Show();
         }
 
         //When the user doesn't have any items selected it will go back to the previous form
@@ -296,173 +437,23 @@ namespace UI
             return createdOrder;
         }
 
-        //This method will be called when the user clicks on a menuitem
-        private void ListViewRowClick(object sender, EventArgs e)
+        //The user has an option to cancel the entire order but it will ask for confirmation
+        private void BtnCancelOrder_Click(object sender, EventArgs e)
         {
-            //check if the item has a color otherwise it is a title category
-            ListView listView = (ListView)sender;
-            if (!listView.SelectedItems[0].BackColor.IsKnownColor)
+            //https://stackoverflow.com/questions/3036829/how-do-i-create-a-message-box-with-yes-no-choices-and-a-dialogresult
+            //Apparantly MessageboxButtons will be displayed in dutch instead of english
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel the order?", "Cancel Order", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                FillListViewOrderdItems((ListView)sender);
+                ShowPreviousForm();
             }
         }
 
-        //receive the selected menuitem and add it to the listview of ListViewOrderdItems
-        private void FillListViewOrderdItems(ListView listView)
+        private void ShowPreviousForm()
         {
-            try
-            {
-                bool itemExists = false;
-                MenuItem menuItem = (MenuItem)listView.SelectedItems[0].Tag;
-                foreach (ListViewItem lvItem in ListViewOrderdItems.Items)
-                {
-                    OrderItem orderItem = (OrderItem)lvItem.Tag;
-                    if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
-                    {
-                        //TODO: What if multiple employees are working on the same order?
-                        if (menuItem.GetStock() > orderItem.Quantity)
-                        {
-                            orderItem.Quantity++;
-                            lvItem.Text = orderItem.DisplayQuantityFormat();
-                            itemExists = true;
-                            break;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Not enough stock");
-                            itemExists = true;
-                            break;
-                        }
-                    }
-                }
-                if (!itemExists)
-                {
-                    AddOrderItemToListView(menuItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            this.Dispose();
+            previousForm.Show();
         }
-
-        //every menuitem will be added as a orderitem to the listview
-        private void AddOrderItemToListView(MenuItem menuItem)
-        {
-            OrderItem orderItem = new OrderItem();
-            orderItem.CreateOrderItem("", menuItem, 1, OrderItemStatus.Ordered);
-
-            //TODO: zorg er voor dat alle orderitems ook toegevoegd worden aan een List<OrderItem>
-            ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());
-            listViewItem.SubItems.Add(orderItem.MenuItem.GetName());
-            listViewItem.SubItems.Add(orderItem.GetComment());
-            listViewItem.Tag = orderItem;
-            ListViewOrderdItems.Items.Add(listViewItem);
-        }
-
-        private void BtnRemoveOrderItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!CheckOrderdItems())
-                {
-                    OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-                    orderItem.Quantity--;
-                    if (orderItem.Quantity == 0)
-                    {
-                        ListViewOrderdItems.Items.Remove(ListViewOrderdItems.SelectedItems[0]);
-                    }
-                    else
-                    {
-                        ListViewOrderdItems.SelectedItems[0].Text = orderItem.DisplayQuantityFormat();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void BtnAddOrderItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!CheckOrderdItems())
-                {
-                    OrderItem selectedOrderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-
-                    MenuItem menuItem = selectedOrderItem.GetMenuItem();
-
-                    if (selectedOrderItem.GetQuantity() < menuItem.GetStock())
-                    {
-                        selectedOrderItem.AddQuantity(1);
-                        ListViewOrderdItems.SelectedItems[0].Text = selectedOrderItem.DisplayQuantityFormat();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Not enough stock");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void BtnAddCommentOrderItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!CheckOrderdItems())
-                {
-                    OrderItem orderItem = (OrderItem)ListViewOrderdItems.SelectedItems[0].Tag;
-                    OrderComment orderComment = new OrderComment(this, orderItem);
-                    this.Hide();
-                    orderComment.ShowDialog();
-                    ListViewOrderdItems.Refresh();
-                    ShowComment(orderItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        //When the user doesn't have any items selected it will show a message
-        private bool CheckOrderdItems()
-        {
-            if (ListViewOrderdItems.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Please, select an item!");
-                return true;
-            }
-            return false;
-        }
-
-        private void ShowComment(OrderItem orderItem)
-        {
-            ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
-            selectedItem.SubItems[GetColumnIndex(ListViewOrderdItems, "Comment")].Text = orderItem.GetComment();
-        }
-
-        //To know the right index of a column, the column name will be compared with the column names of the listview
-        private int GetColumnIndex(ListView listView, string columnName)
-        {
-            int index = 0;
-            foreach (ColumnHeader column in listView.Columns)
-            {
-                if (column.Text == columnName)
-                {
-                    return index;
-                }
-                index++;
-            }
-            return -1;
-        }
-
-       
     }
     //Code By: Jens End *******************************************************
 }

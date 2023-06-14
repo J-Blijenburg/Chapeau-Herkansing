@@ -50,7 +50,7 @@
             BtnRemoveOrderItem = new CustomTools.RoundedButton();
             BtnAddOrder = new CustomTools.RoundedButton();
             LblEmployee = new CustomTools.RoundedLabel();
-            BtnAddOrderItem = new CustomTools.RoundedButton();
+            BtnAddQuantity = new CustomTools.RoundedButton();
             BtnCancelOrder = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
@@ -321,20 +321,20 @@
             LblEmployee.Text = "Employee";
             LblEmployee.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // BtnAddOrderItem
+            // BtnAddQuantity
             // 
-            BtnAddOrderItem.BackColor = Color.FromArgb(196, 196, 196);
-            BtnAddOrderItem.FlatAppearance.BorderSize = 0;
-            BtnAddOrderItem.FlatStyle = FlatStyle.Flat;
-            BtnAddOrderItem.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnAddOrderItem.Location = new Point(264, 1073);
-            BtnAddOrderItem.Name = "BtnAddOrderItem";
-            BtnAddOrderItem.Size = new Size(50, 55);
-            BtnAddOrderItem.TabIndex = 31;
-            BtnAddOrderItem.Text = "+";
-            BtnAddOrderItem.TextAlign = ContentAlignment.TopRight;
-            BtnAddOrderItem.UseVisualStyleBackColor = false;
-            BtnAddOrderItem.Click += BtnAddOrderItem_Click;
+            BtnAddQuantity.BackColor = Color.FromArgb(196, 196, 196);
+            BtnAddQuantity.FlatAppearance.BorderSize = 0;
+            BtnAddQuantity.FlatStyle = FlatStyle.Flat;
+            BtnAddQuantity.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnAddQuantity.Location = new Point(264, 1073);
+            BtnAddQuantity.Name = "BtnAddQuantity";
+            BtnAddQuantity.Size = new Size(50, 55);
+            BtnAddQuantity.TabIndex = 31;
+            BtnAddQuantity.Text = "+";
+            BtnAddQuantity.TextAlign = ContentAlignment.TopRight;
+            BtnAddQuantity.UseVisualStyleBackColor = false;
+            BtnAddQuantity.Click += BtnAddQuantity_Click;
             // 
             // BtnCancelOrder
             // 
@@ -357,7 +357,7 @@
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
             Controls.Add(BtnCancelOrder);
-            Controls.Add(BtnAddOrderItem);
+            Controls.Add(BtnAddQuantity);
             Controls.Add(LblEmployee);
             Controls.Add(BtnAddOrder);
             Controls.Add(BtnRemoveOrderItem);
@@ -412,7 +412,7 @@
         private CustomTools.RoundedButton BtnRemoveOrderItem;
         private CustomTools.RoundedButton BtnAddOrder;
         private CustomTools.RoundedLabel LblEmployee;
-        private CustomTools.RoundedButton BtnAddOrderItem;
+        private CustomTools.RoundedButton BtnAddQuantity;
         private CustomTools.RoundedButton BtnCancelOrder;
     }
 }

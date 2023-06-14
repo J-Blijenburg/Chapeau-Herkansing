@@ -10,7 +10,7 @@ namespace DAL
    public class OrderDAO : BaseDao
     {
         //Code By: Jens Begin *******************************************************
-        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(string menuName, string categoryName)
+        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(Menu menu, MenuCategory menuCategory)
         {
             string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price " +
                 "FROM MenuItem AS MI " +
@@ -20,11 +20,29 @@ namespace DAL
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@menuName", menuName),
-                new SqlParameter("@categoryName", categoryName)
+                new SqlParameter("@menuName", menu.Name.ToString()),
+                new SqlParameter("@categoryName", menuCategory.Name.ToString())
 
             };
             return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
+        {
+            List<MenuItem> list = new List<MenuItem>();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                MenuItem menuItem = new MenuItem()
+                {
+                    MenuItemId = (int)dr["MenuItemId"],
+                    Name = (string)dr["Name"],
+                    Stock = (int)dr["Stock"],
+                    Price = (double)dr["Price"],
+                };
+
+                list.Add(menuItem);
+            }
+            return list;
         }
         public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
@@ -65,23 +83,7 @@ namespace DAL
             return orderItems;
         }
 
-        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
-        {
-            List<MenuItem> list = new List<MenuItem>();
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                MenuItem menuItem = new MenuItem()
-                {
-                    MenuItemId = (int)dr["MenuItemId"],
-                    Name = (string)dr["Name"],
-                    Stock = (int)dr["Stock"],
-                    Price = (double)dr["Price"],
-                };
-                
-                list.Add(menuItem);
-            } 
-            return list;
-        }
+       
 
         public void SendOrderItems(Order order)
         {
