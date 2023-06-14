@@ -421,7 +421,7 @@ namespace DAL
                                 Name = (string)dr["Dish"],
                                 Menu = new Menu()
                                 {
-                                    Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
+                                    Name = StringToMenuType((string)dr["Type"])
                                 }
 
                             },

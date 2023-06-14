@@ -40,7 +40,7 @@ namespace UI
         {
             if (rdbRunningOrders.Checked)
             {
-                GetOrderedItems(loggedInEmployee.Role);
+                GetRunningOrderItems(loggedInEmployee.Role);
             }
             else if (rdbFinishedOrders.Checked)
             {
@@ -63,7 +63,7 @@ namespace UI
         }
 
         //gets the running order items based on the employee role
-        private void GetOrderedItems(EmployeeRole employeeRole)
+        private void GetRunningOrderItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
 
@@ -95,25 +95,25 @@ namespace UI
 
         private void FillListViewOrders(ListView listView, List<OrderItem> orderItems)
         {
-        
-                //filling the listview with the order items
-                foreach (OrderItem orderItem in orderItems)
-                {
-                    //calculating the time difference between the order time and the current time
-                    TimeSpan timeDiff = Subtract(orderItem.Order.OrderDateTime);
 
-                    ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
-                    listViewItem.SubItems.Add(orderItem.Comment.ToString());
-                    listViewItem.SubItems.Add(orderItem.Quantity.ToString());
-                    listViewItem.SubItems.Add($"{timeDiff.Hours:00}:{timeDiff.Minutes:00}:{timeDiff.Seconds:00}");
-                    listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
-                    listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
-                    listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
-                    listViewItem.Tag = orderItem;
-                    listView.Items.Add(listViewItem);
-                }
-            
-            
+            //filling the listview with the order items
+            foreach (OrderItem orderItem in orderItems)
+            {
+                //calculating the time difference between the order time and the current time
+                TimeSpan timeDiff = Subtract(orderItem.Order.OrderDateTime);
+
+                ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
+                listViewItem.SubItems.Add(orderItem.Comment.ToString());
+                listViewItem.SubItems.Add(orderItem.Quantity.ToString());
+                listViewItem.SubItems.Add($"{timeDiff.Hours:00}:{timeDiff.Minutes:00}:{timeDiff.Seconds:00}");
+                listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
+                listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
+                listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
+                listViewItem.Tag = orderItem;
+                listView.Items.Add(listViewItem);
+            }
+
+
         }
 
         private void lstViewOrders_SelectedIndexChanged(object sender, EventArgs e)
@@ -212,7 +212,7 @@ namespace UI
         private void rdbRunningOrders_CheckedChanged(object sender, EventArgs e)
         {
             ToggleButtons(true);
-            GetOrderedItems(loggedInEmployee.Role);
+            GetRunningOrderItems(loggedInEmployee.Role);
         }
 
         // turn buttons on or off based on the selected radio button
@@ -221,6 +221,17 @@ namespace UI
             btnInPrep.Enabled = enabled;
             btnPrepared.Enabled = enabled;
             btnServed.Enabled = enabled;
+        }
+
+
+        private void btnSignOff_Click(object sender, EventArgs e)
+        {
+            //signs off the logged in employee and closes the current form before opening the login form
+            loggedInEmployee = null;
+            Login loginForm = new Login();
+            this.Hide();
+            loginForm.ShowDialog();
+            this.Close();
         }
     }
 }
