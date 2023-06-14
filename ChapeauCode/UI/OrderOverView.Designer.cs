@@ -51,6 +51,7 @@
             BtnAddOrder = new CustomTools.RoundedButton();
             LblEmployee = new CustomTools.RoundedLabel();
             BtnAddOrderItem = new CustomTools.RoundedButton();
+            BtnCancelOrder = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             PnlDinner.SuspendLayout();
@@ -72,9 +73,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Location = new Point(111, 23);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(187, 110);
+            pictureBox1.Size = new Size(82, 57);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
@@ -335,12 +336,27 @@
             BtnAddOrderItem.UseVisualStyleBackColor = false;
             BtnAddOrderItem.Click += BtnAddOrderItem_Click;
             // 
+            // BtnCancelOrder
+            // 
+            BtnCancelOrder.BackColor = Color.FromArgb(255, 179, 71);
+            BtnCancelOrder.FlatAppearance.BorderSize = 0;
+            BtnCancelOrder.FlatStyle = FlatStyle.Flat;
+            BtnCancelOrder.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnCancelOrder.Location = new Point(-26, 17);
+            BtnCancelOrder.Name = "BtnCancelOrder";
+            BtnCancelOrder.Size = new Size(131, 63);
+            BtnCancelOrder.TabIndex = 32;
+            BtnCancelOrder.Text = "CANCEL";
+            BtnCancelOrder.UseVisualStyleBackColor = false;
+            BtnCancelOrder.Click += BtnCancelOrder_Click;
+            // 
             // OrderOverView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
+            Controls.Add(BtnCancelOrder);
             Controls.Add(BtnAddOrderItem);
             Controls.Add(LblEmployee);
             Controls.Add(BtnAddOrder);
@@ -397,5 +413,6 @@
         private CustomTools.RoundedButton BtnAddOrder;
         private CustomTools.RoundedLabel LblEmployee;
         private CustomTools.RoundedButton BtnAddOrderItem;
+        private CustomTools.RoundedButton BtnCancelOrder;
     }
 }

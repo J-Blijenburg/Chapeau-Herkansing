@@ -225,13 +225,23 @@ namespace UI
             try
             {
                 SendOrderItems(this.currentEmployee);
-                this.Dispose();
-                previousForm.Show();
+                ShowPreviousForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void BtnCancelOrder_Click(object sender, EventArgs e)
+        {
+            ShowPreviousForm();
+        }
+
+        private void ShowPreviousForm()
+        {
+            this.Dispose();
+            previousForm.Show();
         }
 
         //When the user doesn't have any items selected it will go back to the previous form
@@ -444,6 +454,7 @@ namespace UI
             return -1;
         }
 
+       
     }
     //Code By: Jens End *******************************************************
 }
