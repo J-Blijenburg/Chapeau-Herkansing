@@ -2,6 +2,7 @@
 using Logic;
 using System.Drawing;
 
+
 namespace UI
 {
     //Code By: Jens Begin *******************************************************
@@ -14,7 +15,6 @@ namespace UI
         private Employee currentEmployee;
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
-            //order in zijn geheel weg gooien door middel van een terugknop. met een melding
             InitializeComponent();
             orderService = new OrderService();
             receiptService = new ReceiptService();
@@ -233,9 +233,17 @@ namespace UI
             }
         }
 
+        //The user has an option to cancel the entire order but it will ask for confirmation
         private void BtnCancelOrder_Click(object sender, EventArgs e)
         {
-            ShowPreviousForm();
+            //https://stackoverflow.com/questions/3036829/how-do-i-create-a-message-box-with-yes-no-choices-and-a-dialogresult
+            //Apparantly MessageboxButtons will be displayed in dutch instead of english
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel the order", "Cancel Order", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                ShowPreviousForm(); 
+            }
+
         }
 
         private void ShowPreviousForm()
