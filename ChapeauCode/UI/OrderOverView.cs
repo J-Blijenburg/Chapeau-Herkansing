@@ -14,6 +14,7 @@ namespace UI
         private Employee currentEmployee;
         public OrderOverView(Form previousForm, MenuType panelToShow, Table table, Employee employee)
         {
+            //order in zijn geheel weg gooien door middel van een terugknop. met een melding
             InitializeComponent();
             orderService = new OrderService();
             receiptService = new ReceiptService();
@@ -333,7 +334,7 @@ namespace UI
             OrderItem orderItem = new OrderItem();
             orderItem.CreateOrderItem("", menuItem, 1, OrderItemStatus.Ordered);
 
-
+            //TODO: zorg er voor dat alle orderitems ook toegevoegd worden aan een List<OrderItem>
             ListViewItem listViewItem = new ListViewItem(orderItem.DisplayQuantityFormat());
             listViewItem.SubItems.Add(orderItem.MenuItem.GetName());
             listViewItem.SubItems.Add(orderItem.GetComment());

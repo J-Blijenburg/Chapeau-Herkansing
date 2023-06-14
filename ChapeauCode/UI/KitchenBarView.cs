@@ -14,7 +14,7 @@ namespace UI
         {
             InitializeComponent();
             loggedInEmployee = employee;
-            txtBoxUser.Text = employee.GetFullName();
+            txtBoxUser.Text = employee.FullName;
             CheckRoleAndSetLabels(employee.Role);
 
             //initialize the timer

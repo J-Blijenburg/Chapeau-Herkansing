@@ -105,11 +105,15 @@ namespace DAL
 
         private void UpdateQuantity(OrderItem orderItem)
         {
+            //TODO: er was nog iets met de menuitem stock
+            int newQuantity = orderItem.MenuItem.Stock - orderItem.Quantity;
+            orderItem.MenuItem.Stock = newQuantity;
+
             string query = "UPDATE MenuItem SET Stock = @stock WHERE MenuItemId = @menuItemId";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@stock", orderItem.CalculateTotalStock()),
+                new SqlParameter("@stock", newQuantity),
                 new SqlParameter("@menuItemId", orderItem.GetMenuItemId())
             };
             ExecuteEditQuery(query, sqlParameters);
