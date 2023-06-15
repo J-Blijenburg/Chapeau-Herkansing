@@ -15,7 +15,6 @@ namespace Logic
         public EmployeeService() { 
             employeeDAO = new EmployeeDAO();
         }
-
         public string EncryptPassword(string password)
         {
             byte[] salt;
@@ -58,8 +57,10 @@ namespace Logic
             {
                 return employee;
             }
-
-            return null;
+            else
+            {
+                throw new Exception("Invalid login credentials");
+            }
         }
         public bool IsUserInputValid(string userName, string password)
         {
