@@ -54,7 +54,7 @@ namespace UI
             receipt = receiptService.GetReceipt(table, logedinEmployee);
 
             //orderItems = orderService.GetOrderdItems(table);
-            orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao
+            orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao
 
             double totalVat = (double)orderService.CalculateTotalVat(orderItems);
             receipt.TotalVat = totalVat;

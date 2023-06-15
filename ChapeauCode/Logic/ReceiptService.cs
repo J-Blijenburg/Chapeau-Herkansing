@@ -11,9 +11,11 @@ namespace Logic
     public class ReceiptService
     {
         ReceiptDAO receiptDAO;
+        OrderDAO orderDAO;  
         public ReceiptService()
         {
             this.receiptDAO = new ReceiptDAO();
+            this.orderDAO = new OrderDAO();
         }
 
         public Receipt GetReceipt(Table table, Employee employee)
@@ -30,7 +32,10 @@ namespace Logic
             {
                   new Exception(exception.Message);
             }
-         
+        }
+        public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
+        {
+            return orderDAO.GetOrderedItemsByReceiptId(receiptId);
         }
 
     }
