@@ -319,7 +319,8 @@ namespace DAL
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")";
+                           "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")" +
+                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 

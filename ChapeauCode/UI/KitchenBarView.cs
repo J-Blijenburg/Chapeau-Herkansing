@@ -99,13 +99,12 @@ namespace UI
             //filling the listview with the order items
             foreach (OrderItem orderItem in orderItems)
             {
-                //calculating the time difference between the order time and the current time
-                TimeSpan timeDiff = Subtract(orderItem.Order.OrderDateTime);
+                
 
                 ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
                 listViewItem.SubItems.Add(orderItem.Comment.ToString());
                 listViewItem.SubItems.Add(orderItem.Quantity.ToString());
-                listViewItem.SubItems.Add($"{timeDiff.Hours:00}:{timeDiff.Minutes:00}:{timeDiff.Seconds:00}");
+                listViewItem.SubItems.Add(orderItem.Order.GetOrderItemWaitTime());
                 listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
                 listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
                 listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
@@ -192,14 +191,6 @@ namespace UI
         private void btnServed_Click(object sender, EventArgs e)
         {
             UpdateOrderStatus(Model.OrderItemStatus.Delivered);
-        }
-
-        // method to calculate the time difference between the current time and the time the order was placed
-        private TimeSpan Subtract(DateTime value)
-        {
-            DateTime dateNow = DateTime.Now;
-            TimeSpan diff = dateNow.Subtract(value);
-            return diff;
         }
 
         private void rdbFinishedOrders_CheckedChanged(object sender, EventArgs e)

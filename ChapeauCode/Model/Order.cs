@@ -35,5 +35,14 @@ namespace Model
         {
               return OrderItems;
         }
+
+        //calculating the time difference between the order time and the current time
+        public string GetOrderItemWaitTime()
+        {
+
+                DateTime dateNow = DateTime.Now;
+                TimeSpan waitTime = dateNow.Subtract(OrderDateTime);
+                return waitTime.ToString(@"hh\:mm\:ss");
+        }
     }
 }
