@@ -16,16 +16,22 @@ namespace Logic
             this.receiptDAO = new ReceiptDAO();
         }
 
-        public Receipt GetReceipt(Table table)
+        public Receipt GetReceipt(Table table, Employee employee)
         {
-            return receiptDAO.GetReceiptByTable(table);
+            return receiptDAO.GetReceiptByTable(table, employee); //todo set try catch
         }
-        public Receipt UpdateReceipt(Table table)
+        public void UpdateReceipt(Receipt receipt)
         {
-            return receiptDAO.UpdateReceipt(table);
+            try
+            {
+                receiptDAO.UpdateReceiptPaid(receipt);
+            }
+            catch (Exception exception)
+            {
+                  new Exception(exception.Message);
+            }
+         
         }
-
-
 
     }
 }

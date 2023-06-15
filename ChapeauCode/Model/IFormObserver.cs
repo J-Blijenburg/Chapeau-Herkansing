@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public enum PaymentMethod
+    public interface IFormObserver
     {
-        NoPayment = 1,Cash,Pin,CreditCard
-    } 
+        bool Update() => false;
+    }
 }

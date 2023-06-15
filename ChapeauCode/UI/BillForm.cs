@@ -11,14 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
+using UI.CustomTools;
 
 namespace UI
 {
-    public partial class Bill : Form
+    public partial class BillForm : Form
     {
-        //Variables for passed objects needed for order identivication
         private Table table;
         private Employee logedinEmployee;
         private OrderService orderService = new OrderService();
@@ -26,7 +24,8 @@ namespace UI
         private PaymentMethod paymentmethod;
         private List<OrderItem> orderItems;
         private Receipt receipt;
-        public Bill(Table table, Employee currentEmployee)
+        RoundedButton clickedButton;
+        public BillForm(Table table, Employee currentEmployee)
         {
             InitializeComponent();
             this.table = table;
@@ -49,26 +48,24 @@ namespace UI
         }
         private void LoadListviewStyle() { Columns(); Style(); }
 
-
-
-
         public void LoadOrders()
         {
             LoadListviewStyle();
+            receipt = receiptService.GetReceipt(table, logedinEmployee);
+
             //orderItems = orderService.GetOrderdItems(table);
-
-            // maybe later nodig
-            receipt = receiptService.GetReceipt(this.table);
-
-                    
-            orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId);
+            orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao
 
             double totalVat = (double)orderService.CalculateTotalVat(orderItems);
             receipt.TotalVat = totalVat;
-            Debug.WriteLine(totalVat);
+            receipt.LowVatPrice = (double)orderService.CalculateLowVat(orderItems);
+            receipt.HighVatPrice = (double)orderService.CalculateHighVat(orderItems);
+
             double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
             LblTotalNumber.Text = $"€ {totalPrice.ToString("N2")}";
             LblVatNumber.Text = $"€ {totalVat.ToString("N2")}";
+            LblOrderPriceNumber.Text = $"€ {totalPrice.ToString("N2")}";
+
 
             foreach (OrderItem orderitem in orderItems)
             {
@@ -90,7 +87,7 @@ namespace UI
         private void Button_Click(object sender, EventArgs e)
         {
             // Identify which button triggered the event
-            Button clickedButton = (Button) sender;
+            clickedButton = (RoundedButton)sender;
 
             // Perform the desired action based on the clicked button
             if (clickedButton == BtnCash)
@@ -101,19 +98,34 @@ namespace UI
             {
                 paymentmethod = PaymentMethod.Pin;
             }
-            else if (clickedButton == BtnVisa)
+            else
             {
                 paymentmethod = PaymentMethod.CreditCard;
+                clickedButton = BtnVisa;
             }
+            SetSelectedButtonColor(clickedButton);
+        }
+        private void SetSelectedButtonColor(RoundedButton button)
+        {
+            BtnCash.BackColor = Color.LightGray;
+            BtnDebit.BackColor = Color.LightGray;
+            BtnVisa.BackColor = Color.LightGray;
+            button.BackColor = ColorTranslator.FromHtml("#ffb347");
+
         }
 
         private void BtnProceedToPayment_Click(object sender, EventArgs e)
         {
+            if (clickedButton == null)
+            {
+                MessageBox.Show("You need to choose a payment method");
+                return;
+            }
 
-            this.Close(); 
-            PaymentOverView pov = new PaymentOverView(receipt,orderItems);
+            receipt.Payment.PaymentMethod = paymentmethod;
+            PaymentOverView pov = new PaymentOverView(receipt, orderItems);
+            this.Hide();
             pov.ShowDialog();
-
         }
     }
 }

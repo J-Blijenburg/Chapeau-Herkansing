@@ -23,9 +23,9 @@ namespace UI
 
         private void BtnAddComment_Click(object sender, EventArgs e)
         {
-            this.Close();
-            CommentInput commandinput = new CommentInput(receipt);
-            commandinput.ShowDialog();
+            this.Hide();
+            CommentInput commentinput = new CommentInput(receipt);
+            commentinput.ShowDialog();
         }
 
         private void BtContinueWithPayment_Click(object sender, EventArgs e)

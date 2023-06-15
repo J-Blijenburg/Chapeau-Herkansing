@@ -33,6 +33,7 @@
             TbComment = new RichTextBox();
             BtConfirm = new CustomTools.RoundedButton();
             BtnBack = new CustomTools.RoundedButton();
+            lblSuccesMessage = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -79,11 +80,23 @@
             BtnBack.UseVisualStyleBackColor = false;
             BtnBack.Click += BtnBack_Click;
             // 
+            // lblSuccesMessage
+            // 
+            lblSuccesMessage.AutoSize = true;
+            lblSuccesMessage.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            lblSuccesMessage.ForeColor = Color.FromArgb(138, 210, 176);
+            lblSuccesMessage.Location = new Point(25, 553);
+            lblSuccesMessage.Name = "lblSuccesMessage";
+            lblSuccesMessage.Size = new Size(361, 56);
+            lblSuccesMessage.TabIndex = 13;
+            lblSuccesMessage.Text = "The comment has been saved!\r\nPlease go back to continue payment.";
+            // 
             // CommentInput
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(398, 697);
+            Controls.Add(lblSuccesMessage);
             Controls.Add(BtnBack);
             Controls.Add(BtConfirm);
             Controls.Add(TbComment);
@@ -92,6 +105,7 @@
             Text = " ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -100,5 +114,6 @@
         private RichTextBox TbComment;
         private CustomTools.RoundedButton BtConfirm;
         private CustomTools.RoundedButton BtnBack;
+        private Label lblSuccesMessage;
     }
 }

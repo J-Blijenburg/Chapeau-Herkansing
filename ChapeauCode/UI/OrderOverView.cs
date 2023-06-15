@@ -246,7 +246,7 @@ namespace UI
             {
                 if (ListViewOrderdItems.Items.Count != 0)
                 {
-                    Receipt receipt = receiptService.GetReceipt(table);
+                    Receipt receipt = receiptService.GetReceipt(table, currentEmployee);
                     Order order = CreateOrder(receipt, employee);
 
                     foreach (ListViewItem item in ListViewOrderdItems.Items)

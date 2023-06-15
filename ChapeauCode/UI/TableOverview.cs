@@ -100,7 +100,7 @@ namespace UI
         }
         private void UpdateOrderItemsListView()
         {
-            Receipt receipt = receiptService.GetReceipt(this.table);
+            Receipt receipt = receiptService.GetReceipt(this.table, currentEmployee);
             var orderItems = orderService.GetOrderdItemsByReceiptId(receipt.ReceiptId);
             FillListViewOrderedItems(ListViewOrderdItems, orderItems);
         }
@@ -156,8 +156,8 @@ namespace UI
 
         private void BtnPayment_Click(object sender, EventArgs e)
         {
-            this.Close();
-            Bill bill = new Bill(table, currentEmployee);
+            this.Hide();
+            BillForm bill = new BillForm(table, currentEmployee);
             bill.ShowDialog();
 
         }

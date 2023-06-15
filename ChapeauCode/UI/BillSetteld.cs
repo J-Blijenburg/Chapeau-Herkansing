@@ -27,15 +27,15 @@ namespace UI
 
         private void LoadData()
         {
-            LblAmontPaidNummer.Text = (receipt.TotalPrice + receipt.Tip).ToString();
             LblOrderPriceNummer.Text = receipt.TotalPrice.ToString();
-            LblVatNummer.Text = receipt.TotalVat.ToString();
+            LblAmontPaidNummer.Text = (receipt.TotalPrice + receipt.Tip).ToString();
             LblTipAmountNummer.Text = receipt.Tip.ToString();
+            LblVatNummer.Text = receipt.TotalVat.ToString();
             receipt.Payment.IsPaid = true;
         }
-        //update the receid in tha database
+        //update the receipt in the database
         private void UpdateReceipt() {
-            receiptService.UpdateReceipt(receipt.Table);
+            receiptService.UpdateReceipt(receipt);
         }
     }
 }
