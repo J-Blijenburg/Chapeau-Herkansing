@@ -64,19 +64,19 @@
             LblTableNumber.AutoSize = true;
             LblTableNumber.Font = new Font("Microsoft Sans Serif", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
             LblTableNumber.ForeColor = Color.FromArgb(196, 196, 196);
-            LblTableNumber.Location = new Point(139, 14);
-            LblTableNumber.Margin = new Padding(2, 0, 2, 0);
+            LblTableNumber.Location = new Point(199, 23);
             LblTableNumber.Name = "LblTableNumber";
-            LblTableNumber.Size = new Size(153, 33);
+            LblTableNumber.Size = new Size(224, 52);
             LblTableNumber.TabIndex = 10;
             LblTableNumber.Text = "Table #10";
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(111, 23);
+            pictureBox1.Location = new Point(113, 17);
+            pictureBox1.Margin = new Padding(4, 5, 4, 5);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(82, 57);
+            pictureBox1.Size = new Size(79, 63);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
@@ -85,10 +85,11 @@
             // 
             ListViewOrderdItems.FullRowSelect = true;
             ListViewOrderdItems.GridLines = true;
-            ListViewOrderdItems.Location = new Point(6, 12);
+            ListViewOrderdItems.Location = new Point(9, 20);
+            ListViewOrderdItems.Margin = new Padding(4, 5, 4, 5);
             ListViewOrderdItems.MultiSelect = false;
             ListViewOrderdItems.Name = "ListViewOrderdItems";
-            ListViewOrderdItems.Size = new Size(362, 179);
+            ListViewOrderdItems.Size = new Size(515, 296);
             ListViewOrderdItems.TabIndex = 0;
             ListViewOrderdItems.UseCompatibleStateImageBehavior = false;
             ListViewOrderdItems.View = View.Details;
@@ -96,9 +97,11 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(ListViewOrderdItems);
-            groupBox1.Location = new Point(16, 434);
+            groupBox1.Location = new Point(23, 723);
+            groupBox1.Margin = new Padding(4, 5, 4, 5);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(374, 197);
+            groupBox1.Padding = new Padding(4, 5, 4, 5);
+            groupBox1.Size = new Size(534, 328);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             // 
@@ -106,9 +109,10 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(19, 416);
+            label1.Location = new Point(27, 693);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(54, 20);
+            label1.Size = new Size(81, 29);
             label1.TabIndex = 15;
             label1.Text = "Order";
             // 
@@ -117,18 +121,20 @@
             PnlDinner.AutoScroll = true;
             PnlDinner.Controls.Add(LblDinner);
             PnlDinner.Controls.Add(ListDinner);
-            PnlDinner.Location = new Point(16, 138);
+            PnlDinner.Location = new Point(23, 230);
+            PnlDinner.Margin = new Padding(4, 5, 4, 5);
             PnlDinner.Name = "PnlDinner";
-            PnlDinner.Size = new Size(373, 275);
+            PnlDinner.Size = new Size(533, 458);
             PnlDinner.TabIndex = 16;
             // 
             // LblDinner
             // 
             LblDinner.AutoSize = true;
             LblDinner.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDinner.Location = new Point(158, 13);
+            LblDinner.Location = new Point(226, 22);
+            LblDinner.Margin = new Padding(4, 0, 4, 0);
             LblDinner.Name = "LblDinner";
-            LblDinner.Size = new Size(45, 15);
+            LblDinner.Size = new Size(69, 25);
             LblDinner.TabIndex = 0;
             LblDinner.Text = "Dinner";
             // 
@@ -136,10 +142,11 @@
             // 
             ListDinner.FullRowSelect = true;
             ListDinner.HeaderStyle = ColumnHeaderStyle.None;
-            ListDinner.Location = new Point(6, 43);
+            ListDinner.Location = new Point(9, 72);
+            ListDinner.Margin = new Padding(4, 5, 4, 5);
             ListDinner.MultiSelect = false;
             ListDinner.Name = "ListDinner";
-            ListDinner.Size = new Size(362, 212);
+            ListDinner.Size = new Size(515, 351);
             ListDinner.TabIndex = 1;
             ListDinner.UseCompatibleStateImageBehavior = false;
             ListDinner.View = View.Details;
@@ -149,18 +156,20 @@
             // 
             PnlLunch.Controls.Add(LblLunch);
             PnlLunch.Controls.Add(ListLunch);
-            PnlLunch.Location = new Point(16, 138);
+            PnlLunch.Location = new Point(23, 230);
+            PnlLunch.Margin = new Padding(4, 5, 4, 5);
             PnlLunch.Name = "PnlLunch";
-            PnlLunch.Size = new Size(373, 275);
+            PnlLunch.Size = new Size(533, 458);
             PnlLunch.TabIndex = 17;
             // 
             // LblLunch
             // 
             LblLunch.AutoSize = true;
             LblLunch.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblLunch.Location = new Point(158, 13);
+            LblLunch.Location = new Point(226, 22);
+            LblLunch.Margin = new Padding(4, 0, 4, 0);
             LblLunch.Name = "LblLunch";
-            LblLunch.Size = new Size(40, 15);
+            LblLunch.Size = new Size(63, 25);
             LblLunch.TabIndex = 0;
             LblLunch.Text = "Lunch";
             // 
@@ -168,10 +177,11 @@
             // 
             ListLunch.FullRowSelect = true;
             ListLunch.HeaderStyle = ColumnHeaderStyle.None;
-            ListLunch.Location = new Point(6, 43);
+            ListLunch.Location = new Point(9, 72);
+            ListLunch.Margin = new Padding(4, 5, 4, 5);
             ListLunch.MultiSelect = false;
             ListLunch.Name = "ListLunch";
-            ListLunch.Size = new Size(362, 212);
+            ListLunch.Size = new Size(515, 351);
             ListLunch.TabIndex = 1;
             ListLunch.UseCompatibleStateImageBehavior = false;
             ListLunch.View = View.Details;
@@ -182,18 +192,20 @@
             PnlDrinks.AutoScroll = true;
             PnlDrinks.Controls.Add(LblDrinks);
             PnlDrinks.Controls.Add(ListDrinks);
-            PnlDrinks.Location = new Point(16, 138);
+            PnlDrinks.Location = new Point(23, 230);
+            PnlDrinks.Margin = new Padding(4, 5, 4, 5);
             PnlDrinks.Name = "PnlDrinks";
-            PnlDrinks.Size = new Size(373, 275);
+            PnlDrinks.Size = new Size(533, 458);
             PnlDrinks.TabIndex = 20;
             // 
             // LblDrinks
             // 
             LblDrinks.AutoSize = true;
             LblDrinks.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            LblDrinks.Location = new Point(158, 13);
+            LblDrinks.Location = new Point(226, 22);
+            LblDrinks.Margin = new Padding(4, 0, 4, 0);
             LblDrinks.Name = "LblDrinks";
-            LblDrinks.Size = new Size(43, 15);
+            LblDrinks.Size = new Size(66, 25);
             LblDrinks.TabIndex = 0;
             LblDrinks.Text = "Drinks";
             // 
@@ -201,10 +213,11 @@
             // 
             ListDrinks.FullRowSelect = true;
             ListDrinks.HeaderStyle = ColumnHeaderStyle.None;
-            ListDrinks.Location = new Point(6, 43);
+            ListDrinks.Location = new Point(9, 72);
+            ListDrinks.Margin = new Padding(4, 5, 4, 5);
             ListDrinks.MultiSelect = false;
             ListDrinks.Name = "ListDrinks";
-            ListDrinks.Size = new Size(362, 212);
+            ListDrinks.Size = new Size(515, 351);
             ListDrinks.TabIndex = 1;
             ListDrinks.UseCompatibleStateImageBehavior = false;
             ListDrinks.View = View.Details;
@@ -217,10 +230,9 @@
             BtnDrinks.FlatAppearance.BorderSize = 0;
             BtnDrinks.FlatStyle = FlatStyle.Flat;
             BtnDrinks.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
-            BtnDrinks.Location = new Point(300, 83);
-            BtnDrinks.Margin = new Padding(2, 2, 2, 2);
+            BtnDrinks.Location = new Point(429, 138);
             BtnDrinks.Name = "BtnDrinks";
-            BtnDrinks.Size = new Size(90, 50);
+            BtnDrinks.Size = new Size(129, 83);
             BtnDrinks.TabIndex = 24;
             BtnDrinks.Text = "Drinks\r\n Not Available";
             BtnDrinks.UseVisualStyleBackColor = false;
@@ -233,10 +245,9 @@
             BtnDinner.FlatAppearance.BorderSize = 0;
             BtnDinner.FlatStyle = FlatStyle.Flat;
             BtnDinner.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
-            BtnDinner.Location = new Point(158, 83);
-            BtnDinner.Margin = new Padding(2, 2, 2, 2);
+            BtnDinner.Location = new Point(226, 138);
             BtnDinner.Name = "BtnDinner";
-            BtnDinner.Size = new Size(90, 50);
+            BtnDinner.Size = new Size(129, 83);
             BtnDinner.TabIndex = 25;
             BtnDinner.Text = "Dinner \r\nNot Available";
             BtnDinner.UseVisualStyleBackColor = false;
@@ -249,10 +260,9 @@
             BtnLunch.FlatAppearance.BorderSize = 0;
             BtnLunch.FlatStyle = FlatStyle.Flat;
             BtnLunch.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
-            BtnLunch.Location = new Point(16, 83);
-            BtnLunch.Margin = new Padding(2, 2, 2, 2);
+            BtnLunch.Location = new Point(23, 138);
             BtnLunch.Name = "BtnLunch";
-            BtnLunch.Size = new Size(90, 50);
+            BtnLunch.Size = new Size(129, 83);
             BtnLunch.TabIndex = 26;
             BtnLunch.Text = "Lunch\r\nNot available\r\n";
             BtnLunch.UseVisualStyleBackColor = false;
@@ -263,10 +273,9 @@
             BtnAddCommentOrderItem.BackColor = Color.FromArgb(196, 196, 196);
             BtnAddCommentOrderItem.FlatAppearance.BorderSize = 0;
             BtnAddCommentOrderItem.FlatStyle = FlatStyle.Flat;
-            BtnAddCommentOrderItem.Location = new Point(16, 643);
-            BtnAddCommentOrderItem.Margin = new Padding(2, 2, 2, 2);
+            BtnAddCommentOrderItem.Location = new Point(23, 1072);
             BtnAddCommentOrderItem.Name = "BtnAddCommentOrderItem";
-            BtnAddCommentOrderItem.Size = new Size(104, 35);
+            BtnAddCommentOrderItem.Size = new Size(149, 58);
             BtnAddCommentOrderItem.TabIndex = 27;
             BtnAddCommentOrderItem.Text = "Comment";
             BtnAddCommentOrderItem.UseVisualStyleBackColor = false;
@@ -278,10 +287,9 @@
             BtnRemoveOrderItem.FlatAppearance.BorderSize = 0;
             BtnRemoveOrderItem.FlatStyle = FlatStyle.Flat;
             BtnRemoveOrderItem.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnRemoveOrderItem.Location = new Point(146, 644);
-            BtnRemoveOrderItem.Margin = new Padding(2, 2, 2, 2);
+            BtnRemoveOrderItem.Location = new Point(209, 1073);
             BtnRemoveOrderItem.Name = "BtnRemoveOrderItem";
-            BtnRemoveOrderItem.Size = new Size(35, 33);
+            BtnRemoveOrderItem.Size = new Size(50, 55);
             BtnRemoveOrderItem.TabIndex = 28;
             BtnRemoveOrderItem.Text = "-";
             BtnRemoveOrderItem.TextAlign = ContentAlignment.TopCenter;
@@ -294,10 +302,9 @@
             BtnAddOrder.FlatAppearance.BorderSize = 0;
             BtnAddOrder.FlatStyle = FlatStyle.Flat;
             BtnAddOrder.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnAddOrder.Location = new Point(244, 636);
-            BtnAddOrder.Margin = new Padding(2, 2, 2, 2);
+            BtnAddOrder.Location = new Point(349, 1060);
             BtnAddOrder.Name = "BtnAddOrder";
-            BtnAddOrder.Size = new Size(145, 50);
+            BtnAddOrder.Size = new Size(207, 83);
             BtnAddOrder.TabIndex = 29;
             BtnAddOrder.Text = "ADD Order";
             BtnAddOrder.UseVisualStyleBackColor = false;
@@ -308,10 +315,9 @@
             LblEmployee.AutoEllipsis = true;
             LblEmployee.BackColor = Color.FromArgb(255, 179, 71);
             LblEmployee.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            LblEmployee.Location = new Point(303, 14);
-            LblEmployee.Margin = new Padding(2, 0, 2, 0);
+            LblEmployee.Location = new Point(433, 23);
             LblEmployee.Name = "LblEmployee";
-            LblEmployee.Size = new Size(86, 40);
+            LblEmployee.Size = new Size(123, 67);
             LblEmployee.TabIndex = 30;
             LblEmployee.Text = "Employee";
             LblEmployee.TextAlign = ContentAlignment.MiddleCenter;
@@ -322,7 +328,8 @@
             BtnAddQuantity.FlatAppearance.BorderSize = 0;
             BtnAddQuantity.FlatStyle = FlatStyle.Flat;
             BtnAddQuantity.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnAddQuantity.Location = new Point(264, 1073);
+            BtnAddQuantity.Location = new Point(268, 1073);
+            BtnAddQuantity.Margin = new Padding(4, 5, 4, 5);
             BtnAddQuantity.Name = "BtnAddQuantity";
             BtnAddQuantity.Size = new Size(50, 55);
             BtnAddQuantity.TabIndex = 31;
@@ -338,6 +345,7 @@
             BtnCancelOrder.FlatStyle = FlatStyle.Flat;
             BtnCancelOrder.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             BtnCancelOrder.Location = new Point(-26, 17);
+            BtnCancelOrder.Margin = new Padding(4, 5, 4, 5);
             BtnCancelOrder.Name = "BtnCancelOrder";
             BtnCancelOrder.Size = new Size(131, 63);
             BtnCancelOrder.TabIndex = 32;
@@ -347,7 +355,7 @@
             // 
             // OrderOverView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(569, 1162);
@@ -368,7 +376,6 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2, 2, 2, 2);
             MaximizeBox = false;
             Name = "OrderOverView";
             StartPosition = FormStartPosition.CenterScreen;
