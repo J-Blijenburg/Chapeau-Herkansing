@@ -27,13 +27,12 @@ namespace UI
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            RefreshListView();
+            if (loggedInEmployee != null)
+            {
+                CheckWhichTypeOfOrdersToGet();
+            }
         }
 
-        private void RefreshListView()
-        {
-            CheckWhichTypeOfOrdersToGet();
-        }
 
         //gets the items based on the selected radio button
         private void CheckWhichTypeOfOrdersToGet()
@@ -99,12 +98,14 @@ namespace UI
             //filling the listview with the order items
             foreach (OrderItem orderItem in orderItems)
             {
-                
+
 
                 ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
+                listViewItem.SubItems.Add(orderItem.Order.Receipt.Table.GetNumber().ToString());
                 listViewItem.SubItems.Add(orderItem.Comment.ToString());
                 listViewItem.SubItems.Add(orderItem.Quantity.ToString());
                 listViewItem.SubItems.Add(orderItem.Order.GetOrderItemWaitTime());
+                listViewItem.SubItems.Add(orderItem.Order.OrderDateTime.ToString("H:mm:ss"));
                 listViewItem.SubItems.Add(orderItem.MenuItem.Name.ToString());
                 listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
                 listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
@@ -115,57 +116,34 @@ namespace UI
 
         }
 
+        
         private void lstViewOrders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection selectedItems = lstViewOrders.SelectedItems;
-
             lstViewSelectedOrder.Items.Clear();
-
-            //filling the listview with the selected order item from the listview with all order items
-            foreach (ListViewItem selectedItem in selectedItems)
+            foreach (ListViewItem selectedItem in lstViewOrders.SelectedItems)
             {
-                ListViewItem listViewItem;
-                int columnIntegerOrderItemId = GetColumnIndex(lstViewOrders, "OrderItemID");
-                int columnIntegerOrderId = GetColumnIndex(lstViewOrders, "OrderId");
-                int columnIntegerStatus = GetColumnIndex(lstViewOrders, "Status");
-
-                listViewItem = new ListViewItem(selectedItem.SubItems[columnIntegerOrderItemId].Text);
-                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerStatus].Text);
-                listViewItem.SubItems.Add(selectedItem.SubItems[columnIntegerOrderId].Text);
-
-                lstViewSelectedOrder.Items.Add(listViewItem);
-            }
-        }
-
-        //method by jens
-        private int GetColumnIndex(ListView listView, string columnName)
-        {
-            int index = 0;
-            foreach (ColumnHeader column in listView.Columns)
-            {
-                if (column.Text == columnName)
+                if (selectedItem.Tag is OrderItem orderItem)
                 {
-                    return index;
+                    ListViewItem listViewItem = new ListViewItem(orderItem.OrderItemId.ToString());
+                    listViewItem.SubItems.Add(orderItem.OrderItemStatus.ToString());
+                    listViewItem.SubItems.Add(orderItem.Order.OrderId.ToString());
+
+                    lstViewSelectedOrder.Items.Add(listViewItem);
+                    
                 }
-                index++;
             }
-            return -1;
         }
-
-
 
         private void UpdateOrderStatus(OrderItemStatus status)
         {
             //checks if an order is selected and updates the status of the order item to the selected status 
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
-                int columnIntegerOrderId = GetColumnIndex(lstViewSelectedOrder, "OrderId");
-                int columnIntegerOrderItemId = GetColumnIndex(lstViewSelectedOrder, "OrderItemId");
+                // Get the selected order item
+                ListViewItem selectedItem = lstViewOrders.SelectedItems[0];
+                OrderItem orderItem = (OrderItem)selectedItem.Tag;
 
-                int orderId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
-                int orderItemId = Convert.ToInt32(lstViewSelectedOrder.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
-
-                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
+                orderService.UpdateOrderItemStatus(orderItem.Order.OrderId, status, orderItem.OrderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
                 CheckWhichTypeOfOrdersToGet();
@@ -218,11 +196,11 @@ namespace UI
         private void btnSignOff_Click(object sender, EventArgs e)
         {
             //signs off the logged in employee and closes the current form before opening the login form
+            timer.Stop();
             loggedInEmployee = null;
             Login loginForm = new Login();
-            this.Hide();
-            loginForm.ShowDialog();
             this.Close();
+            loginForm.Show();
         }
     }
 }
