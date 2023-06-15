@@ -103,7 +103,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
-        public void UpdateReceiptTable (Receipt receipt) { // nog testen 
+        public void UpdateReceiptTable (Receipt receipt) { //tijdelijk
 
             string updateReceiptQuery = @"
              UPDATE Receipt
@@ -127,7 +127,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateReceiptQuery, sqlParameters);
         }
-        public void UpdatePaymentTables (Receipt receipt) // nog aanpassen en testen
+        public void UpdatePaymentTables (Receipt receipt) //tijdelijk
         {
             string updatePaymentQuery = @"
              UPDATE Payment, 

@@ -145,7 +145,7 @@ namespace UI
             {
                 this.tip = ConvertValue(LblChangeNumber);
                 receipt.Tip = tip;
-                LblChangeNumber.Text = 0.ToString(); // magic number?
+                LblChangeNumber.Text = 0.ToString();
             }
         }
 
