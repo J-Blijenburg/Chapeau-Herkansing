@@ -43,9 +43,9 @@
             // employeeNameLbl
             // 
             employeeNameLbl.AutoSize = true;
-            employeeNameLbl.Location = new Point(334, 18);
+            employeeNameLbl.Location = new Point(292, 14);
             employeeNameLbl.Name = "employeeNameLbl";
-            employeeNameLbl.Size = new Size(50, 20);
+            employeeNameLbl.Size = new Size(38, 15);
             employeeNameLbl.TabIndex = 28;
             employeeNameLbl.Text = "label5";
             // 
@@ -53,8 +53,9 @@
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(3, 2);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(125, 62);
+            pictureBox1.Size = new Size(109, 46);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 27;
             pictureBox1.TabStop = false;
@@ -63,9 +64,10 @@
             // 
             backBtn.BackColor = Color.FromArgb(255, 179, 71);
             backBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
-            backBtn.Location = new Point(3, 609);
+            backBtn.Location = new Point(3, 457);
+            backBtn.Margin = new Padding(3, 2, 3, 2);
             backBtn.Name = "backBtn";
-            backBtn.Size = new Size(93, 36);
+            backBtn.Size = new Size(81, 27);
             backBtn.TabIndex = 26;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = false;
@@ -75,9 +77,9 @@
             // 
             tableNumberLbl.AutoSize = true;
             tableNumberLbl.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point);
-            tableNumberLbl.Location = new Point(144, 189);
+            tableNumberLbl.Location = new Point(126, 142);
             tableNumberLbl.Name = "tableNumberLbl";
-            tableNumberLbl.Size = new Size(128, 50);
+            tableNumberLbl.Size = new Size(104, 41);
             tableNumberLbl.TabIndex = 25;
             tableNumberLbl.Text = "label1";
             // 
@@ -85,9 +87,10 @@
             // 
             goToTableBtn.BackColor = Color.White;
             goToTableBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            goToTableBtn.Location = new Point(100, 428);
+            goToTableBtn.Location = new Point(88, 321);
+            goToTableBtn.Margin = new Padding(3, 2, 3, 2);
             goToTableBtn.Name = "goToTableBtn";
-            goToTableBtn.Size = new Size(188, 43);
+            goToTableBtn.Size = new Size(173, 40);
             goToTableBtn.TabIndex = 24;
             goToTableBtn.Text = "Go to table";
             goToTableBtn.UseVisualStyleBackColor = false;
@@ -97,9 +100,10 @@
             // 
             reservedBtn.BackColor = Color.FromArgb(196, 196, 196);
             reservedBtn.FlatStyle = FlatStyle.Flat;
-            reservedBtn.Location = new Point(282, 322);
+            reservedBtn.Location = new Point(247, 242);
+            reservedBtn.Margin = new Padding(3, 2, 3, 2);
             reservedBtn.Name = "reservedBtn";
-            reservedBtn.Size = new Size(102, 48);
+            reservedBtn.Size = new Size(89, 36);
             reservedBtn.TabIndex = 23;
             reservedBtn.Text = "Reserved";
             reservedBtn.UseVisualStyleBackColor = false;
@@ -108,9 +112,10 @@
             // 
             occupiedBtn.BackColor = Color.FromArgb(255, 179, 71);
             occupiedBtn.FlatStyle = FlatStyle.Flat;
-            occupiedBtn.Location = new Point(144, 322);
+            occupiedBtn.Location = new Point(126, 242);
+            occupiedBtn.Margin = new Padding(3, 2, 3, 2);
             occupiedBtn.Name = "occupiedBtn";
-            occupiedBtn.Size = new Size(102, 48);
+            occupiedBtn.Size = new Size(89, 36);
             occupiedBtn.TabIndex = 22;
             occupiedBtn.Text = "Occupied";
             occupiedBtn.UseVisualStyleBackColor = false;
@@ -120,18 +125,19 @@
             freeBtn.BackColor = Color.FromArgb(138, 210, 176);
             freeBtn.BackgroundImageLayout = ImageLayout.None;
             freeBtn.FlatStyle = FlatStyle.Flat;
-            freeBtn.Location = new Point(12, 322);
+            freeBtn.Location = new Point(10, 242);
+            freeBtn.Margin = new Padding(3, 2, 3, 2);
             freeBtn.Name = "freeBtn";
-            freeBtn.Size = new Size(102, 48);
+            freeBtn.Size = new Size(89, 36);
             freeBtn.TabIndex = 21;
             freeBtn.Text = "Free";
             freeBtn.UseVisualStyleBackColor = false;
             // 
             // TableStatusOverview
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(396, 689);
+            ClientSize = new Size(398, 697);
             Controls.Add(employeeNameLbl);
             Controls.Add(pictureBox1);
             Controls.Add(backBtn);
@@ -140,7 +146,9 @@
             Controls.Add(reservedBtn);
             Controls.Add(occupiedBtn);
             Controls.Add(freeBtn);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "TableStatusOverview";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "TableStatus";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

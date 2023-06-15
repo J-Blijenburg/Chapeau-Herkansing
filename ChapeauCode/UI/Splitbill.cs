@@ -40,13 +40,14 @@ namespace UI
 
         private void BtnPay_Click(object sender, EventArgs e)
         {
-          double? totalAmountPaid  = double.Parse(TbInputAmountPaid.Text);
-            if (totalAmountPaid > totalAmount) {
+            double? totalAmountPaid = double.Parse(TbInputAmountPaid.Text);
+            if (totalAmountPaid > totalAmount)
+            {
                 isPaid = true;
                 this.Close();
             }
-               
-        
+
+
         }
 
 

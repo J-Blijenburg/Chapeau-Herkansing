@@ -17,11 +17,10 @@ namespace UI
             UpdateLoginButton();
             passwordTextbox.UseSystemPasswordChar = true;
         }
-
         private void loginBtn_Click(object sender, EventArgs e)
         {
             string employeeNumber = userNameTextBox.Text;
-            string password = passwordTextbox.Text;  
+            string password = passwordTextbox.Text;
 
             Employee loggedInEmployee = employeeService.ValidateEmployeeLogin(employeeNumber, password);
 
@@ -76,17 +75,17 @@ namespace UI
         }
         private void userNameTextBox_TextChanged(object sender, EventArgs e)
         {
-                UpdateLoginButton();
+            UpdateLoginButton();
         }
 
         private void passwordTextbox_TextChanged(object sender, EventArgs e)
         {
-                UpdateLoginButton();
+            UpdateLoginButton();
         }
 
         private void forgotPasswordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-                managerContactMsgLbl.Visible = true;    
+            managerContactMsgLbl.Visible = true;
         }
     }
 }

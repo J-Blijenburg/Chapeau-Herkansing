@@ -57,7 +57,7 @@ namespace UI
             CommentQuestion Comment = new CommentQuestion(receipt);
             this.Hide();
             Comment.ShowDialog();
-            
+
         }
 
         private void CheckPayment()
@@ -120,12 +120,12 @@ namespace UI
             {
                 MessageBox.Show($"A negative value {paidAmount} cannot be entered"); return;
             }
-           
+
             if (paidAmount < totalPrice)
             {
                 remaningBalance = totalPrice - paidAmount;
                 MessageBox.Show($"The remaining balance is €{remaningBalance}"); return;
-              
+
             }
             LblChangeNumber.Text = (paidAmount - totalPrice).ToString();
         }

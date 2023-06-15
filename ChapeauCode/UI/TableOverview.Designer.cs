@@ -50,7 +50,7 @@
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Margin = new Padding(2, 2, 2, 2);
+            pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(131, 66);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -65,7 +65,7 @@
             BtnLunch.FlatStyle = FlatStyle.Flat;
             BtnLunch.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnLunch.Location = new Point(16, 83);
-            BtnLunch.Margin = new Padding(2, 2, 2, 2);
+            BtnLunch.Margin = new Padding(2);
             BtnLunch.Name = "BtnLunch";
             BtnLunch.Size = new Size(90, 50);
             BtnLunch.TabIndex = 1;
@@ -80,7 +80,7 @@
             BtnDinner.FlatStyle = FlatStyle.Flat;
             BtnDinner.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnDinner.Location = new Point(158, 83);
-            BtnDinner.Margin = new Padding(2, 2, 2, 2);
+            BtnDinner.Margin = new Padding(2);
             BtnDinner.Name = "BtnDinner";
             BtnDinner.Size = new Size(90, 50);
             BtnDinner.TabIndex = 2;
@@ -95,7 +95,7 @@
             BtnDrinks.FlatStyle = FlatStyle.Flat;
             BtnDrinks.Font = new Font("Segoe UI", 9F, FontStyle.Strikeout, GraphicsUnit.Point);
             BtnDrinks.Location = new Point(300, 83);
-            BtnDrinks.Margin = new Padding(2, 2, 2, 2);
+            BtnDrinks.Margin = new Padding(2);
             BtnDrinks.Name = "BtnDrinks";
             BtnDrinks.Size = new Size(90, 50);
             BtnDrinks.TabIndex = 3;
@@ -193,7 +193,7 @@
             BtnPayment.FlatAppearance.BorderSize = 20;
             BtnPayment.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             BtnPayment.Location = new Point(245, 636);
-            BtnPayment.Margin = new Padding(2, 2, 2, 2);
+            BtnPayment.Margin = new Padding(2);
             BtnPayment.Name = "BtnPayment";
             BtnPayment.Size = new Size(145, 50);
             BtnPayment.TabIndex = 11;
@@ -220,7 +220,8 @@
             Controls.Add(BtnLunch);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
+            MaximizeBox = false;
             Name = "TableOverview";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "TableOverview";

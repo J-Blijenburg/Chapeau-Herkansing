@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
-            BtnDrinks = new Button();
             userNameTextBox = new TextBox();
             passwordTextbox = new TextBox();
             label2 = new Label();
@@ -43,33 +42,21 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // BtnDrinks
-            // 
-            BtnDrinks.BackColor = Color.FromArgb(138, 210, 176);
-            BtnDrinks.FlatAppearance.BorderSize = 0;
-            BtnDrinks.FlatStyle = FlatStyle.Flat;
-            BtnDrinks.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnDrinks.Location = new Point(174, 732);
-            BtnDrinks.Margin = new Padding(2, 3, 2, 3);
-            BtnDrinks.Name = "BtnDrinks";
-            BtnDrinks.Size = new Size(103, 42);
-            BtnDrinks.TabIndex = 4;
-            BtnDrinks.Text = "Login";
-            BtnDrinks.UseVisualStyleBackColor = false;
-            // 
             // userNameTextBox
             // 
-            userNameTextBox.Location = new Point(192, 325);
+            userNameTextBox.Location = new Point(168, 244);
+            userNameTextBox.Margin = new Padding(3, 2, 3, 2);
             userNameTextBox.Name = "userNameTextBox";
-            userNameTextBox.Size = new Size(125, 27);
+            userNameTextBox.Size = new Size(151, 23);
             userNameTextBox.TabIndex = 5;
             userNameTextBox.TextChanged += userNameTextBox_TextChanged;
             // 
             // passwordTextbox
             // 
-            passwordTextbox.Location = new Point(192, 396);
+            passwordTextbox.Location = new Point(168, 297);
+            passwordTextbox.Margin = new Padding(3, 2, 3, 2);
             passwordTextbox.Name = "passwordTextbox";
-            passwordTextbox.Size = new Size(125, 27);
+            passwordTextbox.Size = new Size(151, 23);
             passwordTextbox.TabIndex = 6;
             passwordTextbox.TextChanged += passwordTextbox_TextChanged;
             // 
@@ -77,9 +64,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(45, 391);
+            label2.Location = new Point(39, 293);
             label2.Name = "label2";
-            label2.Size = new Size(129, 32);
+            label2.Size = new Size(102, 25);
             label2.TabIndex = 8;
             label2.Text = "Password:";
             // 
@@ -87,26 +74,28 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(45, 319);
+            label3.Location = new Point(39, 239);
             label3.Name = "label3";
-            label3.Size = new Size(135, 32);
+            label3.Size = new Size(106, 25);
             label3.TabIndex = 9;
             label3.Text = "Username:";
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(71, 43);
+            pictureBox1.Location = new Point(80, 33);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(254, 163);
+            pictureBox1.Size = new Size(222, 122);
             pictureBox1.TabIndex = 11;
             pictureBox1.TabStop = false;
             // 
             // showHidePasswordBtn
             // 
-            showHidePasswordBtn.Location = new Point(323, 396);
+            showHidePasswordBtn.Location = new Point(333, 296);
+            showHidePasswordBtn.Margin = new Padding(3, 2, 3, 2);
             showHidePasswordBtn.Name = "showHidePasswordBtn";
-            showHidePasswordBtn.Size = new Size(61, 29);
+            showHidePasswordBtn.Size = new Size(53, 24);
             showHidePasswordBtn.TabIndex = 12;
             showHidePasswordBtn.Text = "Show";
             showHidePasswordBtn.UseVisualStyleBackColor = true;
@@ -116,9 +105,10 @@
             // 
             loginBtn.BackColor = SystemColors.ActiveBorder;
             loginBtn.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            loginBtn.Location = new Point(122, 484);
+            loginBtn.Location = new Point(152, 440);
+            loginBtn.Margin = new Padding(3, 2, 3, 2);
             loginBtn.Name = "loginBtn";
-            loginBtn.Size = new Size(133, 52);
+            loginBtn.Size = new Size(116, 39);
             loginBtn.TabIndex = 13;
             loginBtn.Text = "Login";
             loginBtn.UseVisualStyleBackColor = false;
@@ -131,9 +121,9 @@
             forgotPasswordLink.Cursor = Cursors.WaitCursor;
             forgotPasswordLink.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point);
             forgotPasswordLink.LinkColor = SystemColors.ActiveCaptionText;
-            forgotPasswordLink.Location = new Point(135, 571);
+            forgotPasswordLink.Location = new Point(168, 506);
             forgotPasswordLink.Name = "forgotPasswordLink";
-            forgotPasswordLink.Size = new Size(106, 17);
+            forgotPasswordLink.Size = new Size(89, 15);
             forgotPasswordLink.TabIndex = 14;
             forgotPasswordLink.TabStop = true;
             forgotPasswordLink.Text = "Forgot password";
@@ -144,9 +134,9 @@
             // 
             managerContactMsgLbl.AutoSize = true;
             managerContactMsgLbl.ForeColor = Color.FromArgb(216, 0, 0);
-            managerContactMsgLbl.Location = new Point(92, 603);
+            managerContactMsgLbl.Location = new Point(130, 530);
             managerContactMsgLbl.Name = "managerContactMsgLbl";
-            managerContactMsgLbl.Size = new Size(196, 20);
+            managerContactMsgLbl.Size = new Size(156, 15);
             managerContactMsgLbl.TabIndex = 15;
             managerContactMsgLbl.Text = "Please contact the manager!";
             managerContactMsgLbl.Visible = false;
@@ -155,18 +145,18 @@
             // 
             loginErrorMsgLbl.AutoSize = true;
             loginErrorMsgLbl.ForeColor = Color.FromArgb(216, 0, 0);
-            loginErrorMsgLbl.Location = new Point(92, 442);
+            loginErrorMsgLbl.Location = new Point(205, 374);
             loginErrorMsgLbl.Name = "loginErrorMsgLbl";
-            loginErrorMsgLbl.Size = new Size(0, 20);
+            loginErrorMsgLbl.Size = new Size(0, 15);
             loginErrorMsgLbl.TabIndex = 16;
             // 
             // Login
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             BackgroundImageLayout = ImageLayout.None;
-            ClientSize = new Size(396, 689);
+            ClientSize = new Size(398, 697);
             Controls.Add(loginErrorMsgLbl);
             Controls.Add(managerContactMsgLbl);
             Controls.Add(forgotPasswordLink);
@@ -177,10 +167,9 @@
             Controls.Add(label2);
             Controls.Add(passwordTextbox);
             Controls.Add(userNameTextBox);
-            Controls.Add(BtnDrinks);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2, 3, 2, 3);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
@@ -190,8 +179,6 @@
         }
 
         #endregion
-
-        private Button BtnDrinks;
         private TextBox userNameTextBox;
         private TextBox passwordTextbox;
         private Label label2;

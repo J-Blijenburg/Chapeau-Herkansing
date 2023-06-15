@@ -217,6 +217,7 @@
             Controls.Add(LvBill);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
             Name = "BillForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bill";

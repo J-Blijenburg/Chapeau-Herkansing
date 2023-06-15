@@ -151,6 +151,7 @@
             Controls.Add(LblOrderPriceTekst);
             Controls.Add(LblSettled);
             Controls.Add(pictureBox1);
+            MaximizeBox = false;
             Name = "BillSetteld";
             Text = "BILL";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

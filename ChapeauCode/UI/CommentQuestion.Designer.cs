@@ -91,6 +91,7 @@
             Controls.Add(BtContinueWithPayment);
             Controls.Add(pictureBox1);
             Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            MaximizeBox = false;
             Name = "CommentQuestion";
             Text = "Comment ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
