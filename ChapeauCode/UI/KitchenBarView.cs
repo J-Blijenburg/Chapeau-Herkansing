@@ -9,8 +9,9 @@ namespace UI
         private OrderService orderService = new OrderService();
         private Employee loggedInEmployee;
         private System.Windows.Forms.Timer timer;
+        private Login login;
 
-        public KitchenBarView(Employee employee)
+        public KitchenBarView(Employee employee, Login login)
         {
             InitializeComponent();
             loggedInEmployee = employee;
@@ -22,7 +23,7 @@ namespace UI
             timer.Interval = 30000; // 30 seconds
             timer.Tick += Timer_Tick;
             timer.Start();
-
+            this.login = login;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

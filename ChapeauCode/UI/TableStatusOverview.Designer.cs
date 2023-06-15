@@ -147,6 +147,7 @@
             Controls.Add(occupiedBtn);
             Controls.Add(freeBtn);
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "TableStatusOverview";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "TableStatus";

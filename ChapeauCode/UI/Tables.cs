@@ -7,13 +7,15 @@ namespace UI
     {
         private TableService tableService;
         private Employee loggedInEmployee;
-        public Tables(Employee loggedInEmployee)
+        private Login loginForm;
+        public Tables(Employee loggedInEmployee, Login loginForm)
         {
             InitializeComponent();
             tableService = new TableService();
             this.loggedInEmployee = loggedInEmployee;
             Initializer();
             LoadTables();
+            this.loginForm = loginForm;
         }
         private void Initializer()
         {
@@ -56,6 +58,13 @@ namespace UI
         private void tableUpdateTimer_Tick(object sender, EventArgs e)
         {
             LoadTables();
+        }
+
+        private void btnSignOff_Click(object sender, EventArgs e)
+        {
+            loggedInEmployee = null;
+            this.Close();
+            loginForm.ShowDialog();
         }
     }
 }
