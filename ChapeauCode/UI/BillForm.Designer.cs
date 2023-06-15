@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class Bill
+    partial class BillForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bill));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BillForm));
             LvBill = new ListView();
             pictureBox1 = new PictureBox();
             BtnDebit = new CustomTools.RoundedButton();
@@ -71,9 +71,10 @@
             // 
             BtnDebit.BackColor = Color.LightGray;
             BtnDebit.FlatAppearance.BorderSize = 0;
-            BtnDebit.Location = new Point(28, 458);
+            BtnDebit.FlatStyle = FlatStyle.Flat;
+            BtnDebit.Location = new Point(28, 446);
             BtnDebit.Name = "BtnDebit";
-            BtnDebit.Size = new Size(91, 23);
+            BtnDebit.Size = new Size(91, 39);
             BtnDebit.TabIndex = 2;
             BtnDebit.Text = "Debit\r\n";
             BtnDebit.UseVisualStyleBackColor = false;
@@ -83,9 +84,10 @@
             // 
             BtnVisa.BackColor = Color.LightGray;
             BtnVisa.FlatAppearance.BorderSize = 0;
-            BtnVisa.Location = new Point(154, 458);
+            BtnVisa.FlatStyle = FlatStyle.Flat;
+            BtnVisa.Location = new Point(154, 446);
             BtnVisa.Name = "BtnVisa";
-            BtnVisa.Size = new Size(91, 23);
+            BtnVisa.Size = new Size(91, 39);
             BtnVisa.TabIndex = 3;
             BtnVisa.Text = "Visa / Amex";
             BtnVisa.UseVisualStyleBackColor = false;
@@ -95,9 +97,10 @@
             // 
             BtnCash.BackColor = Color.LightGray;
             BtnCash.FlatAppearance.BorderSize = 0;
-            BtnCash.Location = new Point(276, 458);
+            BtnCash.FlatStyle = FlatStyle.Flat;
+            BtnCash.Location = new Point(276, 446);
             BtnCash.Name = "BtnCash";
-            BtnCash.Size = new Size(91, 23);
+            BtnCash.Size = new Size(91, 39);
             BtnCash.TabIndex = 4;
             BtnCash.Text = "Cash";
             BtnCash.UseVisualStyleBackColor = false;
@@ -142,6 +145,8 @@
             // BtnProceedToPayment
             // 
             BtnProceedToPayment.BackColor = Color.FromArgb(138, 210, 176);
+            BtnProceedToPayment.FlatAppearance.BorderSize = 0;
+            BtnProceedToPayment.FlatStyle = FlatStyle.Flat;
             BtnProceedToPayment.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             BtnProceedToPayment.Location = new Point(28, 612);
             BtnProceedToPayment.Name = "BtnProceedToPayment";
@@ -184,13 +189,13 @@
             // 
             LblTotalNumber.AutoSize = true;
             LblTotalNumber.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            LblTotalNumber.Location = new Point(345, 382);
+            LblTotalNumber.Location = new Point(330, 382);
             LblTotalNumber.Name = "LblTotalNumber";
             LblTotalNumber.Size = new Size(28, 21);
             LblTotalNumber.TabIndex = 14;
             LblTotalNumber.Text = "##";
             // 
-            // Bill
+            // BillForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -212,7 +217,7 @@
             Controls.Add(LvBill);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
-            Name = "Bill";
+            Name = "BillForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bill";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

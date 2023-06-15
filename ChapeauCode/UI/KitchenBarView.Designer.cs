@@ -55,6 +55,7 @@
             pictureBox1 = new PictureBox();
             rdbFinishedOrders = new RadioButton();
             rdbRunningOrders = new RadioButton();
+            btnSignOff = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -138,6 +139,7 @@
             textBox1.Location = new Point(826, 293);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
             textBox1.Size = new Size(589, 50);
             textBox1.TabIndex = 2;
             textBox1.Text = "View order status";
@@ -216,6 +218,7 @@
             textBox2.Location = new Point(826, 189);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
+            textBox2.ReadOnly = true;
             textBox2.Size = new Size(589, 43);
             textBox2.TabIndex = 11;
             textBox2.Text = "Change order status";
@@ -228,6 +231,7 @@
             txtTypeOfOrder.Location = new Point(12, 71);
             txtTypeOfOrder.Multiline = true;
             txtTypeOfOrder.Name = "txtTypeOfOrder";
+            txtTypeOfOrder.ReadOnly = true;
             txtTypeOfOrder.Size = new Size(1402, 64);
             txtTypeOfOrder.TabIndex = 12;
             txtTypeOfOrder.Text = "{typeOfOrder}";
@@ -240,6 +244,7 @@
             txtBoxUser.Location = new Point(1267, 33);
             txtBoxUser.Multiline = true;
             txtBoxUser.Name = "txtBoxUser";
+            txtBoxUser.ReadOnly = true;
             txtBoxUser.Size = new Size(147, 32);
             txtBoxUser.TabIndex = 13;
             txtBoxUser.Text = "{user}";
@@ -260,9 +265,9 @@
             rdbFinishedOrders.AutoSize = true;
             rdbFinishedOrders.Location = new Point(12, 141);
             rdbFinishedOrders.Name = "rdbFinishedOrders";
-            rdbFinishedOrders.Size = new Size(105, 19);
+            rdbFinishedOrders.Size = new Size(132, 19);
             rdbFinishedOrders.TabIndex = 15;
-            rdbFinishedOrders.Text = "Finished orders";
+            rdbFinishedOrders.Text = "Finished order items";
             rdbFinishedOrders.UseVisualStyleBackColor = true;
             rdbFinishedOrders.CheckedChanged += rdbFinishedOrders_CheckedChanged;
             // 
@@ -271,18 +276,30 @@
             rdbRunningOrders.AutoSize = true;
             rdbRunningOrders.Location = new Point(12, 166);
             rdbRunningOrders.Name = "rdbRunningOrders";
-            rdbRunningOrders.Size = new Size(106, 19);
+            rdbRunningOrders.Size = new Size(133, 19);
             rdbRunningOrders.TabIndex = 16;
-            rdbRunningOrders.Text = "Running orders";
+            rdbRunningOrders.Text = "Running order items";
             rdbRunningOrders.UseVisualStyleBackColor = true;
             rdbRunningOrders.CheckedChanged += rdbRunningOrders_CheckedChanged;
             // 
-            // KitchenBar
+            // btnSignOff
+            // 
+            btnSignOff.BackColor = Color.DarkOrange;
+            btnSignOff.Location = new Point(133, 33);
+            btnSignOff.Name = "btnSignOff";
+            btnSignOff.Size = new Size(75, 32);
+            btnSignOff.TabIndex = 17;
+            btnSignOff.Text = "Sign off";
+            btnSignOff.UseVisualStyleBackColor = false;
+            btnSignOff.Click += btnSignOff_Click;
+            // 
+            // KitchenBarView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1427, 665);
+            Controls.Add(btnSignOff);
             Controls.Add(rdbRunningOrders);
             Controls.Add(rdbFinishedOrders);
             Controls.Add(pictureBox1);
@@ -302,7 +319,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
             MaximizeBox = false;
-            Name = "KitchenBar";
+            Name = "KitchenBarView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "KitchenBar";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -342,5 +359,6 @@
         private ColumnHeader TimeInSystem;
         private RadioButton rdbFinishedOrders;
         private RadioButton rdbRunningOrders;
+        private Button btnSignOff;
     }
 }

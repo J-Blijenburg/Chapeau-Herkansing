@@ -83,11 +83,6 @@ namespace Model
             return Order;
         }
 
-        public int CalculateTotalStock()
-        {
-            return MenuItem.GetStock() - Quantity;
-        }
-
         public int GetMenuItemId()
         {
             return MenuItem.MenuItemId;

@@ -18,10 +18,14 @@ namespace Model
         public EmployeeRole Role { get; set; }
 
 
-        public string GetFullName()
+        public string FullName
         {
-            return $"{FirstName} {LastName}";
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
         }
+
         public string GetFirstName()
         {
             return FirstName;

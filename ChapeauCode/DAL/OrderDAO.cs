@@ -10,7 +10,7 @@ namespace DAL
    public class OrderDAO : BaseDao
     {
         //Code By: Jens Begin *******************************************************
-        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(string menuName, string categoryName)
+        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(Menu menu, MenuCategory menuCategory)
         {
             string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price " +
                 "FROM MenuItem AS MI " +
@@ -20,11 +20,29 @@ namespace DAL
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@menuName", menuName),
-                new SqlParameter("@categoryName", categoryName)
+                new SqlParameter("@menuName", menu.Name.ToString()),
+                new SqlParameter("@categoryName", menuCategory.Name.ToString())
 
             };
             return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
+        {
+            List<MenuItem> list = new List<MenuItem>();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                MenuItem menuItem = new MenuItem()
+                {
+                    MenuItemId = (int)dr["MenuItemId"],
+                    Name = (string)dr["Name"],
+                    Stock = (int)dr["Stock"],
+                    Price = (double)dr["Price"],
+                };
+
+                list.Add(menuItem);
+            }
+            return list;
         }
         public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
@@ -65,23 +83,7 @@ namespace DAL
             return orderItems;
         }
 
-        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
-        {
-            List<MenuItem> list = new List<MenuItem>();
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                MenuItem menuItem = new MenuItem()
-                {
-                    MenuItemId = (int)dr["MenuItemId"],
-                    Name = (string)dr["Name"],
-                    Stock = (int)dr["Stock"],
-                    Price = (double)dr["Price"],
-                };
-                
-                list.Add(menuItem);
-            } 
-            return list;
-        }
+       
 
         public void SendOrderItems(Order order)
         {
@@ -105,11 +107,15 @@ namespace DAL
 
         private void UpdateQuantity(OrderItem orderItem)
         {
+            //TODO: er was nog iets met de menuitem stock
+            int newQuantity = orderItem.MenuItem.Stock - orderItem.Quantity;
+            orderItem.MenuItem.Stock = newQuantity;
+
             string query = "UPDATE MenuItem SET Stock = @stock WHERE MenuItemId = @menuItemId";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@stock", orderItem.CalculateTotalStock()),
+                new SqlParameter("@stock", newQuantity),
                 new SqlParameter("@menuItemId", orderItem.GetMenuItemId())
             };
             ExecuteEditQuery(query, sqlParameters);
@@ -301,7 +307,8 @@ namespace DAL
         }
 
         
-
+        
+        //get all running order items from the database 
         public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
@@ -316,6 +323,7 @@ namespace DAL
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
+        //get all finished order items from the database
         public List<OrderItem> GetFinshedOrderItems(MenuType type)
         {
             string queryString = GetTypeOfOrderForQuery(type);
@@ -326,13 +334,13 @@ namespace DAL
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (" + queryString + ")" +
+                           "WHERE oi.OrderItemStatus = 3 AND (" + queryString + ")" +
                            "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
 
-
+        //Method to get the type of order for the query using the enum MenuType
         private static string GetTypeOfOrderForQuery(MenuType type)
         {
             string query = "";
@@ -358,6 +366,8 @@ namespace DAL
             return query;
         }
 
+        //Method to update the status of an order item,
+        //if the status of all order items is finished, the status of the whole order will be changed to finished
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             string query = @"UPDATE [OrderItem]
@@ -387,8 +397,7 @@ namespace DAL
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
         {
             List<OrderItem> list = new List<OrderItem>();
-            try
-            {
+          
                 if (dataTable != null)
                 {
                     foreach (DataRow dr in dataTable.Rows)
@@ -412,7 +421,7 @@ namespace DAL
                                 Name = (string)dr["Dish"],
                                 Menu = new Menu()
                                 {
-                                    Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
+                                    Name = StringToMenuType((string)dr["Type"])
                                 }
 
                             },
@@ -421,12 +430,8 @@ namespace DAL
                     }
                 }
                 return list;
-            }
-            catch (Exception e)
-            {
-                
-                return null;
-            }
+           
+          
 
 
         }

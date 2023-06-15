@@ -37,14 +37,21 @@
             LblAmountPaid = new Label();
             TbAmountPaid = new TextBox();
             BtnSetAmountPaid = new CustomTools.RoundedButton();
-            lblChangeTekst = new Label();
+            LblChangeTekst = new Label();
             LblChangeNumber = new Label();
             LblTip = new Label();
             BtnAddChangeAsTip = new CustomTools.RoundedButton();
             LblCustomTip = new Label();
             TbCustomTip = new TextBox();
             BtnSetCustomTip = new CustomTools.RoundedButton();
+            LblDeviderSplit = new Label();
+            LblDeviderTip = new Label();
+            AmountOfPeopleNr = new NumericUpDown();
+            LblSplit = new Label();
+            LblAmountOfPeople = new Label();
+            CbSplitTheBill = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)AmountOfPeopleNr).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -62,7 +69,7 @@
             // 
             BtnPay.BackColor = Color.FromArgb(255, 179, 71);
             BtnPay.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnPay.Location = new Point(25, 603);
+            BtnPay.Location = new Point(20, 637);
             BtnPay.Name = "BtnPay";
             BtnPay.Size = new Size(339, 51);
             BtnPay.TabIndex = 10;
@@ -74,7 +81,7 @@
             // 
             LblPayment.AutoSize = true;
             LblPayment.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            LblPayment.Location = new Point(25, 87);
+            LblPayment.Location = new Point(20, 68);
             LblPayment.Name = "LblPayment";
             LblPayment.Size = new Size(115, 30);
             LblPayment.TabIndex = 11;
@@ -83,7 +90,7 @@
             // LblOrderPriceNumber
             // 
             LblOrderPriceNumber.AutoSize = true;
-            LblOrderPriceNumber.Location = new Point(343, 145);
+            LblOrderPriceNumber.Location = new Point(338, 109);
             LblOrderPriceNumber.Name = "LblOrderPriceNumber";
             LblOrderPriceNumber.Size = new Size(21, 15);
             LblOrderPriceNumber.TabIndex = 13;
@@ -92,7 +99,7 @@
             // LblOrderPriceTekst
             // 
             LblOrderPriceTekst.AutoSize = true;
-            LblOrderPriceTekst.Location = new Point(25, 145);
+            LblOrderPriceTekst.Location = new Point(20, 109);
             LblOrderPriceTekst.Name = "LblOrderPriceTekst";
             LblOrderPriceTekst.Size = new Size(78, 15);
             LblOrderPriceTekst.TabIndex = 12;
@@ -101,7 +108,7 @@
             // LblAmountPaid
             // 
             LblAmountPaid.AutoSize = true;
-            LblAmountPaid.Location = new Point(25, 178);
+            LblAmountPaid.Location = new Point(20, 142);
             LblAmountPaid.Name = "LblAmountPaid";
             LblAmountPaid.Size = new Size(89, 15);
             LblAmountPaid.TabIndex = 14;
@@ -109,7 +116,7 @@
             // 
             // TbAmountPaid
             // 
-            TbAmountPaid.Location = new Point(264, 175);
+            TbAmountPaid.Location = new Point(259, 139);
             TbAmountPaid.Name = "TbAmountPaid";
             TbAmountPaid.Size = new Size(100, 23);
             TbAmountPaid.TabIndex = 15;
@@ -118,7 +125,7 @@
             // 
             BtnSetAmountPaid.BackColor = Color.FromArgb(138, 210, 176);
             BtnSetAmountPaid.FlatAppearance.BorderSize = 0;
-            BtnSetAmountPaid.Location = new Point(306, 204);
+            BtnSetAmountPaid.Location = new Point(301, 168);
             BtnSetAmountPaid.Name = "BtnSetAmountPaid";
             BtnSetAmountPaid.Size = new Size(58, 40);
             BtnSetAmountPaid.TabIndex = 16;
@@ -126,19 +133,19 @@
             BtnSetAmountPaid.UseVisualStyleBackColor = false;
             BtnSetAmountPaid.Click += BtnSetAmountPaid_Click;
             // 
-            // lblChangeTekst
+            // LblChangeTekst
             // 
-            lblChangeTekst.AutoSize = true;
-            lblChangeTekst.Location = new Point(30, 266);
-            lblChangeTekst.Name = "lblChangeTekst";
-            lblChangeTekst.Size = new Size(58, 15);
-            lblChangeTekst.TabIndex = 17;
-            lblChangeTekst.Text = "CHANGE:";
+            LblChangeTekst.AutoSize = true;
+            LblChangeTekst.Location = new Point(25, 220);
+            LblChangeTekst.Name = "LblChangeTekst";
+            LblChangeTekst.Size = new Size(58, 15);
+            LblChangeTekst.TabIndex = 17;
+            LblChangeTekst.Text = "CHANGE:";
             // 
             // LblChangeNumber
             // 
             LblChangeNumber.AutoSize = true;
-            LblChangeNumber.Location = new Point(343, 266);
+            LblChangeNumber.Location = new Point(338, 220);
             LblChangeNumber.Name = "LblChangeNumber";
             LblChangeNumber.Size = new Size(21, 15);
             LblChangeNumber.TabIndex = 18;
@@ -148,7 +155,7 @@
             // 
             LblTip.AutoSize = true;
             LblTip.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            LblTip.Location = new Point(30, 321);
+            LblTip.Location = new Point(20, 446);
             LblTip.Name = "LblTip";
             LblTip.Size = new Size(47, 30);
             LblTip.TabIndex = 19;
@@ -158,7 +165,7 @@
             // 
             BtnAddChangeAsTip.BackColor = Color.FromArgb(138, 210, 176);
             BtnAddChangeAsTip.FlatAppearance.BorderSize = 0;
-            BtnAddChangeAsTip.Location = new Point(30, 379);
+            BtnAddChangeAsTip.Location = new Point(20, 498);
             BtnAddChangeAsTip.Name = "BtnAddChangeAsTip";
             BtnAddChangeAsTip.Size = new Size(334, 32);
             BtnAddChangeAsTip.TabIndex = 20;
@@ -169,7 +176,7 @@
             // LblCustomTip
             // 
             LblCustomTip.AutoSize = true;
-            LblCustomTip.Location = new Point(30, 442);
+            LblCustomTip.Location = new Point(20, 561);
             LblCustomTip.Name = "LblCustomTip";
             LblCustomTip.Size = new Size(76, 15);
             LblCustomTip.TabIndex = 21;
@@ -177,7 +184,7 @@
             // 
             // TbCustomTip
             // 
-            TbCustomTip.Location = new Point(264, 434);
+            TbCustomTip.Location = new Point(254, 553);
             TbCustomTip.Name = "TbCustomTip";
             TbCustomTip.Size = new Size(100, 23);
             TbCustomTip.TabIndex = 22;
@@ -186,7 +193,7 @@
             // 
             BtnSetCustomTip.BackColor = Color.FromArgb(138, 210, 176);
             BtnSetCustomTip.FlatAppearance.BorderSize = 0;
-            BtnSetCustomTip.Location = new Point(306, 463);
+            BtnSetCustomTip.Location = new Point(296, 582);
             BtnSetCustomTip.Name = "BtnSetCustomTip";
             BtnSetCustomTip.Size = new Size(58, 40);
             BtnSetCustomTip.TabIndex = 23;
@@ -194,19 +201,80 @@
             BtnSetCustomTip.UseVisualStyleBackColor = false;
             BtnSetCustomTip.Click += BtnSetCustomTip_Click;
             // 
+            // LblDeviderSplit
+            // 
+            LblDeviderSplit.BorderStyle = BorderStyle.Fixed3D;
+            LblDeviderSplit.Location = new Point(-1, 244);
+            LblDeviderSplit.Name = "LblDeviderSplit";
+            LblDeviderSplit.Size = new Size(400, 2);
+            LblDeviderSplit.TabIndex = 24;
+            // 
+            // LblDeviderTip
+            // 
+            LblDeviderTip.BorderStyle = BorderStyle.Fixed3D;
+            LblDeviderTip.Location = new Point(-1, 444);
+            LblDeviderTip.Name = "LblDeviderTip";
+            LblDeviderTip.Size = new Size(400, 2);
+            LblDeviderTip.TabIndex = 25;
+            // 
+            // AmountOfPeopleNr
+            // 
+            AmountOfPeopleNr.Location = new Point(298, 342);
+            AmountOfPeopleNr.Name = "AmountOfPeopleNr";
+            AmountOfPeopleNr.Size = new Size(58, 23);
+            AmountOfPeopleNr.TabIndex = 26;
+            AmountOfPeopleNr.Visible = false;
+            // 
+            // LblSplit
+            // 
+            LblSplit.AutoSize = true;
+            LblSplit.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            LblSplit.Location = new Point(20, 246);
+            LblSplit.Name = "LblSplit";
+            LblSplit.Size = new Size(0, 30);
+            LblSplit.TabIndex = 27;
+            // 
+            // LblAmountOfPeople
+            // 
+            LblAmountOfPeople.AutoSize = true;
+            LblAmountOfPeople.Location = new Point(20, 350);
+            LblAmountOfPeople.Name = "LblAmountOfPeople";
+            LblAmountOfPeople.Size = new Size(123, 15);
+            LblAmountOfPeople.TabIndex = 28;
+            LblAmountOfPeople.Text = "AMOUNT OF PEOPLE:";
+            LblAmountOfPeople.Visible = false;
+            // 
+            // CbSplitTheBill
+            // 
+            CbSplitTheBill.AutoSize = true;
+            CbSplitTheBill.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            CbSplitTheBill.Location = new Point(26, 269);
+            CbSplitTheBill.Name = "CbSplitTheBill";
+            CbSplitTheBill.Size = new Size(178, 41);
+            CbSplitTheBill.TabIndex = 29;
+            CbSplitTheBill.Text = "Split the bill";
+            CbSplitTheBill.UseVisualStyleBackColor = true;
+            CbSplitTheBill.CheckedChanged += CbSplitTheBill_CheckedChanged;
+            // 
             // PaymentOverView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(398, 697);
+            Controls.Add(CbSplitTheBill);
+            Controls.Add(LblAmountOfPeople);
+            Controls.Add(LblSplit);
+            Controls.Add(AmountOfPeopleNr);
+            Controls.Add(LblDeviderTip);
+            Controls.Add(LblDeviderSplit);
             Controls.Add(BtnSetCustomTip);
             Controls.Add(TbCustomTip);
             Controls.Add(LblCustomTip);
             Controls.Add(BtnAddChangeAsTip);
             Controls.Add(LblTip);
             Controls.Add(LblChangeNumber);
-            Controls.Add(lblChangeTekst);
+            Controls.Add(LblChangeTekst);
             Controls.Add(BtnSetAmountPaid);
             Controls.Add(TbAmountPaid);
             Controls.Add(LblAmountPaid);
@@ -221,6 +289,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = " Payment over";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)AmountOfPeopleNr).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -235,12 +304,18 @@
         private Label LblAmountPaid;
         private TextBox TbAmountPaid;
         private CustomTools.RoundedButton BtnSetAmountPaid;
-        private Label lblChangeTekst;
+        private Label LblChangeTekst;
         private Label LblChangeNumber;
         private Label LblTip;
         private CustomTools.RoundedButton BtnAddChangeAsTip;
         private Label LblCustomTip;
         private TextBox TbCustomTip;
         private CustomTools.RoundedButton BtnSetCustomTip;
+        private Label LblDeviderSplit;
+        private Label LblDeviderTip;
+        private NumericUpDown AmountOfPeopleNr;
+        private Label LblSplit;
+        private Label LblAmountOfPeople;
+        private CheckBox CbSplitTheBill;
     }
 }

@@ -19,16 +19,22 @@ namespace UI
         {
             InitializeComponent();
             this.receipt = receipt;
+            lblSuccesMessage.Hide();
         }
 
         private void BtConfirm_Click(object sender, EventArgs e)
         {
             receipt.Feedback = TbComment.Text;
+            lblSuccesMessage.Show();
+
         }
 
         private void BtnBack_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            CommentQuestion commandQuestion = new CommentQuestion(receipt);
+            commandQuestion.ShowDialog();
+
         }
     }
 }
