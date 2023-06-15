@@ -23,11 +23,6 @@ namespace Model
             return this;
         }
 
-        public bool CheckMenuTime()
-        {
-            return (TimeOnly.FromDateTime(DateTime.Now) > StartTime && TimeOnly.FromDateTime(DateTime.Now) < EndTime);
-        }
-
         public MenuType GetMenuType()
         {
             return Name;

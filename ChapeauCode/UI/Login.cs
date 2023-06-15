@@ -20,11 +20,8 @@ namespace UI
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            //string employeeNumber = userNameTextBox.Text;
-            //string password = passwordTextbox.Text;
-
-            string employeeNumber = "611527";
-            string password = "4321";      
+            string employeeNumber = userNameTextBox.Text;
+            string password = passwordTextbox.Text;  
 
             Employee loggedInEmployee = employeeService.ValidateEmployeeLogin(employeeNumber, password);
 
@@ -52,11 +49,11 @@ namespace UI
             switch (loggedInEmployee.Role)
             {
                 case EmployeeRole.Chefkok:
-                    employeeForm = new KitchenBar(loggedInEmployee);
+                    employeeForm = new KitchenBarView(loggedInEmployee);
                     employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Bartender:
-                    employeeForm = new KitchenBar(loggedInEmployee);
+                    employeeForm = new KitchenBarView(loggedInEmployee);
                     employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Waiter:

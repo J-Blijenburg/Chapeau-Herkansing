@@ -83,6 +83,11 @@ namespace Model
             return Order;
         }
 
+        public int GetMenuItemId()
+        {
+            return MenuItem.MenuItemId;
+        }
+
 
     }
 }

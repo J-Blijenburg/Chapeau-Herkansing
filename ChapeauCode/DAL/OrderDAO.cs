@@ -10,7 +10,7 @@ namespace DAL
    public class OrderDAO : BaseDao
     {
         //Code By: Jens Begin *******************************************************
-        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(string menu, string category)
+        public List<MenuItem> GetMenuItemsByMenuNameAndCategoryName(Menu menu, MenuCategory menuCategory)
         {
             string query = "SELECT MI.MenuItemId, MI.Name, MI.Stock, MI.Price " +
                 "FROM MenuItem AS MI " +
@@ -20,13 +20,31 @@ namespace DAL
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@menuName", menu),
-                new SqlParameter("@categoryName", category)
+                new SqlParameter("@menuName", menu.Name.ToString()),
+                new SqlParameter("@categoryName", menuCategory.Name.ToString())
 
             };
             return CreateListOfMenuItem(ExecuteSelectQuery(query, sqlParameters));
         }
-        public List<OrderItem> GetOrderItemsByReceiptId(int receiptId)
+
+        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
+        {
+            List<MenuItem> list = new List<MenuItem>();
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                MenuItem menuItem = new MenuItem()
+                {
+                    MenuItemId = (int)dr["MenuItemId"],
+                    Name = (string)dr["Name"],
+                    Stock = (int)dr["Stock"],
+                    Price = (double)dr["Price"],
+                };
+
+                list.Add(menuItem);
+            }
+            return list;
+        }
+        public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
             string query = @"SELECT OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name AS MenuCategoryName, SUM(OI.Quantity) as TotalQuantity FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId JOIN [Table] AS TE ON RT.TableNumber = TE.Number JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId WHERE OD.ReceiptId = @ReceiptId AND RT.IsHandled = 0 GROUP BY OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name";
 
@@ -65,23 +83,7 @@ namespace DAL
             return orderItems;
         }
 
-        private List<MenuItem> CreateListOfMenuItem(DataTable dataTable)
-        {
-            List<MenuItem> list = new List<MenuItem>();
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                MenuItem menuItem = new MenuItem()
-                {
-                    MenuItemId = (int)dr["MenuItemId"],
-                    Name = (string)dr["Name"],
-                    Stock = (int)dr["Stock"],
-                    Price = (double)dr["Price"],
-                };
-                
-                list.Add(menuItem);
-            } 
-            return list;
-        }
+       
 
         public void SendOrderItems(Order order)
         {
@@ -105,19 +107,23 @@ namespace DAL
 
         private void UpdateQuantity(OrderItem orderItem)
         {
+            //TODO: er was nog iets met de menuitem stock
+            int newQuantity = orderItem.MenuItem.Stock - orderItem.Quantity;
+            orderItem.MenuItem.Stock = newQuantity;
+
             string query = "UPDATE MenuItem SET Stock = @stock WHERE MenuItemId = @menuItemId";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@stock", orderItem.MenuItem.GetStock() - orderItem.Quantity),
-                new SqlParameter("@menuItemId", orderItem.MenuItem.MenuItemId)
+                new SqlParameter("@stock", newQuantity),
+                new SqlParameter("@menuItemId", orderItem.GetMenuItemId())
             };
             ExecuteEditQuery(query, sqlParameters);
         }
         
         public void CreateOrder(Order order)
         {
-            //When a order is added to the database return the ide of the order 
+            //When a order is added to the database return the id of the order 
             //And place it in the order object
             string query = "INSERT INTO [Order] (EmployeeId, ReceiptId, OrderDateTime, Status) VALUES (@EmployeeId, @ReceiptId, @OrderDateTime, @Status); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
@@ -133,10 +139,11 @@ namespace DAL
 
         public List<Menu> GetListOfMenu()
         {
+            //https://azureops.org/articles/get-local-date-in-azure-sql-database/
+            //Get every menu from the database where the current time is between the start and end time of the menu
             string query = "SELECT MenuId, Name, StartTime, EndTime " +
                 "FROM Menu " +
-                "WHERE " +
-                "StartTime < CAST(GETUTCDATE() AS TIME) AND EndTime > CAST(GETUTCDATE() AS TIME);";
+                "WHERE StartTime < CAST(SYSDATETIMEOFFSET() AT TIME ZONE 'W. Europe Standard Time' AS TIME) AND EndTime > CAST(SYSDATETIMEOFFSET() AT TIME ZONE 'W. Europe Standard Time' AS TIME)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
@@ -223,105 +230,6 @@ namespace DAL
 
         //Code By: Jens End *******************************************************
 
-        //public List<OrderItem> GetOrderdItems(Table table){
-        //    string query = "SELECT OI.OrderItemId, OD.OrderId, EM.EmployeeId , EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role,RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EmployeeReceipt.EmployeeId, EmployeeReceipt.FirstName, EmployeeReceipt.LastName, EmployeeReceipt.EmployeeNumber, EmployeeReceipt.Password, EmployeeReceipt.IsActive, EmployeeReceipt.RegistrationDate, RoleReceipt.Role,TE.TableId,  TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, RT.IsHandled,PM.PaymentId, PM.IsPaid, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name, MU.MenuId, MU.Name, MU.StartTime, MU.EndTime, OI.Quantity " +
-        //        "FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId " +
-        //        "JOIN [OrderStatus] AS OS ON OD.Status = OS.OrderStatusId " +
-        //        "JOIN [Employee] AS EM ON OD.EmployeeId = EM.EmployeeId " +
-        //        "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
-        //        "JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId " +
-        //        "JOIN [Employee] AS EmployeeReceipt ON RT.EmployeeId = EmployeeReceipt.EmployeeId " +
-        //        "JOIN [EmployeeRole] AS RoleReceipt ON EmployeeReceipt.Role = RoleReceipt.EmployeeRoleId " +
-        //        "JOIN [Table] AS TE ON RT.TableId = TE.TableId JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
-        //        "JOIN [Payment] AS PM ON RT.PaymentId = PM.PaymentId " +
-        //        "JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId " +
-        //        "JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId " +
-        //        "JOIN [Menu] AS MU ON MC.MenuId = MU.MenuId " +
-        //        "WHERE TE.Number = @TableNumber AND RT.IsHandled = 0";
-        //    SqlParameter[] sqlParameters;
-        //    sqlParameters = new SqlParameter[]
-        //    {
-        //        new SqlParameter("@TableNumber", table.Number)
-        //    };
-
-        //    return CreateOrderItems(ExecuteSelectQuery(query, sqlParameters));
-        //}
-
-        //private List<OrderItem> CreateOrderItems(DataTable dataTable)
-        //{
-        //    List<OrderItem> orderItems = new List<OrderItem>();
-
-        //    foreach (DataRow dataRow in dataTable.Rows)
-        //    {
-        //        OrderItem orderItem = new OrderItem()
-        //        {
-        //            OrderItemId = (int)dataRow["OrderItemId"],
-        //            Order = new Order()
-        //            {
-        //                OrderId = (int)dataRow["OrderId"],
-        //                Employee = new Employee()
-        //                {
-        //                    EmployeeId = (int)dataRow["EmployeeId"],
-        //                    FirstName = (string)dataRow["FirstName"],
-        //                    LastName = (string)dataRow["LastName"],
-        //                    EmployeeNumber = (int)dataRow["EmployeeNumber"],
-        //                    Password = (string)dataRow["Password"],
-        //                    IsActive = (bool)dataRow["IsActive"],
-        //                    RegistrationDate = DateTime.Now,
-        //                    Role = StringToEmployeeRole((string)dataRow["Role"])
-        //                },
-        //                Receipt = new Receipt()
-        //                {
-        //                    ReceiptId = (int)dataRow["ReceiptId"],
-        //                    ReceiptDateTime = DateTime.Now,
-        //                    Feedback = (string)dataRow["Feedback"],
-        //                    Employee = new Employee()
-        //                    {
-        //                        EmployeeId = (int)dataRow["EmployeeId"],
-        //                        FirstName = (string)dataRow["FirstName"],
-        //                        LastName = (string)dataRow["LastName"],
-        //                        EmployeeNumber = (int)dataRow["EmployeeNumber"],
-        //                        Password = (string)dataRow["Password"],
-        //                        IsActive = (bool)dataRow["IsActive"],
-        //                        RegistrationDate = DateTime.Now,
-        //                        Role =  StringToEmployeeRole((string)dataRow["Role"])
-        //                    },
-        //                    Table = new Table()
-        //                    {
-        //                        TableId = (int)dataRow["TableId"],
-        //                        Number = (int)dataRow["Number"],
-        //                        Status = StringToTableStatus((string)dataRow["Status"])
-        //                    },
-        //                    LowVatPrice = (double)dataRow["LowVatPrice"],
-        //                    HighVatPrice = (double)dataRow["HighVatPrice"],
-        //                    TotalPrice = (double)dataRow["TotalPrice"],
-        //                    Tip = (double)dataRow["Tip"],
-        //                    IsHandled = (bool)dataRow["IsHandled"],
-        //                    Payment = new Payment()
-        //                    {
-        //                        PaymentId = (int)dataRow["PaymentId"],
-        //                        IsPaid = (bool)dataRow["IsPaid"]
-        //                    }
-        //                },
-        //                OrderDateTime = DateTime.Now,
-        //                Status = StringToOrderStatus((string)dataRow["Status"])
-
-        //            },
-        //            Comment = (string)dataRow["Comment"],
-        //            MenuItem = new MenuItem()
-        //            {
-        //                MenuItemId = (int)dataRow["MenuItemId"],
-        //                Name = (string)dataRow["Name"],
-        //                Stock = (int)dataRow["Stock"],
-        //                Price = (double)dataRow["Price"],
-        //            },
-        //            Quantity = (int)dataRow["Quantity"]
-        //        };
-        //        orderItems.Add(orderItem);
-        //    }
-
-        //    return orderItems;
-        //}
         public List<OrderItem> GetOrderedItems(Table table)
         {
             string query = "SELECT OI.OrderItemId, OD.OrderId, EM.FirstName, EM.LastName, OD.OrderDateTime, OS.Status, OI.Comment, MI.MenuItemId, MI.Name AS MenuItemName, MI.Stock, MI.Price, MC.MenuCategoryId, MC.VAT, MC.Name AS MenuCategoryName, OI.Quantity " +
@@ -384,38 +292,6 @@ namespace DAL
 
             return orderItems;
         }
-
-        private EmployeeRole StringToEmployeeRole(string role)
-        {
-            switch (role)
-            {
-                case "Manager":
-                    return EmployeeRole.Manager;
-                case "Waiter":
-                    return EmployeeRole.Waiter;
-                case "Chefkok":
-                    return EmployeeRole.Chefkok;
-                case "Bartender":
-                    return EmployeeRole.Bartender;
-                    default:
-                      return EmployeeRole.Waiter;
-            }
-        }
-
-        private TableStatus StringToTableStatus(string tableStatus)
-        {
-            switch (tableStatus)
-            {
-                case "Open":
-                    return TableStatus.Open;
-                case "Reserved":
-                    return TableStatus.Reserved;
-                case "Occupied":
-                    return TableStatus.Occupied;
-                default:
-                    return TableStatus.Open;
-            }
-        }
         private OrderStatus StringToOrderStatus(string orderStatus)
         {
             switch (orderStatus)
@@ -430,42 +306,68 @@ namespace DAL
             }
         }
 
-        public List<OrderItem> GetKitchenOrders()
+        
+        
+        //get all running order items from the database 
+        public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Lunch' OR c.Name = 'Dinner');";
-            return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
-        }
+            string queryString = GetTypeOfOrderForQuery(type);
 
-        public List<OrderItem> GetBarOrders()
-        {
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " + "FROM OrderItem oi " + "JOIN [Order] o ON oi.OrderID = o.OrderID " + "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " + "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " + "JOIN Menu c ON mc.MenuId = c.MenuId " + "WHERE oi.OrderItemStatus <> 3 AND (c.Name = 'Drinks');";
-            return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
-        }
-
-        public List<OrderItem> GetFinishedKitchenOrders()
-        {
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Lunch' OR c.Name = 'Dinner')";
+                           "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
-        public List<OrderItem> GetFinishedBarOrders()
+        //get all finished order items from the database
+        public List<OrderItem> GetFinshedOrderItems(MenuType type)
         {
+            string queryString = GetTypeOfOrderForQuery(type);
+
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "WHERE o.Status = 2 AND (c.Name = 'Drinks')";
+                           "WHERE oi.OrderItemStatus = 3 AND (" + queryString + ")" +
+                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 
+
+        //Method to get the type of order for the query using the enum MenuType
+        private static string GetTypeOfOrderForQuery(MenuType type)
+        {
+            string query = "";
+            switch (type)
+            {
+                case MenuType.Dinner:
+                case MenuType.Lunch:
+                    {
+                        query = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                        break;
+                    }
+                case MenuType.Drinks:
+                    {
+                        query = "c.Name = 'Drinks'";
+                        break;
+                    }
+                default:
+                    {  
+                        break;
+                    }
+            }
+
+            return query;
+        }
+
+        //Method to update the status of an order item,
+        //if the status of all order items is finished, the status of the whole order will be changed to finished
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             string query = @"UPDATE [OrderItem]
@@ -495,8 +397,7 @@ namespace DAL
         private List<OrderItem> ReadKitchenAndBarOrders(DataTable dataTable)
         {
             List<OrderItem> list = new List<OrderItem>();
-            try
-            {
+          
                 if (dataTable != null)
                 {
                     foreach (DataRow dr in dataTable.Rows)
@@ -520,7 +421,7 @@ namespace DAL
                                 Name = (string)dr["Dish"],
                                 Menu = new Menu()
                                 {
-                                    Name = Enum.TryParse((string)dr["Type"], out MenuType menuType) ? menuType : MenuType.Lunch
+                                    Name = StringToMenuType((string)dr["Type"])
                                 }
 
                             },
@@ -529,12 +430,8 @@ namespace DAL
                     }
                 }
                 return list;
-            }
-            catch (Exception e)
-            {
-                
-                return null;
-            }
+           
+          
 
 
         }

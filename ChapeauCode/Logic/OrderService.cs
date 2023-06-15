@@ -15,7 +15,7 @@ namespace Logic
             this.orderDAO = new OrderDAO();
             this.tableService = new TableService();
         }
-        public List<MenuItem> GetMenuItemsByMenuAndCategory(string menu, string category)
+        public List<MenuItem> GetMenuItemsByMenuAndCategory(Menu menu, MenuCategory category)
         {
             return orderDAO.GetMenuItemsByMenuNameAndCategoryName(menu, category);
         }
@@ -46,35 +46,29 @@ namespace Logic
         {
             return orderDAO.GetOrderedItems(table);
         }
-        public List<OrderItem> GetOrderdItemsByReceiptId(int receiptId)
+        public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
-            return orderDAO.GetOrderItemsByReceiptId(receiptId);
+            return orderDAO.GetOrderedItemsByReceiptId(receiptId);
         }
 
-        public List<OrderItem> GetKitchenOrders()
+   
+
+        public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
-           return orderDAO.GetKitchenOrders();
+            return orderDAO.GetRunningOrderItems(type);
         }
 
-        public List<OrderItem> GetBarOrders()
+        public List<OrderItem> GetFinishedOrderItems(MenuType type)
         {
-           return orderDAO.GetBarOrders();
-        }
-
-        public List<OrderItem> GetFinishedKitchenOrders()
-        {
-            return orderDAO.GetFinishedKitchenOrders();
-        }
-
-        public List<OrderItem> GetFinishedBarOrders()
-        {
-            return orderDAO.GetFinishedBarOrders();
+            return orderDAO.GetFinshedOrderItems(type);
         }
 
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
         }
+
+
         //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {
