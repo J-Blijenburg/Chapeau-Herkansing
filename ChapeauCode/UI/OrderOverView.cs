@@ -160,7 +160,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-        
+
 
         //When the user changes the category it will show the right panel
         private void BtnLunch_Click(object sender, EventArgs e)
@@ -246,13 +246,13 @@ namespace UI
             //Goes through every selected order items and adjust the quantity when item is already in the List<OrderItem>
             //else it creates and add that item
             bool itemExists = false;
-    
+
             foreach (OrderItem orderItem in listOfOrderItems)
             {
                 if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
                 {
                     CheckAndUpdateQuantity(menuItem, orderItem);
-                    itemExists = true;  
+                    itemExists = true;
                 }
             }
 
