@@ -22,21 +22,28 @@ namespace UI
             string employeeNumber = userNameTextBox.Text;
             string password = passwordTextbox.Text;
 
-            Employee loggedInEmployee = employeeService.ValidateEmployeeLogin(employeeNumber, password);
-
-            if (loggedInEmployee != null)
+            try
             {
+                Employee loggedInEmployee = employeeService.ValidateEmployeeLogin(employeeNumber, password);
                 ProcessSuccessfulLogin(loggedInEmployee);
             }
-            else
+            catch (Exception ex)
             {
-                ShowLoginError("Invalid login credentials");
+                ShowLoginError(ex.Message);
             }
         }
         private void ProcessSuccessfulLogin(Employee loggedInEmployee)
         {
+            ClearFields();
             this.Hide();
             OpenFormBasedOnRole(loggedInEmployee);
+        }
+        private void ClearFields()
+        {
+            userNameTextBox.Text = "";
+            passwordTextbox.Text = "";
+            loginErrorMsgLbl.Text = "";
+            managerContactMsgLbl.Visible = false;
         }
         private void ShowLoginError(string errorMessage)
         {
@@ -48,16 +55,16 @@ namespace UI
             switch (loggedInEmployee.Role)
             {
                 case EmployeeRole.Chefkok:
-                    employeeForm = new KitchenBarView(loggedInEmployee);
+                    employeeForm = new KitchenBarView(loggedInEmployee, this);
                     employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Bartender:
-                    employeeForm = new KitchenBarView(loggedInEmployee);
+                    employeeForm = new KitchenBarView(loggedInEmployee, this);
                     employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Waiter:
                 case EmployeeRole.Manager:
-                    employeeForm = new Tables(loggedInEmployee);
+                    employeeForm = new Tables(loggedInEmployee, this);
                     employeeForm.ShowDialog();
                     break;
                 default:

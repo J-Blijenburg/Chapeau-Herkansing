@@ -33,7 +33,6 @@ namespace UI
 
             SetLabels();
             SubscribeToEvents();
-
         }
         private void SetLabels()
         {
@@ -96,7 +95,7 @@ namespace UI
 
         private void goToTableBtn_Click(object sender, EventArgs e)
         {
-            TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee);
+            TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee, this);
             this.Hide();
             tableOverview.ShowDialog();
 

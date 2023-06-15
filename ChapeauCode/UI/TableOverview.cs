@@ -14,11 +14,14 @@ namespace UI
 {
     public partial class TableOverview : Form
     {
+        private const string orderIdColumnName = "OrderId";
+        private const string orderItemIdColumnName = "OrderItemId";
         private OrderService orderService;
         private ReceiptService receiptService;
         private Table table;
         private Employee currentEmployee;
-        public TableOverview(Table table, Employee currentEmployee)
+        private TableStatusOverview tableStatusOverview;
+        public TableOverview(Table table, Employee currentEmployee, TableStatusOverview tableStatusOverview)
         {
             InitializeComponent();
             this.table = table;
@@ -29,6 +32,7 @@ namespace UI
             this.SetLabels();
             EnableMenuButtons();
             UpdateOrderItemsListView();
+            this.tableStatusOverview = tableStatusOverview;
         }
         private void SetLabels()
         {
@@ -125,9 +129,10 @@ namespace UI
         private void AddColumnsToListView(ListView listView)
         {
             listView.Columns.Add("Name", 150);
-            listView.Columns.Add("Price", 100);
-            listView.Columns.Add("Quantity", 75);
-            listView.Columns.Add("Subtotal", 75);
+            listView.Columns.Add("Price", 60);
+            listView.Columns.Add("Quantity", 40);
+            listView.Columns.Add("Subtotal", 60);
+            listView.Columns.Add("Status", 100);
         }
 
         private void AddItemsToListView(ListView listView, List<OrderItem> orderItems)
@@ -160,6 +165,50 @@ namespace UI
             BillForm bill = new BillForm(table, currentEmployee);
             bill.ShowDialog();
 
+        }
+
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            tableStatusOverview.Show();
+        }
+
+        private void btnServed_Click(object sender, EventArgs e)
+        {
+            UpdateOrderStatus(OrderItemStatus.Delivered);
+        }
+
+        private int GetColumnIndex(ListView listView, string columnName)
+        {
+            int index = 0;
+            foreach (ColumnHeader column in listView.Columns)
+            {
+                if (column.Text == columnName)
+                {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
+        private void UpdateOrderStatus(OrderItemStatus status)
+        {
+            //checks if an order is selected and updates the status of the order item to the selected status 
+            if (ListViewOrderdItems.SelectedItems.Count > 0)
+            {
+                int columnIntegerOrderId = GetColumnIndex(ListViewOrderdItems, orderIdColumnName);
+                int columnIntegerOrderItemId = GetColumnIndex(ListViewOrderdItems, orderItemIdColumnName);
+
+                int orderId = Convert.ToInt32(ListViewOrderdItems.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
+                int orderItemId = Convert.ToInt32(ListViewOrderdItems.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
+
+                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
+                ListViewOrderdItems.Items.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Please select an order");
+            }
         }
     }
 }
