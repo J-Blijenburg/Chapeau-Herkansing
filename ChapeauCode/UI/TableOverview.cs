@@ -130,7 +130,7 @@ namespace UI
         {
             listView.Columns.Add("Name", 150);
             listView.Columns.Add("Price", 60);
-            listView.Columns.Add("Quantity", 40);
+            listView.Columns.Add("Qty", 40);
             listView.Columns.Add("Subtotal", 60);
             listView.Columns.Add("Status", 100);
         }
