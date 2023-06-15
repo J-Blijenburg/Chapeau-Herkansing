@@ -101,6 +101,7 @@
             Controls.Add(BtConfirm);
             Controls.Add(TbComment);
             Controls.Add(pictureBox1);
+            MaximizeBox = false;
             Name = "CommentInput";
             Text = " ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

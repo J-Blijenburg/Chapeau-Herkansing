@@ -89,6 +89,7 @@
             Controls.Add(BtnPay);
             Controls.Add(LblToPayNumber);
             Controls.Add(LblToPayTekst);
+            MaximizeBox = false;
             Name = "Splitbill";
             Text = "Splitbill";
             ResumeLayout(false);

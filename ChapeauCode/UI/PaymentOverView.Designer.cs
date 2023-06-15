@@ -285,6 +285,7 @@
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
             Name = "PaymentOverView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = " Payment over";

@@ -34,7 +34,8 @@ namespace UI
             receipt.Payment.IsPaid = true;
         }
         //update the receipt in the database
-        private void UpdateReceipt() {
+        private void UpdateReceipt()
+        {
             receiptService.UpdateReceipt(receipt);
         }
     }
