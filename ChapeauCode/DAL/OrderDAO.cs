@@ -46,7 +46,7 @@ namespace DAL
         }
         public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
-            string query = @"SELECT OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name AS MenuCategoryName, SUM(OI.Quantity) as TotalQuantity FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId JOIN [Table] AS TE ON RT.TableNumber = TE.Number JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId WHERE OD.ReceiptId = @ReceiptId AND RT.IsHandled = 0 GROUP BY OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name";
+            string query = @"SELECT OD.ReceiptId, OD.OrderDateTime as OrderDateTime, OI.MenuItemId, OI.OrderItemId as OrderItemId, OI.OrderItemStatus as OrderItemStatus, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name AS MenuCategoryName, SUM(OI.Quantity) as TotalQuantity FROM [OrderItem] AS OI JOIN [Order] AS OD ON OI.OrderId = OD.OrderId JOIN [Receipt] AS RT ON OD.ReceiptId = RT.ReceiptId JOIN [Table] AS TE ON RT.TableNumber = TE.Number JOIN [MenuItem] AS MI ON OI.MenuItemId = MI.MenuItemId JOIN [MenuCategory] AS MC ON MI.MenuCategoryId = MC.MenuCategoryId WHERE OD.ReceiptId = @ReceiptId AND RT.IsHandled = 0 GROUP BY OD.ReceiptId, OI.MenuItemId, MI.Name, MI.Price, MC.VAT, MC.MenuCategoryId, MC.Name, OI.OrderItemStatus, OI.OrderItemId, OD.OrderDateTime";
 
             SqlParameter[] sqlParameters = { new SqlParameter("@ReceiptId", receiptId) };
 
@@ -59,7 +59,9 @@ namespace DAL
             {
                 OrderItem orderItem = new OrderItem
                 {
-                    Order = new Order { Receipt = new Receipt { ReceiptId = (int)row["ReceiptId"] } },
+                    OrderItemStatus = (OrderItemStatus)row["OrderItemStatus"],
+                    OrderItemId = (int)row["OrderItemId"],
+                    Order = new Order { OrderDateTime = (DateTime)row["OrderDateTime"], Receipt = new Receipt { ReceiptId = (int)row["ReceiptId"] } },
                     MenuItem = new MenuItem {
                         MenuItemId = (int)row["MenuItemId"],
                         Name = row["Name"].ToString(),
@@ -70,6 +72,7 @@ namespace DAL
                         VAT = (double)row["VAT"],
                         Name = (Category)Enum.Parse(typeof(Category), row["MenuCategoryName"].ToString())
                     }
+                    
                     },
 
                     Quantity = (int)row["TotalQuantity"]
@@ -366,6 +369,37 @@ namespace DAL
 
             return query;
         }
+        public void UpdateOrderItemStatusByWaiter(int orderItemId, OrderItemStatus orderStatus)
+        {
+            string query = @"UPDATE [OrderItem]
+                     SET [OrderItemStatus] = @status
+                     WHERE [OrderItemId] = @OrderItemId AND [OrderItemStatus] = 4;
+
+                     IF @@ROWCOUNT = 0
+                     BEGIN
+                         RAISERROR('Cannot mark as served. the order item is not ready to be served or has already been served.', 16, 1);
+                     END";
+
+            SqlParameter[] sqlParameters = new SqlParameter[2];
+            sqlParameters[0] = new SqlParameter("@status", (int)orderStatus);
+            sqlParameters[1] = new SqlParameter("@OrderItemId", orderItemId);
+
+            try
+            {
+                ExecuteEditQuery(query, sqlParameters);
+            }
+            catch (SqlException e)
+            {
+                if (e.Number == 50000)
+                {
+                    throw new InvalidOperationException(e.Message);
+                }
+                throw;
+            }
+        }
+
+
+
 
         //Method to update the status of an order item,
         //if the status of all order items is finished, the status of the whole order will be changed to finished

@@ -27,7 +27,7 @@ namespace Logic
             {
                 throw new Exception($"Table with number {tableNumber} not found");
             }
-            if (newStatus == TableStatus.Open && table.UndeliveredOrdersCount > 0)
+            if (table.UndeliveredOrdersCount > 0)
             {
                 throw new Exception("Can't set table to 'Free' because there are active orders");
             }
@@ -35,9 +35,15 @@ namespace Logic
             tableDAO.UpdateTableStatus(tableNumber, newStatus);
         }
 
+
         public Color GetColorForTable(Table table)
         {
-            if (table.UndeliveredOrdersCount > 0)
+            //prioritize status of the table.
+            if (table.Status == TableStatus.Open)
+            {
+                return GetColorForStatus(table.Status);
+            }
+            else if (table.UndeliveredOrdersCount > 0)
             {
                 return Color.Red;
             }
@@ -46,6 +52,7 @@ namespace Logic
                 return GetColorForStatus(table.Status);
             }
         }
+
 
         public Color GetColorForStatus(TableStatus status)
         {

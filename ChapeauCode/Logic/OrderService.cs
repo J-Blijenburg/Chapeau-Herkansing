@@ -51,7 +51,21 @@ namespace Logic
             return orderDAO.GetOrderedItemsByReceiptId(receiptId);
         }
 
-   
+        public TimeSpan GetOrderElapsedTime(int receiptId)
+        {
+            var orderItems = orderDAO.GetOrderedItemsByReceiptId(receiptId);
+
+            // If no orders found, return zero timespan
+            if (orderItems.Count == 0)
+            {
+                return TimeSpan.Zero;
+            }
+
+            DateTime earliestOrderTime = orderItems.Min(item => item.Order.OrderDateTime);
+
+            return DateTime.Now - earliestOrderTime;
+        }
+
 
         public List<OrderItem> GetRunningOrderItems(MenuType type)
         {
@@ -66,6 +80,10 @@ namespace Logic
         public void UpdateOrderItemStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
         {
             orderDAO.UpdateOrderStatus(orderId, orderStatus, orderItemId);
+        }
+        public void UpdateOrderItemStatusByWaiter(int orderItemId, OrderItemStatus orderStatus)
+        {
+            orderDAO.UpdateOrderItemStatusByWaiter(orderItemId, orderStatus);
         }
 
 

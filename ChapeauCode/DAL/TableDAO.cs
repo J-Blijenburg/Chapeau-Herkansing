@@ -14,7 +14,8 @@ namespace DAL
                  COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
                  FROM [Table]
                  LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
-                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus
+                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus AND [Receipt].[IsHandled] = 0
+
                  LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
                  GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
@@ -31,7 +32,7 @@ namespace DAL
                  COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
                  FROM [Table]
                  LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
-                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus
+                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus AND [Receipt].[IsHandled] = 0
                  LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
                  WHERE [Table].[Number] = @TableNumber
                  GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";

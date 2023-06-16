@@ -14,25 +14,45 @@ namespace UI
 {
     public partial class TableOverview : Form
     {
-        private const string orderIdColumnName = "OrderId";
-        private const string orderItemIdColumnName = "OrderItemId";
         private OrderService orderService;
         private ReceiptService receiptService;
         private Table table;
         private Employee currentEmployee;
         private TableStatusOverview tableStatusOverview;
+        private Receipt currentReceipt;
+        private TimeSpan orderStartDateTime;
         public TableOverview(Table table, Employee currentEmployee, TableStatusOverview tableStatusOverview)
         {
-            InitializeComponent();
-            this.table = table;
-            this.currentEmployee = currentEmployee;
+            this.InitializeComponent();
             orderService = new OrderService();
             receiptService = new ReceiptService();
-
-            this.SetLabels();
-            EnableMenuButtons();
-            UpdateOrderItemsListView();
+            this.table = table;
+            this.currentEmployee = currentEmployee;
             this.tableStatusOverview = tableStatusOverview;
+
+            this.EnableMenuButtons();
+            this.UpdateOrderItemsListView();
+
+            Initializer();
+        }
+        private void Initializer()
+        {
+            try
+            {
+                orderStartDateTime = orderService.GetOrderElapsedTime(this.currentReceipt.ReceiptId);
+                timeUpdateTimer.Start();
+                timeUpdateTimer.Tick += timeUpdateTimer_Tick;
+                timeUpdateTimer.Interval = 1000;
+                tableUpdateTimer.Interval = 10000;
+                tableUpdateTimer.Tick += tableUpdateTimer_Tick;
+                tableUpdateTimer.Start();
+                SetLabels();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
         }
         private void SetLabels()
         {
@@ -90,37 +110,35 @@ namespace UI
                     OpenOrderForm(MenuType.Drinks);
                     break;
             }
-
         }
         private void OpenOrderForm(MenuType panelToShow)
         {
-            OrderOverView orderForm = CreateOrderForm(panelToShow);
+            OrderOverView orderForm = new(this, panelToShow, this.table, currentEmployee);
             orderForm.ShowDialog();
             UpdateOrderItemsListView();
         }
-        private OrderOverView CreateOrderForm(MenuType panelToShow)
-        {
-            return new OrderOverView(this, panelToShow, this.table, currentEmployee);
-        }
         private void UpdateOrderItemsListView()
-        {
-            Receipt receipt = receiptService.GetReceipt(this.table, currentEmployee);
-            var orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId);
-            FillListViewOrderedItems(ListViewOrderdItems, orderItems);
-        }
-        private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)
         {
             try
             {
-                ClearListView(listView);
-                AddColumnsToListView(listView);
-                AddItemsToListView(listView, orderItems);
-                UpdateTotalVatAndPriceLabels(orderItems);
+                currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+                List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
+                FillListViewOrderedItems(ListViewOrderdItems, orderItems);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred: " + ex.Message);
+
             }
+            
+        }
+
+        private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)
+        {
+                ClearListView(listView);
+                AddColumnsToListView(listView);
+                AddItemsToListView(listView, orderItems);
+                UpdateTotalVatAndPriceLabels(orderItems);
         }
         private void ClearListView(ListView listView)
         {
@@ -144,7 +162,8 @@ namespace UI
                     orderItem.MenuItem.Name,
                     orderItem.MenuItem.Price.ToString("N2"),
                     orderItem.Quantity.ToString(),
-                    orderItem.SubTotal.ToString("N2")
+                    orderItem.SubTotal.ToString("N2"),
+                    orderItem.OrderItemStatus.ToString()
                 })
                 { Tag = orderItem };
 
@@ -177,38 +196,49 @@ namespace UI
         {
             UpdateOrderStatus(OrderItemStatus.Delivered);
         }
-
-        private int GetColumnIndex(ListView listView, string columnName)
-        {
-            int index = 0;
-            foreach (ColumnHeader column in listView.Columns)
-            {
-                if (column.Text == columnName)
-                {
-                    return index;
-                }
-                index++;
-            }
-            return -1;
-        }
         private void UpdateOrderStatus(OrderItemStatus status)
         {
-            //checks if an order is selected and updates the status of the order item to the selected status 
             if (ListViewOrderdItems.SelectedItems.Count > 0)
             {
-                int columnIntegerOrderId = GetColumnIndex(ListViewOrderdItems, orderIdColumnName);
-                int columnIntegerOrderItemId = GetColumnIndex(ListViewOrderdItems, orderItemIdColumnName);
+                ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
+                OrderItem orderItem = selectedItem.Tag as OrderItem;
 
-                int orderId = Convert.ToInt32(ListViewOrderdItems.SelectedItems[0].SubItems[columnIntegerOrderId].Text);
-                int orderItemId = Convert.ToInt32(ListViewOrderdItems.SelectedItems[0].SubItems[columnIntegerOrderItemId].Text);
-
-                orderService.UpdateOrderItemStatus(orderId, status, orderItemId);
-                ListViewOrderdItems.Items.Clear();
+                if (orderItem != null)
+                {
+                    try
+                    {
+                        orderService.UpdateOrderItemStatusByWaiter(orderItem.OrderItemId, status);
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        // Display the error message to the user
+                        MessageBox.Show(e.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid item selected");
+                }
             }
             else
             {
-                MessageBox.Show("Please select an order");
+                MessageBox.Show("Please select an order item");
             }
         }
+
+        private void tableUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateOrderItemsListView();
+        }
+        private void timeUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            // Refresh the receipt
+            currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+
+            TimeSpan elapsedTime = orderService.GetOrderElapsedTime(currentReceipt.ReceiptId);
+            orderWaitTimeLbl.Text = $"Order running for: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}";
+        }
+
+
     }
 }

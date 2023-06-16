@@ -13,15 +13,17 @@ namespace UI
             InitializeComponent();
             tableService = new TableService();
             this.loggedInEmployee = loggedInEmployee;
+            this.loginForm = loginForm;
+
             Initializer();
             LoadTables();
-            this.loginForm = loginForm;
         }
         private void Initializer()
         {
             employeeNameLbl.Text = this.loggedInEmployee.FirstName;
-            timeUpdateTimer.Start();
+
             timeUpdateTimer.Tick += timeUpdateTimer_Tick;
+            timeUpdateTimer.Start();
             tableUpdateTimer.Interval = 10000;
             tableUpdateTimer.Tick += tableUpdateTimer_Tick;
             tableUpdateTimer.Start();
