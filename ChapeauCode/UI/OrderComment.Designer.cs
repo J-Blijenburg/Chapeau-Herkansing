@@ -38,11 +38,12 @@
             // 
             TxtComment.AccessibleName = "";
             TxtComment.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            TxtComment.Location = new Point(82, 172);
+            TxtComment.Location = new Point(117, 287);
+            TxtComment.Margin = new Padding(4, 5, 4, 5);
             TxtComment.Multiline = true;
             TxtComment.Name = "TxtComment";
             TxtComment.PlaceholderText = "Message...";
-            TxtComment.Size = new Size(250, 100);
+            TxtComment.Size = new Size(355, 164);
             TxtComment.TabIndex = 1;
             // 
             // BtnBack
@@ -51,10 +52,9 @@
             BtnBack.FlatAppearance.BorderSize = 0;
             BtnBack.FlatStyle = FlatStyle.Flat;
             BtnBack.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnBack.Location = new Point(-18, 10);
-            BtnBack.Margin = new Padding(2, 2, 2, 2);
+            BtnBack.Location = new Point(-26, 17);
             BtnBack.Name = "BtnBack";
-            BtnBack.Size = new Size(92, 38);
+            BtnBack.Size = new Size(131, 63);
             BtnBack.TabIndex = 3;
             BtnBack.Text = "BACK";
             BtnBack.UseVisualStyleBackColor = false;
@@ -66,10 +66,9 @@
             BtnAddComment.FlatAppearance.BorderSize = 0;
             BtnAddComment.FlatStyle = FlatStyle.Flat;
             BtnAddComment.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnAddComment.Location = new Point(107, 284);
-            BtnAddComment.Margin = new Padding(2, 2, 2, 2);
+            BtnAddComment.Location = new Point(153, 473);
             BtnAddComment.Name = "BtnAddComment";
-            BtnAddComment.Size = new Size(200, 50);
+            BtnAddComment.Size = new Size(286, 83);
             BtnAddComment.TabIndex = 4;
             BtnAddComment.Text = "ADD Comment";
             BtnAddComment.UseVisualStyleBackColor = false;
@@ -77,14 +76,15 @@
             // 
             // OrderComment
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(398, 507);
+            ClientSize = new Size(569, 1162);
             Controls.Add(BtnAddComment);
             Controls.Add(BtnBack);
             Controls.Add(TxtComment);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             Name = "OrderComment";
             StartPosition = FormStartPosition.CenterScreen;

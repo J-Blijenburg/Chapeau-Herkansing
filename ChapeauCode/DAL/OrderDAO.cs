@@ -316,12 +316,13 @@ namespace DAL
         {
             string queryString = GetTypeOfOrderForQuery(type);
 
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
+            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, r.tableNumber, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
+                           "JOIN Receipt r ON o.ReceiptID = r.ReceiptID " +
                            "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")" +
                            "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
@@ -332,16 +333,18 @@ namespace DAL
         {
             string queryString = GetTypeOfOrderForQuery(type);
 
-            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, m.Name AS 'Dish', c.Name AS 'Type' " +
+            string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, r.tableNumber, m.Name AS 'Dish', c.Name AS 'Type' " +
                            "FROM OrderItem oi " +
                            "JOIN [Order] o ON oi.OrderID = o.OrderID " +
                            "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
                            "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
                            "JOIN Menu c ON mc.MenuId = c.MenuId " +
+                           "JOIN Receipt r ON o.ReceiptID = r.ReceiptID " +
                            "WHERE oi.OrderItemStatus = 3 AND (" + queryString + ")" +
                            "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
+
 
 
         //Method to get the type of order for the query using the enum MenuType
@@ -399,8 +402,6 @@ namespace DAL
         }
 
 
-
-
         //Method to update the status of an order item,
         //if the status of all order items is finished, the status of the whole order will be changed to finished
         public void UpdateOrderStatus(int orderId, OrderItemStatus orderStatus, int orderItemId)
@@ -447,8 +448,15 @@ namespace DAL
                             {
                                 OrderId = (int)dr["OrderId"],
                                 Status = (OrderStatus)(int)dr["Status"],
-                                OrderDateTime = (DateTime)dr["OrderDateTime"]
+                                OrderDateTime = (DateTime)dr["OrderDateTime"],
 
+                                Receipt = new Receipt()
+                                {
+                                    Table = new Table() 
+                                    {
+                                        Number = (int)dr["tableNumber"]
+                                    }
+                                }
                             },
                     
                             MenuItem = new MenuItem()
@@ -469,6 +477,32 @@ namespace DAL
           
 
 
+        }
+
+        //Method to get the type of order for the query using the enum MenuType
+        private static string GetTypeOfOrderForQuery(MenuType type)
+        {
+            string query = "";
+            switch (type)
+            {
+                case MenuType.Dinner:
+                case MenuType.Lunch:
+                    {
+                        query = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
+                        break;
+                    }
+                case MenuType.Drinks:
+                    {
+                        query = "c.Name = 'Drinks'";
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+            return query;
         }
     }
 }

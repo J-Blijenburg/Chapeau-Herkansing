@@ -34,6 +34,7 @@
             Comment = new ColumnHeader();
             Quantity = new ColumnHeader();
             TimeInSystem = new ColumnHeader();
+            orderDateTime = new ColumnHeader();
             Description = new ColumnHeader();
             OrderItemStatus = new ColumnHeader();
             OrderId = new ColumnHeader();
@@ -56,12 +57,13 @@
             rdbFinishedOrders = new RadioButton();
             rdbRunningOrders = new RadioButton();
             btnSignOff = new Button();
+            tableNumber = new ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // lstViewOrders
             // 
-            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, Comment, Quantity, TimeInSystem, Description, OrderItemStatus, OrderId });
+            lstViewOrders.Columns.AddRange(new ColumnHeader[] { OrderItemId, tableNumber, Comment, Quantity, TimeInSystem, orderDateTime, Description, OrderItemStatus, OrderId });
             lstViewOrders.FullRowSelect = true;
             lstViewOrders.GridLines = true;
             lstViewOrders.Location = new Point(12, 189);
@@ -75,7 +77,7 @@
             // OrderItemId
             // 
             OrderItemId.Text = "OrderItemID";
-            OrderItemId.Width = 200;
+            OrderItemId.Width = 100;
             // 
             // Comment
             // 
@@ -85,12 +87,17 @@
             // Quantity
             // 
             Quantity.Text = "Quantity";
-            Quantity.Width = 90;
+            Quantity.Width = 80;
             // 
             // TimeInSystem
             // 
             TimeInSystem.Text = "Elapsed Time (H:M:S)";
             TimeInSystem.Width = 120;
+            // 
+            // orderDateTime
+            // 
+            orderDateTime.Text = "Order time";
+            orderDateTime.Width = 120;
             // 
             // Description
             // 
@@ -293,6 +300,10 @@
             btnSignOff.UseVisualStyleBackColor = false;
             btnSignOff.Click += btnSignOff_Click;
             // 
+            // tableNumber
+            // 
+            tableNumber.Text = "Table";
+            // 
             // KitchenBarView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -360,5 +371,7 @@
         private RadioButton rdbFinishedOrders;
         private RadioButton rdbRunningOrders;
         private Button btnSignOff;
+        private ColumnHeader orderDateTime;
+        private ColumnHeader tableNumber;
     }
 }
