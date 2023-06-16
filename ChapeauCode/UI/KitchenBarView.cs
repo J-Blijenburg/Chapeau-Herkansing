@@ -199,9 +199,8 @@ namespace UI
             //signs off the logged in employee and closes the current form before opening the login form
             timer.Stop();
             loggedInEmployee = null;
-            Login loginForm = new Login();
             this.Close();
-            loginForm.Show();
+            login.Show();
         }
     }
 }
