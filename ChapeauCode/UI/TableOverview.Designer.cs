@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableOverview));
             BtnLunch = new Button();
             BtnDinner = new Button();
@@ -44,6 +45,9 @@
             backBtn = new Button();
             btnServed = new Button();
             pictureBox1 = new PictureBox();
+            tableUpdateTimer = new System.Windows.Forms.Timer(components);
+            orderWaitTimeLbl = new Label();
+            timeUpdateTimer = new System.Windows.Forms.Timer(components);
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -129,6 +133,7 @@
             // 
             // ListViewOrderdItems
             // 
+            ListViewOrderdItems.FullRowSelect = true;
             ListViewOrderdItems.Location = new Point(7, 29);
             ListViewOrderdItems.Margin = new Padding(3, 4, 3, 4);
             ListViewOrderdItems.Name = "ListViewOrderdItems";
@@ -228,12 +233,31 @@
             pictureBox1.TabIndex = 30;
             pictureBox1.TabStop = false;
             // 
+            // tableUpdateTimer
+            // 
+            tableUpdateTimer.Enabled = true;
+            tableUpdateTimer.Tick += tableUpdateTimer_Tick;
+            // 
+            // orderWaitTimeLbl
+            // 
+            orderWaitTimeLbl.AutoSize = true;
+            orderWaitTimeLbl.Location = new Point(176, 200);
+            orderWaitTimeLbl.Name = "orderWaitTimeLbl";
+            orderWaitTimeLbl.Size = new Size(0, 20);
+            orderWaitTimeLbl.TabIndex = 31;
+            // 
+            // timeUpdateTimer
+            // 
+            timeUpdateTimer.Enabled = true;
+            timeUpdateTimer.Tick += timeUpdateTimer_Tick;
+            // 
             // TableOverview
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(455, 929);
+            Controls.Add(orderWaitTimeLbl);
             Controls.Add(pictureBox1);
             Controls.Add(btnServed);
             Controls.Add(backBtn);
@@ -276,5 +300,8 @@
         private Button backBtn;
         private Button btnServed;
         private PictureBox pictureBox1;
+        private System.Windows.Forms.Timer tableUpdateTimer;
+        private Label orderWaitTimeLbl;
+        private System.Windows.Forms.Timer timeUpdateTimer;
     }
 }
