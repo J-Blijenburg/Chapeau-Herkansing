@@ -241,10 +241,11 @@
             // orderWaitTimeLbl
             // 
             orderWaitTimeLbl.AutoSize = true;
-            orderWaitTimeLbl.Location = new Point(176, 200);
+            orderWaitTimeLbl.Location = new Point(127, 195);
             orderWaitTimeLbl.Name = "orderWaitTimeLbl";
-            orderWaitTimeLbl.Size = new Size(0, 20);
+            orderWaitTimeLbl.Size = new Size(81, 20);
             orderWaitTimeLbl.TabIndex = 31;
+            orderWaitTimeLbl.Text = "Order time";
             // 
             // timeUpdateTimer
             // 

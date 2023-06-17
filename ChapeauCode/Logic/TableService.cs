@@ -27,9 +27,9 @@ namespace Logic
             {
                 throw new Exception($"Table with number {tableNumber} not found");
             }
-            if (table.UndeliveredOrdersCount > 0)
+            if (tableDAO.HasUnhandledReceipt(tableNumber) && table.Status == TableStatus.Occupied && newStatus == TableStatus.Open)
             {
-                throw new Exception("Can't set table to 'Free' because there are active orders");
+                throw new Exception("Can't set table to 'Free' because there are active orders or unhandled receipts");
             }
 
             tableDAO.UpdateTableStatus(tableNumber, newStatus);
@@ -38,7 +38,7 @@ namespace Logic
 
         public Color GetColorForTable(Table table)
         {
-            //prioritize status of the table.
+            //prioritize status of the table
             if (table.Status == TableStatus.Open)
             {
                 return GetColorForStatus(table.Status);
@@ -52,8 +52,6 @@ namespace Logic
                 return GetColorForStatus(table.Status);
             }
         }
-
-
         public Color GetColorForStatus(TableStatus status)
         {
             switch (status)

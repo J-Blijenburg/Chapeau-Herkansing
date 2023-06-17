@@ -11,16 +11,17 @@ namespace DAL
         public List<Table> GetTables()
         {
             string query = @"SELECT [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status] as [TableStatus],
-                 COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
-                 FROM [Table]
-                 LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
-                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus AND [Receipt].[IsHandled] = 0
+             COUNT([OrderItem].[OrderItemId]) as [UndeliveredOrdersCount]
+             FROM [Table]
+             LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
+             LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Receipt].[IsHandled] = 0
+             LEFT JOIN [OrderItem] ON [Order].[OrderId] = [OrderItem].[OrderId] AND [OrderItem].[OrderItemStatus] != @DeliveredStatus
 
-                 LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
-                 GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
+             LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
+             GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
+        new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered)
             };
 
 
@@ -29,21 +30,24 @@ namespace DAL
         public Table GetTable(int tableNumber)
         {
             string query = @"SELECT [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status] as [TableStatus],
-                 COUNT([Order].[OrderId]) as [UndeliveredOrdersCount]
-                 FROM [Table]
-                 LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
-                 LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Order].[Status] != @DeliveredStatus AND [Receipt].[IsHandled] = 0
-                 LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
-                 WHERE [Table].[Number] = @TableNumber
-                 GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
+             COUNT([OrderItem].[OrderItemId]) as [UndeliveredOrdersCount]
+             FROM [Table]
+             LEFT JOIN [Receipt] ON [Table].[Number] = [Receipt].[TableNumber]
+             LEFT JOIN [Order] ON [Receipt].[ReceiptId] = [Order].[ReceiptId] AND [Receipt].[IsHandled] = 0
+             LEFT JOIN [OrderItem] ON [Order].[OrderId] = [OrderItem].[OrderId] AND [OrderItem].[OrderItemStatus] != @DeliveredStatus
+
+             LEFT JOIN [TableStatus] ON [Table].[Status] = [TableStatus].[TableStatusId]
+             WHERE [Table].[Number] = @TableNumber
+             GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
-            { 
-                new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered),
-                new SqlParameter("@TableNumber", tableNumber)
+            {
+        new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered),
+        new SqlParameter("@TableNumber", tableNumber)
             };
 
             return ReadTable(ExecuteSelectQuery(query, sqlParameters));
         }
+
 
         public void UpdateTableStatus(int tableNumber, TableStatus newStatus)
         {
@@ -55,6 +59,19 @@ namespace DAL
             };
 
             ExecuteEditQuery(query, sqlParameters);
+        }
+        public bool HasUnhandledReceipt(int tableNumber)
+        {
+            string query = @"SELECT [ReceiptId] FROM [Receipt] WHERE [TableNumber] = @TableNumber AND [IsHandled] = 0";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableNumber", tableNumber)
+            };
+
+            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+
+            
+            return dataTable.Rows.Count > 0;
         }
 
         private Table ReadTable(DataTable dataTable)
