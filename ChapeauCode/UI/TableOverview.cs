@@ -202,9 +202,8 @@ namespace UI
             if (ListViewOrderdItems.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
-                OrderItem orderItem = selectedItem.Tag as OrderItem;
 
-                if (orderItem != null)
+                if (selectedItem.Tag is OrderItem orderItem)
                 {
                     try
                     {
@@ -212,7 +211,6 @@ namespace UI
                     }
                     catch (InvalidOperationException e)
                     {
-                        // Display the error message to the user
                         MessageBox.Show(e.Message);
                     }
                 }
@@ -233,7 +231,7 @@ namespace UI
         }
         private void timeUpdateTimer_Tick(object sender, EventArgs e)
         {
-            // Refresh the receipt
+            //refresh the receipt
             currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
 
             TimeSpan elapsedTime = orderService.GetOrderElapsedTime(currentReceipt.ReceiptId);

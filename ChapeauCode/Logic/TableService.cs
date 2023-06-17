@@ -29,7 +29,7 @@ namespace Logic
             }
             if (tableDAO.HasUnhandledReceipt(tableNumber) && table.Status == TableStatus.Occupied && newStatus == TableStatus.Open)
             {
-                throw new Exception("Can't set table to 'Free' because there are active orders or unhandled receipts");
+                throw new Exception("Can't set table to 'Free' because there are unhandled receipts");
             }
 
             tableDAO.UpdateTableStatus(tableNumber, newStatus);
