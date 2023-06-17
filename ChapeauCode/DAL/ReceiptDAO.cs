@@ -156,7 +156,7 @@ namespace DAL
                 "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
                 "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
                 "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
-                "WHERE TE.Number = @TableNumber"; 
+                "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0"; 
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
         new SqlParameter("@TableNumber", table.Number)
