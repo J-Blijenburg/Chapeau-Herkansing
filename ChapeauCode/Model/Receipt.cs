@@ -18,6 +18,8 @@ namespace Model
         public double TotalVat { get; set; }
         public double TotalPrice { get; set; }
         public double Tip { get; set; }
+
+        public bool IsHandled { get; set; }
         public Payment Payment { get; set; }
         private List<Order> Orders { get; set; }
         

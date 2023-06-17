@@ -28,6 +28,7 @@ namespace DAL
             receipt.HighVatPrice = 0;
             receipt.TotalPrice = 0;
             receipt.Tip = 0;
+            receipt.IsHandled = false;
             receipt.Payment = payment;
 
             receipt.Payment.PaymentId = InsertNewPayment();
@@ -39,7 +40,7 @@ namespace DAL
         private int InsertNewReceipt(Receipt receipt)
         {
             //https://stackoverflow.com/questions/20117825/executescalar-call-throwing-exception-object-reference-not-set-to-an-instance-o
-            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableNumber, LowVatPrice, HighVatPrice, TotalPrice, Tip, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableNumber, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @PaymentId); SELECT CAST(scope_identity() AS int)";
+            string query = "INSERT INTO Receipt (ReceiptDateTime, Feedback, EmployeeId, TableNumber, LowVatPrice, HighVatPrice, TotalPrice, Tip, IsHandled, PaymentId) VALUES (@ReceiptDateTime, @Feedback, @EmployeeId, @TableNumber, @LowVatPrice, @HighVatPrice, @TotalPrice, @Tip, @IsHandled, @PaymentId); SELECT CAST(scope_identity() AS int)";
             SqlParameter[] sqlParameters;
             sqlParameters = new SqlParameter[]
             {
@@ -51,6 +52,7 @@ namespace DAL
                 new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
                 new SqlParameter("@TotalPrice", receipt.TotalPrice),
                 new SqlParameter("@Tip", receipt.Tip),
+                new SqlParameter("@IsHandled", receipt.IsHandled),
                 new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
             };
             //by using the method executeinsertqueryandreturnid we can get the id of the last inserted receipt
