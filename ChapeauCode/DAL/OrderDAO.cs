@@ -346,32 +346,6 @@ namespace DAL
         }
 
 
-
-        //Method to get the type of order for the query using the enum MenuType
-        private static string GetTypeOfOrderForQuery(MenuType type)
-        {
-            string query = "";
-            switch (type)
-            {
-                case MenuType.Dinner:
-                case MenuType.Lunch:
-                    {
-                        query = "c.Name = 'Lunch' OR c.Name = 'Dinner'";
-                        break;
-                    }
-                case MenuType.Drinks:
-                    {
-                        query = "c.Name = 'Drinks'";
-                        break;
-                    }
-                default:
-                    {  
-                        break;
-                    }
-            }
-
-            return query;
-        }
         public void UpdateOrderItemStatusByWaiter(int orderItemId, OrderItemStatus orderStatus)
         {
             string query = @"UPDATE [OrderItem]

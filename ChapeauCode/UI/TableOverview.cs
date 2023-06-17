@@ -114,6 +114,7 @@ namespace UI
         private void OpenOrderForm(MenuType panelToShow)
         {
             OrderOverView orderForm = new(this, panelToShow, this.table, currentEmployee);
+            this.Hide();
             orderForm.ShowDialog();
             UpdateOrderItemsListView();
         }
@@ -130,15 +131,15 @@ namespace UI
                 MessageBox.Show("An error occurred: " + ex.Message);
 
             }
-            
+
         }
 
         private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)
         {
-                ClearListView(listView);
-                AddColumnsToListView(listView);
-                AddItemsToListView(listView, orderItems);
-                UpdateTotalVatAndPriceLabels(orderItems);
+            ClearListView(listView);
+            AddColumnsToListView(listView);
+            AddItemsToListView(listView, orderItems);
+            UpdateTotalVatAndPriceLabels(orderItems);
         }
         private void ClearListView(ListView listView)
         {
