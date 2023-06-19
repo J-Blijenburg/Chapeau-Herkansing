@@ -162,8 +162,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
-
-        public Receipt GetReceiptByTable(Table table, Employee employee)
+        public Receipt GetReceiptByTable(Table table)
         {
             string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, PT.PaymentId, PT.IsPaid " +
                 "FROM [Receipt] AS RT " +
@@ -175,7 +174,24 @@ namespace DAL
                 "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0"; 
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-        new SqlParameter("@TableNumber", table.Number)
+                new SqlParameter("@TableNumber", table.Number)
+            };
+
+            return CreateExistingReceipt(ExecuteSelectQuery(query, sqlParameters));
+        }
+        public Receipt GetReceiptByTableAndEmployee(Table table, Employee employee)
+        {
+            string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, PT.PaymentId, PT.IsPaid " +
+                "FROM [Receipt] AS RT " +
+                "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
+                "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
+                "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
+                "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
+                "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
+                "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableNumber", table.Number)
             };
 
             DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);

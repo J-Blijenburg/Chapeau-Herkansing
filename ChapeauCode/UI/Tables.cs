@@ -75,7 +75,7 @@ namespace UI
         {
             loggedInEmployee = null;
             this.Dispose();
-            loginForm.ShowDialog();
+            loginForm.Show();
         }
 
     }

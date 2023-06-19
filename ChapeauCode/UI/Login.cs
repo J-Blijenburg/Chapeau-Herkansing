@@ -96,7 +96,7 @@ namespace UI
         }
 
         private void forgotPasswordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
+        {   
             managerContactMsgLbl.Visible = true;
         }
     }

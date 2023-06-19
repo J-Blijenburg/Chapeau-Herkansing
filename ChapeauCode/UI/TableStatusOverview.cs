@@ -90,7 +90,7 @@ namespace UI
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
             tablesForm.LoadTables();
             tablesForm.Show();
         }
@@ -99,7 +99,7 @@ namespace UI
         {
             TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee, this);
             this.Hide();
-            tableOverview.ShowDialog();
+            tableOverview.Show();
 
         }
     }
