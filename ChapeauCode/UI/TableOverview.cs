@@ -198,8 +198,8 @@ namespace UI
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Dispose();
-            tableStatusOverview.ShowDialog();
+            this.Hide();
+            tableStatusOverview.Show();
         }
         private void btnServed_Click(object sender, EventArgs e)
         {
