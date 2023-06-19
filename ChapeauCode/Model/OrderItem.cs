@@ -87,7 +87,17 @@ namespace Model
         {
             return MenuItem.MenuItemId;
         }
+        public string GetOrderItemWaitTime()
+        {
 
-
+            if (OrderItemStatus == OrderItemStatus.Delivered)
+            {
+                return "";
+            }
+            else
+            {
+                return Order.GetOrderItemWaitTime();   
+            }
+        }
     }
 }

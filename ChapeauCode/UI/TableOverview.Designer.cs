@@ -45,9 +45,9 @@
             backBtn = new Button();
             btnServed = new Button();
             pictureBox1 = new PictureBox();
-            tableUpdateTimer = new System.Windows.Forms.Timer(components);
             orderWaitTimeLbl = new Label();
             timeUpdateTimer = new System.Windows.Forms.Timer(components);
+            timer1 = new System.Windows.Forms.Timer(components);
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -219,7 +219,7 @@
             btnServed.Name = "btnServed";
             btnServed.Size = new Size(144, 48);
             btnServed.TabIndex = 29;
-            btnServed.Text = "Served";
+            btnServed.Text = "Delivered";
             btnServed.UseVisualStyleBackColor = false;
             btnServed.Click += btnServed_Click;
             // 
@@ -232,11 +232,6 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 30;
             pictureBox1.TabStop = false;
-            // 
-            // tableUpdateTimer
-            // 
-            tableUpdateTimer.Enabled = true;
-            tableUpdateTimer.Tick += tableUpdateTimer_Tick;
             // 
             // orderWaitTimeLbl
             // 
@@ -251,6 +246,10 @@
             // 
             timeUpdateTimer.Enabled = true;
             timeUpdateTimer.Tick += timeUpdateTimer_Tick;
+            // 
+            // timer1
+            // 
+            timer1.Enabled = true;
             // 
             // TableOverview
             // 
@@ -301,8 +300,8 @@
         private Button backBtn;
         private Button btnServed;
         private PictureBox pictureBox1;
-        private System.Windows.Forms.Timer tableUpdateTimer;
         private Label orderWaitTimeLbl;
         private System.Windows.Forms.Timer timeUpdateTimer;
+        private System.Windows.Forms.Timer timer1;
     }
 }
