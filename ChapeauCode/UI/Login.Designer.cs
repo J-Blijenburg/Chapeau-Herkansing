@@ -72,7 +72,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(45, 319);
+            label3.Location = new Point(39, 319);
             label3.Name = "label3";
             label3.Size = new Size(135, 32);
             label3.TabIndex = 9;
@@ -140,7 +140,7 @@
             // 
             loginErrorMsgLbl.AutoSize = true;
             loginErrorMsgLbl.ForeColor = Color.FromArgb(216, 0, 0);
-            loginErrorMsgLbl.Location = new Point(234, 499);
+            loginErrorMsgLbl.Location = new Point(159, 488);
             loginErrorMsgLbl.Name = "loginErrorMsgLbl";
             loginErrorMsgLbl.Size = new Size(0, 20);
             loginErrorMsgLbl.TabIndex = 16;

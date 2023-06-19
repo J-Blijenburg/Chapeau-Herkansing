@@ -41,14 +41,10 @@ namespace UI
                 timeUpdateTimer.Start();
                 timeUpdateTimer.Tick += timeUpdateTimer_Tick;
                 timeUpdateTimer.Interval = 1000;
-                tableUpdateTimer.Interval = 10000;
-                tableUpdateTimer.Tick += tableUpdateTimer_Tick;
-                tableUpdateTimer.Start();
                 SetLabels();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
@@ -132,7 +128,6 @@ namespace UI
             }
 
         }
-
         private void FillListViewOrderedItems(ListView listView, List<OrderItem> orderItems)
         {
             ClearListView(listView);
@@ -146,11 +141,12 @@ namespace UI
         }
         private void AddColumnsToListView(ListView listView)
         {
-            listView.Columns.Add("Name", 150);
+            listView.Columns.Add("Name", 100);
             listView.Columns.Add("Price", 60);
             listView.Columns.Add("Qty", 40);
             listView.Columns.Add("Subtotal", 60);
             listView.Columns.Add("Status", 100);
+            listView.Columns.Add("Wait time", 100);
         }
 
         private void AddItemsToListView(ListView listView, List<OrderItem> orderItems)
@@ -163,7 +159,9 @@ namespace UI
                     orderItem.MenuItem.Price.ToString("N2"),
                     orderItem.Quantity.ToString(),
                     orderItem.SubTotal.ToString("N2"),
-                    orderItem.OrderItemStatus.ToString()
+                    orderItem.OrderItemStatus.ToString(),
+                    orderItem.GetOrderItemWaitTime().ToString()
+
                 })
                 { Tag = orderItem };
 
@@ -184,7 +182,7 @@ namespace UI
             {
                 currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
                 List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
-                BtnPayment.Enabled = orderService.AreAllItemsServed(orderItems);
+                BtnPayment.Enabled = orderService.AllItemsServed(orderItems);
             }
             catch (Exception ex)
             {
@@ -202,7 +200,7 @@ namespace UI
 
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Dispose();
             tableStatusOverview.Show();
         }
 

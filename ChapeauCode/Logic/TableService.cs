@@ -11,7 +11,9 @@ namespace Logic
     public class TableService
     {
         private TableDAO tableDAO;
-        private ReceiptService receiptService;
+        private const string ColorOpen = "#8AD2B0";
+        private const string ColorOccupied = "#FFB347";
+        private const string ColorReserved = "#C4C4C4";
         public TableService()
         {
             tableDAO = new TableDAO();
@@ -39,12 +41,9 @@ namespace Logic
         {
             return tableDAO.HasUnhandledReceipt(tableNumber);
         }
-       
-
-
         public Color GetColorForTable(Table table)
         {
-            //prioritize status of the table
+            //tafel status heeft prioriteit
             if (table.Status == TableStatus.Open)
             {
                 return GetColorForStatus(table.Status);
@@ -63,11 +62,11 @@ namespace Logic
             switch (status)
             {
                 case TableStatus.Open:
-                    return ColorTranslator.FromHtml("#8AD2B0");
+                    return ColorTranslator.FromHtml(ColorOpen);
                 case TableStatus.Occupied:
-                    return ColorTranslator.FromHtml("#FFB347");
+                    return ColorTranslator.FromHtml(ColorOccupied);
                 case TableStatus.Reserved:
-                    return ColorTranslator.FromHtml("#C4C4C4");
+                    return ColorTranslator.FromHtml(ColorReserved);
                 default:
                     return Color.Gray;
             }

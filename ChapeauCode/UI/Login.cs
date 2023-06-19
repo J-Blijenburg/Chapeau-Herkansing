@@ -8,8 +8,8 @@ namespace UI
 {
     public partial class Login : Form
     {
+        //readonly omdat je alleen dingen terug krijgt
         private readonly EmployeeService employeeService;
-
         public Login()
         {
             InitializeComponent();
@@ -55,25 +55,30 @@ namespace UI
             switch (loggedInEmployee.Role)
             {
                 case EmployeeRole.Chefkok:
-                    employeeForm = new KitchenBarView(loggedInEmployee, this);
-                    employeeForm.ShowDialog();
-                    break;
                 case EmployeeRole.Bartender:
                     employeeForm = new KitchenBarView(loggedInEmployee, this);
-                    employeeForm.ShowDialog();
                     break;
                 case EmployeeRole.Waiter:
                 case EmployeeRole.Manager:
                     employeeForm = new Tables(loggedInEmployee, this);
-                    employeeForm.ShowDialog();
                     break;
                 default:
-                    throw new ArgumentException("Invalid employee role");
+                    MessageBox.Show("Invalid employee role", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+            }
+
+            if (employeeForm != null)
+            {
+                employeeForm.ShowDialog();
             }
         }
+
         private void showHidePasswordBtn_Click(object sender, EventArgs e)
         {
+            //bepalen of de huidige boolean value op true of false staat, standaard staat ie op true
+            //als er op geklikt wordt wordt het false
             passwordTextbox.UseSystemPasswordChar = !passwordTextbox.UseSystemPasswordChar;
+            //tekst veranderen op basis van de value, true of false, true is show false is hide
             showHidePasswordBtn.Text = passwordTextbox.UseSystemPasswordChar ? "Show" : "Hide";
         }
         private void UpdateLoginButton()
