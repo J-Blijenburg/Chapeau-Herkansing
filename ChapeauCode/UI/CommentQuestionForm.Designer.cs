@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class CommentQuestion
+    partial class CommentQuestionForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommentQuestion));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommentQuestionForm));
             pictureBox1 = new PictureBox();
             BtContinueWithPayment = new CustomTools.RoundedButton();
             BtnAddComment = new CustomTools.RoundedButton();
@@ -93,6 +93,7 @@
             Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             MaximizeBox = false;
             Name = "CommentQuestion";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Comment ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

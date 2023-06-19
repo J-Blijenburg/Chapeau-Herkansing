@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,26 +18,37 @@ namespace UI
     {
         private Receipt receipt;
         private ReceiptService receiptService = new ReceiptService();
-        public BillSetteld(Receipt receipt)
+        private Employee loggedInEmployee;
+        public BillSetteld(Receipt receipt, Employee employee)
         {
             InitializeComponent();
             this.receipt = receipt;
+            this.loggedInEmployee = employee;   
             LoadData();
             UpdateReceipt();
         }
 
         private void LoadData()
         {
-            LblOrderPriceNummer.Text = receipt.TotalPrice.ToString();
-            LblAmontPaidNummer.Text = (receipt.TotalPrice + receipt.Tip).ToString();
-            LblTipAmountNummer.Text = receipt.Tip.ToString();
-            LblVatNummer.Text = receipt.TotalVat.ToString();
-            receipt.Payment.IsPaid = true;
+            LblOrderPriceNummer.Text = receipt.TotalPriceExclVat.ToString("N2");
+            LblAmontPaidNummer.Text = (receipt.TotalPriceExclVat + receipt.Tip + receipt.TotalVat).ToString("N2");
+            LblTipAmountNummer.Text = receipt.Tip.ToString("N2");
+            LblVatNummer.Text = receipt.TotalVat.ToString("N2");
+            receipt.Payments.First().IsPaid = true;
+            receipt.IsHandled = true;   
         }
         //update the receipt in the database
         private void UpdateReceipt()
         {
             receiptService.UpdateReceipt(receipt);
+        }
+
+        private void BtnBackTableOverView_Click(object sender, EventArgs e)
+        {
+            Tables tables = new Tables(loggedInEmployee, new Login());
+            this.Close();
+            tables.Show();
+
         }
     }
 }

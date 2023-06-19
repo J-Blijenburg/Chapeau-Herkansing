@@ -9,8 +9,7 @@ namespace Model
     public interface IPaymentSystem
     {
         void Update();
-        void AddObserver(IFormObserver observer);
-        void RemoveObserver(IFormObserver observer);
+        void AddObserver(ISplittDisplay observer);
 
     }
 }

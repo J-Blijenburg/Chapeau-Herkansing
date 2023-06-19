@@ -13,43 +13,39 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace UI
 {
-    public partial class Splitbill : Form, IFormObserver
+    public partial class Splitbill : Form, ISplittDisplay
     {
         private IPaymentSystem observer;
-        private double totalAmount;
-        private bool isPaid = false;
+        private static double totalAmountPaid;
+        private static double totalAmountReceipt;
 
         public Splitbill(IPaymentSystem observer, double totalAmount)
         {
             InitializeComponent();
             this.observer = observer;
             this.observer.AddObserver(this);
-            this.totalAmount = totalAmount;
+            totalAmountReceipt = totalAmount;
             LoadData();
         }
-
         private void LoadData()
         {
-            LblToPayNumber.Text = totalAmount.ToString();
+            LblToPayNumber.Text = totalAmountReceipt.ToString();
         }
-
-        bool IFormObserver.Update()
+        public void Update(Receipt receipt)
         {
-            return isPaid;
+         
+            receipt.TotalPriceExclVat -= totalAmountPaid;
+            if (receipt.TotalPriceExclVat < 0)
+                receipt.Payments.First().IsPaid = true;
+            totalAmountPaid = 0;
         }
-
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            double? totalAmountPaid = double.Parse(TbInputAmountPaid.Text);
-            if (totalAmountPaid > totalAmount)
+            totalAmountPaid = double.Parse(TbInputAmountPaid.Text);
+            if (totalAmountPaid > 0)
             {
-                isPaid = true;
                 this.Close();
             }
-
-
         }
-
-
     }
 }

@@ -39,6 +39,7 @@
             LblAmountPaidTekst = new Label();
             LblTipAmountNummer = new Label();
             lblTipAmountTekst = new Label();
+            BtnBackTableOverView = new CustomTools.RoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -136,11 +137,26 @@
             lblTipAmountTekst.TabIndex = 15;
             lblTipAmountTekst.Text = "TIP AMOUNT:";
             // 
+            // BtnBackTableOverView
+            // 
+            BtnBackTableOverView.BackColor = Color.FromArgb(255, 179, 71);
+            BtnBackTableOverView.FlatAppearance.BorderSize = 0;
+            BtnBackTableOverView.FlatStyle = FlatStyle.Flat;
+            BtnBackTableOverView.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnBackTableOverView.Location = new Point(30, 497);
+            BtnBackTableOverView.Name = "BtnBackTableOverView";
+            BtnBackTableOverView.Size = new Size(339, 51);
+            BtnBackTableOverView.TabIndex = 17;
+            BtnBackTableOverView.Text = "BACK TO OVERVIEW";
+            BtnBackTableOverView.UseVisualStyleBackColor = false;
+            BtnBackTableOverView.Click += BtnBackTableOverView_Click;
+            // 
             // BillSetteld
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(398, 697);
+            Controls.Add(BtnBackTableOverView);
             Controls.Add(LblTipAmountNummer);
             Controls.Add(lblTipAmountTekst);
             Controls.Add(LblAmontPaidNummer);
@@ -153,6 +169,7 @@
             Controls.Add(pictureBox1);
             MaximizeBox = false;
             Name = "BillSetteld";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "BILL";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
@@ -171,5 +188,6 @@
         private Label LblAmountPaidTekst;
         private Label LblTipAmountNummer;
         private Label lblTipAmountTekst;
+        private CustomTools.RoundedButton BtnBackTableOverView;
     }
 }

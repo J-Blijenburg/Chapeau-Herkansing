@@ -15,33 +15,33 @@ namespace UI
 {
     public partial class PaymentOverView : Form, IPaymentSystem
     {
-        private OrderService orderService = new OrderService();
-        private List<OrderItem> orderItems;
         private Receipt receipt;
         private double tip;
-        private double totalPrice;
+        private double totalInclVat;
         private double remaningBalance;
-        private List<IFormObserver> observers = new List<IFormObserver>();
-
-        public PaymentOverView(Receipt receipt, List<OrderItem> orderItems
-            )
+        private static double reeiptValue;
+        private List<ISplittDisplay> observers = new List<ISplittDisplay>();
+        private Employee loggedInEmployee;
+        private Receipt placeholder = new Receipt();
+  
+        public PaymentOverView(Receipt receipt, Employee employee)
         {
             InitializeComponent();
             this.receipt = receipt;
-            this.orderItems = orderItems;
+            this.loggedInEmployee = employee;
+            this.placeholder = receipt;
+
             NonCashPayment();
             LoadData();
         }
-
         private void LoadData()
         {
-            totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
-            LblOrderPriceNumber.Text = totalPrice.ToString();
-            receipt.TotalPrice = totalPrice;
+            this.Refresh();
+            LblTotalPriceNumber.Text = receipt.TotalPrice.ToString();
         }
         private void NonCashPayment()
         {
-            if (!(receipt.Payment.PaymentMethod == PaymentMethod.Cash))
+            if (!(receipt.Payments.First().PaymentMethod == PaymentMethod.Cash))
             {
                 LblChangeTekst.Hide();
                 LblChangeNumber.Hide();
@@ -50,109 +50,108 @@ namespace UI
         }
         private void BtnPay_Click(object sender, EventArgs e)
         {
-            if (CbSplitTheBill.Checked)
-            {
-                ShowNextPayWindow();
-            }
-            CommentQuestion Comment = new CommentQuestion(receipt);
-            this.Hide();
-            Comment.ShowDialog();
-
+            ShowNextPayWindow();
         }
 
         private void CheckPayment()
         {
-            foreach (IFormObserver observer in observers)
+            if (receipt.TotalPrice > 0)
             {
-                bool allPaid = false;
-
-                if (observer.Update())
-                {
-                    allPaid = true;
-                }
-                if (allPaid)
-                {
-                    this.Hide();
-                    CommentQuestion Comment = new CommentQuestion(receipt);
-                    Comment.ShowDialog();
-                }
-                else
-                    MessageBox.Show("Not everything is paid");
+                MessageBox.Show($"The remaining balance is €{remaningBalance}");
             }
+
+            if (receipt.Payments.First().IsPaid){
+                this.Hide();
+                CommentQuestionForm Comment = new CommentQuestionForm(placeholder, loggedInEmployee);
+                Comment.ShowDialog();
+            }
+
         }
+        // show the next payment screen based on the split amount that has been chosen by the user
         private void ShowNextPayWindow()
         {
-
             observers.Clear();
             for (int i = 0; i < (int)AmountOfPeopleNr.Value; i++)
             {
-                Splitbill splitbill = new Splitbill(this, SplittTotalAmount());
+                Splitbill splitbill = new Splitbill(this, receipt.TotalPrice);
+                splitbill.Text = "Payment Form " + (i + 1);
                 splitbill.ShowDialog();
+                NotifyObservers();
             }
             CheckPayment();
         }
-        private double SplittTotalAmount()
+        // add display to the screen of observers
+        public void AddObserver(ISplittDisplay observer)
         {
-
-            return receipt.TotalPrice / (int)AmountOfPeopleNr.Value;
+            observers.Add(observer);
         }
-
-
-        public void AddObserver(IFormObserver observer)
+        // update the display after person x has paid an certain amount of the total price
+        private void NotifyObservers()
         {
-            for (int i = 1; i <= (int)AmountOfPeopleNr.Value; i++)
-            {
-                observers.Add(observer);
-            }
-        }
-
-        public void RemoveObserver(IFormObserver observer)
-        {
-            observers.Remove(observer);
+            ISplittDisplay observer = observers.LastOrDefault();
+            observer?.Update(receipt);
+            receipt.Payments.Add(receipt.Payments.First());
         }
 
         private void BtnSetAmountPaid_Click(object sender, EventArgs e)
         {
             double paidAmount = ConvertValue(TbAmountPaid);
 
-
-            if (CheckNegativeValue(paidAmount))
+            if (CheckIfNegativeValue(paidAmount))
             {
                 MessageBox.Show($"A negative value {paidAmount} cannot be entered"); return;
             }
 
-            if (paidAmount < totalPrice)
+            if (paidAmount < receipt.TotalPrice)
             {
-                remaningBalance = totalPrice - paidAmount;
-                MessageBox.Show($"The remaining balance is €{remaningBalance}"); return;
-
+                remaningBalance = receipt.TotalPrice - paidAmount;
+                MessageBox.Show($"The remaining balance is €{remaningBalance.ToString("N2")}"); return;
             }
-            LblChangeNumber.Text = (paidAmount - totalPrice).ToString();
+            LblChangeNumber.Text = (paidAmount - receipt.TotalPrice).ToString("N2");
         }
         private double ConvertValue(Control value)
         {
             return double.Parse(value.Text);
         }
 
-        private bool CheckNegativeValue(double value)
+        private bool CheckIfNegativeValue(double value)
         {
             return value < 0;
         }
 
         private void BtnAddChangeAsTip_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(LblChangeNumber.Text))
+            if (CheckStringToDouble(LblChangeNumber.Text))
             {
                 this.tip = ConvertValue(LblChangeNumber);
                 receipt.Tip = tip;
                 LblChangeNumber.Text = 0.ToString();
+                LblCustomTip.Visible = false;
+                TbCustomTip.Visible = false;
+                BtnSetCustomTip.Visible = false;
+                LblEnterCustomTip.Visible = false;
+                LblhasBeenAdded.Visible = true;
             }
+        }
+
+        private bool CheckStringToDouble(String toCheck)
+        {
+            bool result = false;
+            if (!String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double CheckIfNumber))
+            {
+                if (!CheckIfNegativeValue(double.Parse(toCheck)))
+                {
+                    result = true;
+                }
+            }
+            return result;
+            //return !String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double parsedNumber) && !CheckIfNegativeValue(parsedNumber);
         }
 
         private void BtnSetCustomTip_Click(object sender, EventArgs e)
         {
             double Checktip = ConvertValue(TbAmountPaid);
-            if (CheckNegativeValue(Checktip))
+            if (CheckIfNegativeValue(Checktip))
             {
                 MessageBox.Show($"A negative value {Checktip} cannot be entered"); return;
             }
@@ -165,6 +164,13 @@ namespace UI
         {
             AmountOfPeopleNr.Visible = LblAmountOfPeople.Visible = CbSplitTheBill.Checked;
             BtnSetAmountPaid.Enabled = !CbSplitTheBill.Checked;
+        }
+
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            BillForm bill = new BillForm(receipt.Table, loggedInEmployee);
+            this.Close();
+            bill.Show();
         }
     }
 }

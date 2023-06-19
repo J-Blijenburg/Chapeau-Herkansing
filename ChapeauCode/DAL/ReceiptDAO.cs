@@ -18,7 +18,7 @@ namespace DAL
         public Receipt CreateNewReceipt(Table table, Employee employee)
         {
             Payment payment = new Payment();
-
+   
             Receipt receipt = new Receipt();
             receipt.ReceiptDateTime = DateTime.Now;
             receipt.Feedback = "";
@@ -26,13 +26,15 @@ namespace DAL
             receipt.Table = table;
             receipt.LowVatPrice = 0;
             receipt.HighVatPrice = 0;
-            receipt.TotalPrice = 0;
+            receipt.TotalPriceExclVat = 0;
             receipt.Tip = 0;
             receipt.IsHandled = false;
-            receipt.Payment = payment;
+            receipt.Payments.Add(payment);
+            //receipt.Payment =  payment;
+            var paymentId = InsertNewPayment();
+            receipt.Payments.ForEach(p => p.PaymentId = paymentId);
+            //receipt.Payment.PaymentId = InsertNewPayment();
 
-            receipt.Payment.PaymentId = InsertNewPayment();
-            
             receipt.ReceiptId = InsertNewReceipt(receipt);
 
             return receipt;
@@ -50,10 +52,10 @@ namespace DAL
                 new SqlParameter("@TableNumber", receipt.Table.Number),
                 new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
                 new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
-                new SqlParameter("@TotalPrice", receipt.TotalPrice),
+                new SqlParameter("@TotalPrice", receipt.TotalPriceExclVat),
                 new SqlParameter("@Tip", receipt.Tip),
                 new SqlParameter("@IsHandled", receipt.IsHandled),
-                new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
+                new SqlParameter("@PaymentId",  receipt.Payments.First().PaymentId),   /*receipt.Payment.PaymentId*/
             };
             //by using the method executeinsertqueryandreturnid we can get the id of the last inserted receipt
 
@@ -71,12 +73,48 @@ namespace DAL
 
             return ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
+        // insert payments in koppeltabel
         // TODO update receipt in the db, with an update set query
         public void UpdateReceiptPaid(Receipt receipt)
         {
-            //UpdateReceiptTable(receipt);
-            //UpdatePaymentTables(receipt);
+            UpdateReceiptTables(receipt);
+            UpdatePaymentTables(receipt);
+            SettabletoFree(receipt);
 
+            var sss = receipt.ReceiptId;
+            var aaa = receipt.Payments.FirstOrDefault().PaymentId;
+
+            foreach (Payment payment in receipt.Payments)
+            {
+                string query = "INSERT INTO ReceiptPayment ([PaymentId], [ReceiptId]) VALUES (@PaymentId, @ReceiptId);";
+                SqlParameter[] sqlParameters;
+                sqlParameters = new SqlParameter[]
+                {
+                new SqlParameter("@ReceiptId", receipt.ReceiptId),
+                new SqlParameter("@PaymentId", receipt.Payments.First().PaymentId),
+                };
+                ExecuteEditQuery(query, sqlParameters);
+            }
+        }
+        private void SettabletoFree(Receipt receipt)
+        {
+            
+            string updateQuery = @"
+             UPDATE [Table]
+             SET
+               [Table].Status = @TableStatus
+                WHERE [Table].Number= @TableNumber";
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableStatus", TableStatus.Open),
+                new SqlParameter("@TableNumber", receipt.Table.TableId)
+            };
+            ExecuteEditQuery(updateQuery, sqlParameters);
+        }
+
+        private void UpdateReceiptTables(Receipt receipt)
+        {
             string updateQuery = @"
              UPDATE Receipt
              SET
@@ -85,68 +123,43 @@ namespace DAL
                 HighVatPrice = @HighVatPrice,
                 TotalPrice = @TotalPrice,
                 Tip = @Tip,
-                Payment.isPaid = @isPaid,
-                Payment.PaymentMethodId = @PaymentMethodId
-                FROM Receipt
-                INNER JOIN Payment ON Receipt.PaymentId = Payment.PaymentId
-                WHERE Receipt.ReceiptId = @ReceiptId";
+                IsHandled = @IsHandled
+                WHERE Receipt.ReceiptId = @ReceiptId;";
 
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-          new SqlParameter("@ReceiptId", receipt.ReceiptId),
+                new SqlParameter("@ReceiptId", receipt.ReceiptId),
                 new SqlParameter("@Feedback", receipt.Feedback),
                 new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
                 new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
-                new SqlParameter("@TotalPrice", receipt.TotalPrice),
+                new SqlParameter("@TotalPrice", receipt.TotalPriceExclVat),
                 new SqlParameter("@Tip", receipt.Tip),
-            new SqlParameter("@PaymentId", receipt.Payment.PaymentId),
-            new SqlParameter("@isPaid", receipt.Payment.IsPaid),
-            new SqlParameter("@PaymentMethodId", receipt.Payment.PaymentMethod)
+                new SqlParameter("@IsHandled", receipt.IsHandled)
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
-        public void UpdateReceiptTable (Receipt receipt) { //tijdelijk
-
-            string updateReceiptQuery = @"
-             UPDATE Receipt
-             SET
-                Feedback = @Feedback,
-                LowVatPrice = @LowVatPrice,
-                HighVatPrice = @HighVatPrice,
-                TotalPrice = @TotalPrice,
-                Tip = @Tip,
-                Payment.isPaid = @isPaid,
-                Payment.PaymentMethodId = @PaymentMethodId";
-
-            SqlParameter[] sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@ReceiptId", receipt.ReceiptId),
-                new SqlParameter("@Feedback", receipt.Feedback),
-                new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
-                new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
-                new SqlParameter("@TotalPrice", receipt.TotalPrice),
-                new SqlParameter("@Tip", receipt.Tip),
-            };
-            ExecuteEditQuery(updateReceiptQuery, sqlParameters);
-        }
-        public void UpdatePaymentTables (Receipt receipt) //tijdelijk
+        private void UpdatePaymentTables(Receipt receipt)
         {
-            string updatePaymentQuery = @"
-             UPDATE Payment, 
+            var x = receipt.Payments.First().PaymentId;
+            var s = receipt.Payments.First().PaymentMethod;
+            var b = receipt.Payments.First().PaymentMethod;
+            string updateQuery = @"
+             UPDATE Payment
              SET
-                Payment.isPaid = @isPaid,
-                Payment.PaymentMethodId = @PaymentMethodId";
+                IsPaid = @IsPaid,
+                PaymentMethodId = @PaymentMethodId
+                FROM Payment
+                JOIN Receipt ON Payment.PaymentId = Receipt.PaymentId
+                WHERE Receipt.ReceiptId = @ReceiptId;";
 
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
+                new SqlParameter("@PaymentId", receipt.Payments.First().PaymentId),
+                new SqlParameter("@IsPaid", receipt.Payments.First().IsPaid),
+                new SqlParameter("@PaymentMethodId", receipt.Payments.First().PaymentMethod),
                 new SqlParameter("@ReceiptId", receipt.ReceiptId),
-                new SqlParameter("@Feedback", receipt.Feedback),
-                new SqlParameter("@LowVatPrice", receipt.LowVatPrice),
-                new SqlParameter("@HighVatPrice", receipt.HighVatPrice),
-                new SqlParameter("@TotalPrice", receipt.TotalPrice),
-                new SqlParameter("@Tip", receipt.Tip),
             };
-            ExecuteEditQuery(updatePaymentQuery, sqlParameters);
+            ExecuteEditQuery(updateQuery, sqlParameters);
         }
 
         public Receipt GetReceiptByTable(Table table, Employee employee)
@@ -200,13 +213,27 @@ namespace DAL
                 };
                 receipt.LowVatPrice = (double)dr["LowVatPrice"];
                 receipt.HighVatPrice = (double)dr["HighVatPrice"];
-                receipt.TotalPrice = (double)dr["TotalPrice"];
+                receipt.TotalPriceExclVat = (double)dr["TotalPrice"];
                 receipt.Tip = (double)dr["Tip"];
-                receipt.Payment = new Payment()
+
+                //foreach (var item in receipt.Payments)
+                //{
+                //    //item = new Payment();
+                //    item.PaymentId = (int)dr["PaymentId"];
+                //    item.IsPaid = (bool)dr["IsPaid"];
+                //}
+                //receipt.Payment = new Payment()
+                //{
+                //    PaymentId = (int)dr["PaymentId"],
+                //    IsPaid = (bool)dr["IsPaid"]
+                //};
+                var payment = new Payment()
                 {
                     PaymentId = (int)dr["PaymentId"],
                     IsPaid = (bool)dr["IsPaid"]
                 };
+                if(receipt.Payments.Count == 0)
+                    receipt.Payments.Add(payment);
 
             }
             return receipt;
