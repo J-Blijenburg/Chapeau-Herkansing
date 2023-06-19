@@ -112,6 +112,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
+        
 
         private void UpdateReceiptTables(Receipt receipt)
         {

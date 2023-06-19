@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Model;
+using System.ComponentModel.Design;
 using System.Drawing.Drawing2D;
 
 namespace Logic
@@ -83,9 +84,31 @@ namespace Logic
         }
         public void UpdateOrderItemStatusByWaiter(int orderItemId, OrderItemStatus orderStatus)
         {
+            OrderItem orderItem = orderDAO.GetOrderItemById(orderItemId);
+            if (orderItem == null)
+            {
+                throw new ArgumentException("Invalid order item");
+            }
+            if (orderStatus == OrderItemStatus.Delivered && orderItem.OrderItemStatus != OrderItemStatus.ReadyToBeServed)
+            {
+                throw new InvalidOperationException("Cannot mark as served. The order item is not ready to be served or has been served already");
+            }
+
             orderDAO.UpdateOrderItemStatusByWaiter(orderItemId, orderStatus);
         }
-
+        public bool AreAllItemsServed(List<OrderItem> orderItems)
+        {
+            foreach (var item in orderItems)
+            {
+                if (item.OrderItemStatus != OrderItemStatus.Delivered)
+                {
+                    //if an item is found that isnt delivered, then not all items have been served
+                    return false;
+                }
+            }
+            //all items are delivered
+            return true;
+        }
 
         //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
@@ -101,7 +124,7 @@ namespace Logic
                     totalVat += itemVat;
                 }
             }
-            
+
             return totalVat;
         }
         public decimal CalculateLowVat(List<OrderItem> orderItems)
@@ -143,5 +166,6 @@ namespace Logic
 
             return totalPrice;
         }
+
     }
 }

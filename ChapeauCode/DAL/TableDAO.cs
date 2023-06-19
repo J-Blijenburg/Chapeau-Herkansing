@@ -41,8 +41,8 @@ namespace DAL
              GROUP BY [Table].[TableId], [Table].[Number], [Table].[Status], [TableStatus].[Status]";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-        new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered),
-        new SqlParameter("@TableNumber", tableNumber)
+                new SqlParameter("@DeliveredStatus", (int)OrderItemStatus.Delivered),
+                new SqlParameter("@TableNumber", tableNumber)
             };
 
             return ReadTable(ExecuteSelectQuery(query, sqlParameters));
