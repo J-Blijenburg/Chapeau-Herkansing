@@ -18,18 +18,19 @@ namespace UI
     public partial class BillForm : Form
     {
         private Table table;
-        private Employee logedinEmployee;
+        private Employee loggedInEmployee;
         private OrderService orderService = new OrderService();
         private ReceiptService receiptService = new ReceiptService();
         private PaymentMethod paymentmethod;
         private List<OrderItem> orderItems;
         private Receipt receipt;
         RoundedButton clickedButton;
+        private TableOverview tableOverview;
         public BillForm(Table table, Employee currentEmployee)
         {
             InitializeComponent();
             this.table = table;
-            this.logedinEmployee = currentEmployee;
+            this.loggedInEmployee = currentEmployee;
             LoadOrders();
         }
 
@@ -51,21 +52,22 @@ namespace UI
         public void LoadOrders()
         {
             LoadListviewStyle();
-            receipt = receiptService.GetReceipt(table, logedinEmployee);
+            receipt = receiptService.GetReceipt(table, loggedInEmployee);
 
             //orderItems = orderService.GetOrderdItems(table);
             orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao
 
-            double totalVat = (double)orderService.CalculateTotalVat(orderItems);
-            receipt.TotalVat = totalVat;
+            receipt.TotalPriceExclVat = (double)orderService.CalculateTotalPrice(orderItems);
             receipt.LowVatPrice = (double)orderService.CalculateLowVat(orderItems);
             receipt.HighVatPrice = (double)orderService.CalculateHighVat(orderItems);
+            receipt.TotalVat = (double)orderService.CalculateTotalVat(orderItems);
+            double totalInclVat = receipt.TotalPriceExclVat + receipt.TotalVat;
 
-            double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
-            LblTotalNumber.Text = $"€ {totalPrice.ToString("N2")}";
-            LblVatNumber.Text = $"€ {totalVat.ToString("N2")}";
-            LblOrderPriceNumber.Text = $"€ {totalPrice.ToString("N2")}";
-
+            LblTotalNumber.Text = $"€ {totalInclVat.ToString("N2")}";
+            LblOrderPriceNumber.Text = $"€ {receipt.TotalPriceExclVat.ToString("N2")}";
+            LblLowVatNumber.Text = $"€ {receipt.LowVatPrice.ToString("N2")}";
+            LblHighVatNumber.Text = $"€ {receipt.HighVatPrice.ToString("N2")}";
+            LblTotalVatNumber.Text = $"€ {receipt.TotalVat.ToString("N2")}";
 
             foreach (OrderItem orderitem in orderItems)
             {
@@ -122,10 +124,19 @@ namespace UI
                 return;
             }
 
-            receipt.Payment.PaymentMethod = paymentmethod;
-            PaymentOverView pov = new PaymentOverView(receipt, orderItems);
+            //receipt.Payment.PaymentMethod = paymentmethod;
+
+            receipt.Payments.Add(new Payment { PaymentMethod = paymentmethod });
+             var x = receipt.Payments.First().PaymentMethod = paymentmethod;
+            PaymentOverView pov = new PaymentOverView(receipt, loggedInEmployee);
             this.Hide();
-            pov.ShowDialog();
+            pov.Show();
+        }
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            Tables tables = new Tables(loggedInEmployee, new Login());
+            this.Close();
+            tables.ShowDialog();
         }
     }
 }

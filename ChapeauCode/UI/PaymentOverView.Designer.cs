@@ -32,8 +32,8 @@
             pictureBox1 = new PictureBox();
             BtnPay = new CustomTools.RoundedButton();
             LblPayment = new Label();
-            LblOrderPriceNumber = new Label();
-            LblOrderPriceTekst = new Label();
+            LblTotalPriceNumber = new Label();
+            LblTotalPriceTekst = new Label();
             LblAmountPaid = new Label();
             TbAmountPaid = new TextBox();
             BtnSetAmountPaid = new CustomTools.RoundedButton();
@@ -47,9 +47,11 @@
             LblDeviderSplit = new Label();
             LblDeviderTip = new Label();
             AmountOfPeopleNr = new NumericUpDown();
-            LblSplit = new Label();
             LblAmountOfPeople = new Label();
             CbSplitTheBill = new CheckBox();
+            backBtn = new Button();
+            LblhasBeenAdded = new Label();
+            LblEnterCustomTip = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AmountOfPeopleNr).BeginInit();
             SuspendLayout();
@@ -87,23 +89,23 @@
             LblPayment.TabIndex = 11;
             LblPayment.Text = "PAYMENT";
             // 
-            // LblOrderPriceNumber
+            // LblTotalPriceNumber
             // 
-            LblOrderPriceNumber.AutoSize = true;
-            LblOrderPriceNumber.Location = new Point(338, 109);
-            LblOrderPriceNumber.Name = "LblOrderPriceNumber";
-            LblOrderPriceNumber.Size = new Size(21, 15);
-            LblOrderPriceNumber.TabIndex = 13;
-            LblOrderPriceNumber.Text = "##";
+            LblTotalPriceNumber.AutoSize = true;
+            LblTotalPriceNumber.Location = new Point(338, 109);
+            LblTotalPriceNumber.Name = "LblTotalPriceNumber";
+            LblTotalPriceNumber.Size = new Size(21, 15);
+            LblTotalPriceNumber.TabIndex = 13;
+            LblTotalPriceNumber.Text = "##";
             // 
-            // LblOrderPriceTekst
+            // LblTotalPriceTekst
             // 
-            LblOrderPriceTekst.AutoSize = true;
-            LblOrderPriceTekst.Location = new Point(20, 109);
-            LblOrderPriceTekst.Name = "LblOrderPriceTekst";
-            LblOrderPriceTekst.Size = new Size(78, 15);
-            LblOrderPriceTekst.TabIndex = 12;
-            LblOrderPriceTekst.Text = "ORDER PRCE:";
+            LblTotalPriceTekst.AutoSize = true;
+            LblTotalPriceTekst.Location = new Point(20, 109);
+            LblTotalPriceTekst.Name = "LblTotalPriceTekst";
+            LblTotalPriceTekst.Size = new Size(64, 15);
+            LblTotalPriceTekst.TabIndex = 12;
+            LblTotalPriceTekst.Text = "Total Price:";
             // 
             // LblAmountPaid
             // 
@@ -155,7 +157,7 @@
             // 
             LblTip.AutoSize = true;
             LblTip.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            LblTip.Location = new Point(20, 446);
+            LblTip.Location = new Point(20, 382);
             LblTip.Name = "LblTip";
             LblTip.Size = new Size(47, 30);
             LblTip.TabIndex = 19;
@@ -165,7 +167,7 @@
             // 
             BtnAddChangeAsTip.BackColor = Color.FromArgb(138, 210, 176);
             BtnAddChangeAsTip.FlatAppearance.BorderSize = 0;
-            BtnAddChangeAsTip.Location = new Point(20, 498);
+            BtnAddChangeAsTip.Location = new Point(20, 456);
             BtnAddChangeAsTip.Name = "BtnAddChangeAsTip";
             BtnAddChangeAsTip.Size = new Size(334, 32);
             BtnAddChangeAsTip.TabIndex = 20;
@@ -176,7 +178,7 @@
             // LblCustomTip
             // 
             LblCustomTip.AutoSize = true;
-            LblCustomTip.Location = new Point(20, 561);
+            LblCustomTip.Location = new Point(25, 551);
             LblCustomTip.Name = "LblCustomTip";
             LblCustomTip.Size = new Size(76, 15);
             LblCustomTip.TabIndex = 21;
@@ -184,7 +186,7 @@
             // 
             // TbCustomTip
             // 
-            TbCustomTip.Location = new Point(254, 553);
+            TbCustomTip.Location = new Point(254, 543);
             TbCustomTip.Name = "TbCustomTip";
             TbCustomTip.Size = new Size(100, 23);
             TbCustomTip.TabIndex = 22;
@@ -193,7 +195,7 @@
             // 
             BtnSetCustomTip.BackColor = Color.FromArgb(138, 210, 176);
             BtnSetCustomTip.FlatAppearance.BorderSize = 0;
-            BtnSetCustomTip.Location = new Point(296, 582);
+            BtnSetCustomTip.Location = new Point(296, 572);
             BtnSetCustomTip.Name = "BtnSetCustomTip";
             BtnSetCustomTip.Size = new Size(58, 40);
             BtnSetCustomTip.TabIndex = 23;
@@ -212,32 +214,23 @@
             // LblDeviderTip
             // 
             LblDeviderTip.BorderStyle = BorderStyle.Fixed3D;
-            LblDeviderTip.Location = new Point(-1, 444);
+            LblDeviderTip.Location = new Point(-1, 380);
             LblDeviderTip.Name = "LblDeviderTip";
             LblDeviderTip.Size = new Size(400, 2);
             LblDeviderTip.TabIndex = 25;
             // 
             // AmountOfPeopleNr
             // 
-            AmountOfPeopleNr.Location = new Point(298, 342);
+            AmountOfPeopleNr.Location = new Point(303, 302);
             AmountOfPeopleNr.Name = "AmountOfPeopleNr";
             AmountOfPeopleNr.Size = new Size(58, 23);
             AmountOfPeopleNr.TabIndex = 26;
             AmountOfPeopleNr.Visible = false;
             // 
-            // LblSplit
-            // 
-            LblSplit.AutoSize = true;
-            LblSplit.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            LblSplit.Location = new Point(20, 246);
-            LblSplit.Name = "LblSplit";
-            LblSplit.Size = new Size(0, 30);
-            LblSplit.TabIndex = 27;
-            // 
             // LblAmountOfPeople
             // 
             LblAmountOfPeople.AutoSize = true;
-            LblAmountOfPeople.Location = new Point(20, 350);
+            LblAmountOfPeople.Location = new Point(25, 310);
             LblAmountOfPeople.Name = "LblAmountOfPeople";
             LblAmountOfPeople.Size = new Size(123, 15);
             LblAmountOfPeople.TabIndex = 28;
@@ -248,7 +241,7 @@
             // 
             CbSplitTheBill.AutoSize = true;
             CbSplitTheBill.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-            CbSplitTheBill.Location = new Point(26, 269);
+            CbSplitTheBill.Location = new Point(25, 249);
             CbSplitTheBill.Name = "CbSplitTheBill";
             CbSplitTheBill.Size = new Size(178, 41);
             CbSplitTheBill.TabIndex = 29;
@@ -256,15 +249,53 @@
             CbSplitTheBill.UseVisualStyleBackColor = true;
             CbSplitTheBill.CheckedChanged += CbSplitTheBill_CheckedChanged;
             // 
+            // backBtn
+            // 
+            backBtn.BackColor = Color.FromArgb(255, 179, 71);
+            backBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
+            backBtn.Location = new Point(287, 39);
+            backBtn.Margin = new Padding(3, 2, 3, 2);
+            backBtn.Name = "backBtn";
+            backBtn.Size = new Size(81, 27);
+            backBtn.TabIndex = 33;
+            backBtn.Text = "Back";
+            backBtn.UseVisualStyleBackColor = false;
+            backBtn.Click += backBtn_Click;
+            // 
+            // LblhasBeenAdded
+            // 
+            LblhasBeenAdded.AutoSize = true;
+            LblhasBeenAdded.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            LblhasBeenAdded.ForeColor = Color.FromArgb(138, 210, 176);
+            LblhasBeenAdded.Location = new Point(25, 423);
+            LblhasBeenAdded.Name = "LblhasBeenAdded";
+            LblhasBeenAdded.Size = new Size(199, 30);
+            LblhasBeenAdded.TabIndex = 34;
+            LblhasBeenAdded.Text = "HAS BEEN ADDED";
+            LblhasBeenAdded.Visible = false;
+            // 
+            // LblEnterCustomTip
+            // 
+            LblEnterCustomTip.AutoSize = true;
+            LblEnterCustomTip.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            LblEnterCustomTip.ForeColor = Color.Black;
+            LblEnterCustomTip.Location = new Point(25, 506);
+            LblEnterCustomTip.Name = "LblEnterCustomTip";
+            LblEnterCustomTip.Size = new Size(133, 30);
+            LblEnterCustomTip.TabIndex = 35;
+            LblEnterCustomTip.Text = "Custom tip:";
+            // 
             // PaymentOverView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(398, 697);
+            Controls.Add(LblEnterCustomTip);
+            Controls.Add(LblhasBeenAdded);
+            Controls.Add(backBtn);
             Controls.Add(CbSplitTheBill);
             Controls.Add(LblAmountOfPeople);
-            Controls.Add(LblSplit);
             Controls.Add(AmountOfPeopleNr);
             Controls.Add(LblDeviderTip);
             Controls.Add(LblDeviderSplit);
@@ -278,8 +309,8 @@
             Controls.Add(BtnSetAmountPaid);
             Controls.Add(TbAmountPaid);
             Controls.Add(LblAmountPaid);
-            Controls.Add(LblOrderPriceNumber);
-            Controls.Add(LblOrderPriceTekst);
+            Controls.Add(LblTotalPriceNumber);
+            Controls.Add(LblTotalPriceTekst);
             Controls.Add(LblPayment);
             Controls.Add(BtnPay);
             Controls.Add(pictureBox1);
@@ -300,8 +331,8 @@
         private PictureBox pictureBox1;
         private CustomTools.RoundedButton BtnPay;
         private Label LblPayment;
-        private Label LblOrderPriceNumber;
-        private Label LblOrderPriceTekst;
+        private Label LblTotalPriceNumber;
+        private Label LblTotalPriceTekst;
         private Label LblAmountPaid;
         private TextBox TbAmountPaid;
         private CustomTools.RoundedButton BtnSetAmountPaid;
@@ -315,8 +346,10 @@
         private Label LblDeviderSplit;
         private Label LblDeviderTip;
         private NumericUpDown AmountOfPeopleNr;
-        private Label LblSplit;
         private Label LblAmountOfPeople;
         private CheckBox CbSplitTheBill;
+        private Button backBtn;
+        private Label LblhasBeenAdded;
+        private Label LblEnterCustomTip;
     }
 }

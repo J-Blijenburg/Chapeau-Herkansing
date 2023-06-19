@@ -16,9 +16,15 @@ namespace Model
         public double LowVatPrice { get; set; }
         public double HighVatPrice { get; set; }
         public double TotalVat { get; set; }
-        public double TotalPrice { get; set; }
+        public double TotalPriceExclVat { get; set; }
+
+        public double TotalPrice { get { return TotalVat + TotalPriceExclVat; } }
         public double Tip { get; set; }
-        public Payment Payment { get; set; }
+
+        public bool IsHandled { get; set; }
+        //public Payment Payment { get; set; }
+
+        public List<Payment> Payments { get; set; } = new List<Payment>();
         private List<Order> Orders { get; set; }
         
     }

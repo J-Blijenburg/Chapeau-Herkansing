@@ -35,14 +35,19 @@
             BtnVisa = new CustomTools.RoundedButton();
             BtnCash = new CustomTools.RoundedButton();
             LblOrderPriceTekst = new Label();
-            LblVat = new Label();
+            LblTotalVatTekst = new Label();
             LblOrderPriceNumber = new Label();
-            LblVatNumber = new Label();
+            LblTotalVatNumber = new Label();
             BtnProceedToPayment = new CustomTools.RoundedButton();
             LblChoosePayment = new Label();
             LblBill = new Label();
             LblTotalTekst = new Label();
             LblTotalNumber = new Label();
+            LblHighVatNumber = new Label();
+            LblHighVatTekst = new Label();
+            LblLowVatNumber = new Label();
+            LbllowVatTekst = new Label();
+            backBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -72,7 +77,7 @@
             BtnDebit.BackColor = Color.LightGray;
             BtnDebit.FlatAppearance.BorderSize = 0;
             BtnDebit.FlatStyle = FlatStyle.Flat;
-            BtnDebit.Location = new Point(28, 446);
+            BtnDebit.Location = new Point(28, 440);
             BtnDebit.Name = "BtnDebit";
             BtnDebit.Size = new Size(91, 39);
             BtnDebit.TabIndex = 2;
@@ -85,7 +90,7 @@
             BtnVisa.BackColor = Color.LightGray;
             BtnVisa.FlatAppearance.BorderSize = 0;
             BtnVisa.FlatStyle = FlatStyle.Flat;
-            BtnVisa.Location = new Point(154, 446);
+            BtnVisa.Location = new Point(154, 440);
             BtnVisa.Name = "BtnVisa";
             BtnVisa.Size = new Size(91, 39);
             BtnVisa.TabIndex = 3;
@@ -98,7 +103,7 @@
             BtnCash.BackColor = Color.LightGray;
             BtnCash.FlatAppearance.BorderSize = 0;
             BtnCash.FlatStyle = FlatStyle.Flat;
-            BtnCash.Location = new Point(276, 446);
+            BtnCash.Location = new Point(276, 440);
             BtnCash.Name = "BtnCash";
             BtnCash.Size = new Size(91, 39);
             BtnCash.TabIndex = 4;
@@ -109,38 +114,38 @@
             // LblOrderPriceTekst
             // 
             LblOrderPriceTekst.AutoSize = true;
-            LblOrderPriceTekst.Location = new Point(28, 519);
+            LblOrderPriceTekst.Location = new Point(28, 512);
             LblOrderPriceTekst.Name = "LblOrderPriceTekst";
             LblOrderPriceTekst.Size = new Size(78, 15);
             LblOrderPriceTekst.TabIndex = 5;
             LblOrderPriceTekst.Text = "ORDER PRCE:";
             // 
-            // LblVat
+            // LblTotalVatTekst
             // 
-            LblVat.AutoSize = true;
-            LblVat.Location = new Point(28, 547);
-            LblVat.Name = "LblVat";
-            LblVat.Size = new Size(29, 15);
-            LblVat.TabIndex = 6;
-            LblVat.Text = "VAT:";
+            LblTotalVatTekst.AutoSize = true;
+            LblTotalVatTekst.Location = new Point(28, 587);
+            LblTotalVatTekst.Name = "LblTotalVatTekst";
+            LblTotalVatTekst.Size = new Size(64, 15);
+            LblTotalVatTekst.TabIndex = 6;
+            LblTotalVatTekst.Text = "TOTAL VAT:";
             // 
             // LblOrderPriceNumber
             // 
             LblOrderPriceNumber.AutoSize = true;
-            LblOrderPriceNumber.Location = new Point(346, 519);
+            LblOrderPriceNumber.Location = new Point(313, 512);
             LblOrderPriceNumber.Name = "LblOrderPriceNumber";
             LblOrderPriceNumber.Size = new Size(21, 15);
             LblOrderPriceNumber.TabIndex = 7;
             LblOrderPriceNumber.Text = "##";
             // 
-            // LblVatNumber
+            // LblTotalVatNumber
             // 
-            LblVatNumber.AutoSize = true;
-            LblVatNumber.Location = new Point(346, 547);
-            LblVatNumber.Name = "LblVatNumber";
-            LblVatNumber.Size = new Size(21, 15);
-            LblVatNumber.TabIndex = 8;
-            LblVatNumber.Text = "##";
+            LblTotalVatNumber.AutoSize = true;
+            LblTotalVatNumber.Location = new Point(313, 587);
+            LblTotalVatNumber.Name = "LblTotalVatNumber";
+            LblTotalVatNumber.Size = new Size(21, 15);
+            LblTotalVatNumber.TabIndex = 8;
+            LblTotalVatNumber.Text = "##";
             // 
             // BtnProceedToPayment
             // 
@@ -148,7 +153,7 @@
             BtnProceedToPayment.FlatAppearance.BorderSize = 0;
             BtnProceedToPayment.FlatStyle = FlatStyle.Flat;
             BtnProceedToPayment.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnProceedToPayment.Location = new Point(28, 612);
+            BtnProceedToPayment.Location = new Point(28, 634);
             BtnProceedToPayment.Name = "BtnProceedToPayment";
             BtnProceedToPayment.Size = new Size(339, 51);
             BtnProceedToPayment.TabIndex = 9;
@@ -159,7 +164,7 @@
             // LblChoosePayment
             // 
             LblChoosePayment.AutoSize = true;
-            LblChoosePayment.Location = new Point(25, 424);
+            LblChoosePayment.Location = new Point(25, 418);
             LblChoosePayment.Name = "LblChoosePayment";
             LblChoosePayment.Size = new Size(141, 15);
             LblChoosePayment.TabIndex = 10;
@@ -179,7 +184,7 @@
             // 
             LblTotalTekst.AutoSize = true;
             LblTotalTekst.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            LblTotalTekst.Location = new Point(25, 382);
+            LblTotalTekst.Location = new Point(25, 375);
             LblTotalTekst.Name = "LblTotalTekst";
             LblTotalTekst.Size = new Size(60, 21);
             LblTotalTekst.TabIndex = 13;
@@ -188,12 +193,61 @@
             // LblTotalNumber
             // 
             LblTotalNumber.AutoSize = true;
-            LblTotalNumber.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            LblTotalNumber.Location = new Point(330, 382);
+            LblTotalNumber.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            LblTotalNumber.Location = new Point(306, 375);
             LblTotalNumber.Name = "LblTotalNumber";
             LblTotalNumber.Size = new Size(28, 21);
             LblTotalNumber.TabIndex = 14;
             LblTotalNumber.Text = "##";
+            // 
+            // LblHighVatNumber
+            // 
+            LblHighVatNumber.AutoSize = true;
+            LblHighVatNumber.Location = new Point(313, 563);
+            LblHighVatNumber.Name = "LblHighVatNumber";
+            LblHighVatNumber.Size = new Size(21, 15);
+            LblHighVatNumber.TabIndex = 16;
+            LblHighVatNumber.Text = "##";
+            // 
+            // LblHighVatTekst
+            // 
+            LblHighVatTekst.AutoSize = true;
+            LblHighVatTekst.Location = new Point(28, 563);
+            LblHighVatTekst.Name = "LblHighVatTekst";
+            LblHighVatTekst.Size = new Size(61, 15);
+            LblHighVatTekst.TabIndex = 15;
+            LblHighVatTekst.Text = "HIGH VAT:";
+            // 
+            // LblLowVatNumber
+            // 
+            LblLowVatNumber.AutoSize = true;
+            LblLowVatNumber.Location = new Point(313, 539);
+            LblLowVatNumber.Name = "LblLowVatNumber";
+            LblLowVatNumber.Size = new Size(21, 15);
+            LblLowVatNumber.TabIndex = 20;
+            LblLowVatNumber.Text = "##";
+            // 
+            // LbllowVatTekst
+            // 
+            LbllowVatTekst.AutoSize = true;
+            LbllowVatTekst.Location = new Point(28, 539);
+            LbllowVatTekst.Name = "LbllowVatTekst";
+            LbllowVatTekst.Size = new Size(58, 15);
+            LbllowVatTekst.TabIndex = 19;
+            LbllowVatTekst.Text = "LOW VAT:";
+            // 
+            // backBtn
+            // 
+            backBtn.BackColor = Color.FromArgb(255, 179, 71);
+            backBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point);
+            backBtn.Location = new Point(292, 37);
+            backBtn.Margin = new Padding(3, 2, 3, 2);
+            backBtn.Name = "backBtn";
+            backBtn.Size = new Size(81, 27);
+            backBtn.TabIndex = 32;
+            backBtn.Text = "Back";
+            backBtn.UseVisualStyleBackColor = false;
+            backBtn.Click += backBtn_Click;
             // 
             // BillForm
             // 
@@ -201,14 +255,19 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(398, 697);
+            Controls.Add(backBtn);
+            Controls.Add(LblLowVatNumber);
+            Controls.Add(LbllowVatTekst);
+            Controls.Add(LblHighVatNumber);
+            Controls.Add(LblHighVatTekst);
             Controls.Add(LblTotalNumber);
             Controls.Add(LblTotalTekst);
             Controls.Add(LblBill);
             Controls.Add(LblChoosePayment);
             Controls.Add(BtnProceedToPayment);
-            Controls.Add(LblVatNumber);
+            Controls.Add(LblTotalVatNumber);
             Controls.Add(LblOrderPriceNumber);
-            Controls.Add(LblVat);
+            Controls.Add(LblTotalVatTekst);
             Controls.Add(LblOrderPriceTekst);
             Controls.Add(BtnCash);
             Controls.Add(BtnVisa);
@@ -220,7 +279,7 @@
             MaximizeBox = false;
             Name = "BillForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Bill";
+            Text = "7";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -234,13 +293,18 @@
         private CustomTools.RoundedButton BtnVisa;
         private CustomTools.RoundedButton BtnCash;
         private Label LblOrderPriceTekst;
-        private Label LblVat;
+        private Label LblTotalVatTekst;
         private Label LblOrderPriceNumber;
-        private Label LblVatNumber;
+        private Label LblTotalVatNumber;
         private CustomTools.RoundedButton BtnProceedToPayment;
         private Label LblChoosePayment;
         private Label LblBill;
         private Label LblTotalTekst;
         private Label LblTotalNumber;
+        private Label LblHighVatNumber;
+        private Label LblHighVatTekst;
+        private Label LblLowVatNumber;
+        private Label LbllowVatTekst;
+        private Button backBtn;
     }
 }

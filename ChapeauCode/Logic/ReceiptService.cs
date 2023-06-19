@@ -33,6 +33,8 @@ namespace Logic
                   new Exception(exception.Message);
             }
         }
+  
+
         public List<OrderItem> GetOrderedItemsByReceiptId(int receiptId)
         {
             return orderDAO.GetOrderedItemsByReceiptId(receiptId);

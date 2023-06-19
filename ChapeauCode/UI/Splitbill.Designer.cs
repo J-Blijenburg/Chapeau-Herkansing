@@ -40,9 +40,9 @@
             LblToPayTekst.AutoSize = true;
             LblToPayTekst.Location = new Point(54, 125);
             LblToPayTekst.Name = "LblToPayTekst";
-            LblToPayTekst.Size = new Size(44, 15);
+            LblToPayTekst.Size = new Size(108, 15);
             LblToPayTekst.TabIndex = 0;
-            LblToPayTekst.Text = "To pay:";
+            LblToPayTekst.Text = "Remaning balance:";
             // 
             // LblToPayNumber
             // 
@@ -91,6 +91,7 @@
             Controls.Add(LblToPayTekst);
             MaximizeBox = false;
             Name = "Splitbill";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Splitbill";
             ResumeLayout(false);
             PerformLayout();

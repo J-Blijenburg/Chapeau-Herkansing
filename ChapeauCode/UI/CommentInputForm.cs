@@ -12,13 +12,15 @@ using System.Windows.Forms;
 
 namespace UI
 {
-    public partial class CommentInput : Form
+    public partial class CommentInputForm : Form
     {
         private Receipt receipt;
-        public CommentInput(Receipt receipt)
+        private CommentQuestionForm commentQuestionForm;
+        public CommentInputForm(Receipt receipt, CommentQuestionForm cq)
         {
             InitializeComponent();
             this.receipt = receipt;
+            this.commentQuestionForm = cq;    
             lblSuccesMessage.Hide();
         }
 
@@ -32,8 +34,8 @@ namespace UI
         private void BtnBack_Click(object sender, EventArgs e)
         {
             this.Hide();
-            CommentQuestion commandQuestion = new CommentQuestion(receipt);
-            commandQuestion.ShowDialog();
+            CommentQuestionForm commandQuestion = commentQuestionForm;
+            commandQuestion.Show();
 
         }
     }

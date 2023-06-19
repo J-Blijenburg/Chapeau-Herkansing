@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class CommentInput
+    partial class CommentInputForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommentInput));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommentInputForm));
             pictureBox1 = new PictureBox();
             TbComment = new RichTextBox();
             BtConfirm = new CustomTools.RoundedButton();
@@ -103,6 +103,7 @@
             Controls.Add(pictureBox1);
             MaximizeBox = false;
             Name = "CommentInput";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = " ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

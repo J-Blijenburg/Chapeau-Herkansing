@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public interface IFormObserver
+    public interface ISplittDisplay
     {
-        bool Update() => false;
+        //bool Update() => false;
+        void Update(Receipt receipt);
     }
 }

@@ -183,7 +183,7 @@ namespace UI
         {
             this.Hide();
             BillForm bill = new BillForm(table, currentEmployee);
-            bill.ShowDialog();
+            bill.Show();
 
         }
 

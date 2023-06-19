@@ -12,27 +12,29 @@ using System.Windows.Forms;
 
 namespace UI
 {
-    public partial class CommentQuestion : Form
+    public partial class CommentQuestionForm : Form
     {
         private Receipt receipt;
-        public CommentQuestion(Receipt receipt)
+        private Employee loggedInEmployee;
+        public CommentQuestionForm(Receipt receipt, Employee employee)
         {
             InitializeComponent();
             this.receipt = receipt;
+            this.loggedInEmployee = employee;
         }
 
         private void BtnAddComment_Click(object sender, EventArgs e)
         {
             this.Hide();
-            CommentInput commentinput = new CommentInput(receipt);
-            commentinput.ShowDialog();
+            CommentInputForm commentinput = new CommentInputForm(receipt, this);
+            commentinput.Show();
         }
 
         private void BtContinueWithPayment_Click(object sender, EventArgs e)
         {
-            this.Close();
-            BillSetteld commandinput = new BillSetteld(receipt);
-            commandinput.ShowDialog();
+            this.Hide();
+            BillSetteld commandinput = new BillSetteld(receipt, loggedInEmployee);
+            commandinput.Show();
 
         }
     }
