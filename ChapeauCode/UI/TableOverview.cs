@@ -196,14 +196,11 @@ namespace UI
             BillForm bill = new BillForm(table, currentEmployee);
             bill.Show();
         }
-
-
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Hide();
             tableStatusOverview.Show();
         }
-
         private void btnServed_Click(object sender, EventArgs e)
         {
             UpdateOrderStatus(OrderItemStatus.Delivered);
