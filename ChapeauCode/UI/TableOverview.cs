@@ -116,7 +116,7 @@ namespace UI
         {
             try
             {
-                currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+                currentReceipt = receiptService.GetReceiptByTable(this.table);
                 List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
                 FillListViewOrderedItems(ListViewOrderdItems, orderItems);
                 UpdatePaymentButtonState();
@@ -180,7 +180,7 @@ namespace UI
         {
             try
             {
-                currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+                currentReceipt = receiptService.GetReceiptByTable(this.table);
                 List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
                 BtnPayment.Enabled = orderService.AllItemsServed(orderItems);
             }
@@ -198,8 +198,8 @@ namespace UI
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            tableStatusOverview.Show();
+            this.Dispose();
+            tableStatusOverview.ShowDialog();
         }
         private void btnServed_Click(object sender, EventArgs e)
         {
@@ -242,7 +242,7 @@ namespace UI
         private void timeUpdateTimer_Tick(object sender, EventArgs e)
         {
             //refresh the receipt
-            currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+            currentReceipt = receiptService.GetReceiptByTable(this.table);
 
             TimeSpan elapsedTime = orderService.GetOrderElapsedTime(currentReceipt.ReceiptId);
             orderWaitTimeLbl.Text = $"Order running for: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}";

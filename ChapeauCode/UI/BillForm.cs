@@ -52,7 +52,7 @@ namespace UI
         public void LoadOrders()
         {
             LoadListviewStyle();
-            receipt = receiptService.GetReceipt(table, loggedInEmployee);
+            receipt = receiptService.GetReceiptByTable(table);
 
             //orderItems = orderService.GetOrderdItems(table);
             orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao

@@ -18,13 +18,13 @@ namespace Logic
             this.orderDAO = new OrderDAO();
         }
 
-        public Receipt GetReceipt(Table table)
+        public Receipt GetReceiptByTable(Table table)
         {
             return receiptDAO.GetReceiptByTable(table); //todo set try catch
         }
         public Receipt GetReceiptByTableAndEmployee(Table table, Employee employee)
         {
-            return receiptDAO.GetReceiptByTable(table, employee); //todo set try catch
+            return receiptDAO.GetReceiptByTableAndEmployee(table, employee); //todo set try catch
         }
         public void UpdateReceipt(Receipt receipt)
         {
