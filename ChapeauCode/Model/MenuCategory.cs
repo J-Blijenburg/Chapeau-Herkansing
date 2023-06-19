@@ -17,5 +17,15 @@ namespace Model
         {
             return Name;
         }
+
+        public void SetMenuItems(List<MenuItem> menuItems)
+        {
+            this.MenuItems = menuItems;
+        }
+
+        public List<MenuItem> GetMenuItems()
+        {
+            return MenuItems;
+        }
     }
 }
