@@ -317,14 +317,14 @@ namespace DAL
             string queryString = GetTypeOfOrderForQuery(type);
 
             string query = "SELECT oi.OrderID, oi.OrderItemId, oi.OrderItemStatus, oi.Comment, oi.Quantity, o.Status, o.OrderDateTime, r.tableNumber, m.Name AS 'Dish', c.Name AS 'Type' " +
-                           "FROM OrderItem oi " +
-                           "JOIN [Order] o ON oi.OrderID = o.OrderID " +
-                           "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
-                           "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
-                           "JOIN Menu c ON mc.MenuId = c.MenuId " +
-                           "JOIN Receipt r ON o.ReceiptID = r.ReceiptID " +
-                           "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")" +
-                           "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
+                   "FROM OrderItem oi " +
+                   "JOIN [Order] o ON oi.OrderID = o.OrderID " +
+                   "JOIN MenuItem m ON oi.MenuItemID = m.MenuItemID " +
+                   "JOIN MenuCategory mc ON m.MenuCategoryID = mc.MenuCategoryID " +
+                   "JOIN Menu c ON mc.MenuId = c.MenuId " +
+                   "JOIN Receipt r ON o.ReceiptID = r.ReceiptID " +
+                   "WHERE oi.OrderItemStatus <> 3 AND (" + queryString + ")" +
+                   "AND CONVERT(date, o.OrderDateTime) = CONVERT(date, GETDATE())";
             return ReadKitchenAndBarOrders(ExecuteSelectQuery(query));
         }
 

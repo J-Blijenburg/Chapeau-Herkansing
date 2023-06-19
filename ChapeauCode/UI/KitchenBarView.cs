@@ -144,14 +144,16 @@ namespace UI
             //checks if an order is selected and updates the status of the order item to the selected status 
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
-                // Get the selected order item
-                ListViewItem selectedItem = lstViewOrders.SelectedItems[0];
-                OrderItem orderItem = (OrderItem)selectedItem.Tag;
+                foreach(ListViewItem selectedItem in lstViewOrders.SelectedItems)
+                {
+                    OrderItem orderItem = (OrderItem)selectedItem.Tag;
+                    orderService.UpdateOrderItemStatus(orderItem.Order.OrderId, status, orderItem.OrderItemId);
+                }
 
-                orderService.UpdateOrderItemStatus(orderItem.Order.OrderId, status, orderItem.OrderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
                 CheckWhichTypeOfOrdersToGet();
+
             }
             else
             {
