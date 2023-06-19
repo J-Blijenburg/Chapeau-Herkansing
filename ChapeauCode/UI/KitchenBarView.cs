@@ -17,8 +17,12 @@ namespace UI
             loggedInEmployee = employee;
             txtBoxUser.Text = employee.FullName;
             CheckRoleAndSetLabels(employee.Role);
-
             //initialize the timer
+            InitializeTimer(login);
+        }
+
+        private void InitializeTimer(Login login)
+        {
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 30000; // 30 seconds
             timer.Tick += Timer_Tick;
@@ -48,32 +52,25 @@ namespace UI
             }
         }
 
-        //checks the role of the logged in employee and sets the labels accordingly
-        private void CheckRoleAndSetLabels(EmployeeRole employeeRole)
-        {
-
-            if (employeeRole == EmployeeRole.Bartender)
-            {
-                txtTypeOfOrder.Text = "Bar orders";
-            }
-            else
-            {
-                txtTypeOfOrder.Text = "Kitchen orders";
-            }
-        }
-
         //gets the running order items based on the employee role
         private void GetRunningOrderItems(EmployeeRole employeeRole)
         {
             lstViewOrders.Items.Clear();
 
-            if (employeeRole == EmployeeRole.Bartender)
+            try
             {
-                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Drinks));
+                if (employeeRole == EmployeeRole.Bartender)
+                {
+                    FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Drinks));
+                }
+                else
+                {
+                    FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Dinner));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetRunningOrderItems(MenuType.Dinner));
+                MessageBox.Show($"There was an error gathering the order items, please contact support, \n {ex.Message}");
             }
         }
 
@@ -82,13 +79,20 @@ namespace UI
         {
             lstViewOrders.Items.Clear();
 
-            if (employeeRole == EmployeeRole.Bartender)
+            try
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Drinks));
+                if (employeeRole == EmployeeRole.Bartender)
+                {
+                    FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Drinks));
+                }
+                else
+                {
+                    FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Dinner));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FillListViewOrders(lstViewOrders, orderService.GetFinishedOrderItems(MenuType.Dinner));
+                MessageBox.Show($"There was an error gathering the order items, please contact support, \n {ex.Message}");
             }
         }
 
@@ -201,6 +205,20 @@ namespace UI
             loggedInEmployee = null;
             this.Close();
             login.Show();
+        }
+
+        //checks the role of the logged in employee and sets the labels accordingly
+        private void CheckRoleAndSetLabels(EmployeeRole employeeRole)
+        {
+
+            if (employeeRole == EmployeeRole.Bartender)
+            {
+                txtTypeOfOrder.Text = "Bar orders";
+            }
+            else
+            {
+                txtTypeOfOrder.Text = "Kitchen orders";
+            }
         }
     }
 }
