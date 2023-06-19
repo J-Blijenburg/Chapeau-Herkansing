@@ -33,6 +33,7 @@ namespace UI
 
             SetLabels();
             SubscribeToEvents();
+            UpdateFreeButtonState();
         }
         private void SetLabels()
         {
@@ -73,12 +74,25 @@ namespace UI
                 tableService.UpdateTableStatus(selectedTable.Number, newStatus);
                 selectedTable.Status = newStatus;
                 UpdateButtonSelection();
+                UpdateFreeButtonState();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error updating table status: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void UpdateFreeButtonState()
+        {
+            try
+            {
+                freeBtn.Enabled = !tableService.HasUnhandledReceipt(selectedTable.TableId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void TableStatusOverview_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!isFormClosing)

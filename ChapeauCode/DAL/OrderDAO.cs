@@ -350,31 +350,48 @@ namespace DAL
         {
             string query = @"UPDATE [OrderItem]
                      SET [OrderItemStatus] = @status
-                     WHERE [OrderItemId] = @OrderItemId AND [OrderItemStatus] = 4;
-
-                     IF @@ROWCOUNT = 0
-                     BEGIN
-                         RAISERROR('Cannot mark as served. the order item is not ready to be served or has already been served.', 16, 1);
-                     END";
+                     WHERE [OrderItemId] = @OrderItemId";
 
             SqlParameter[] sqlParameters = new SqlParameter[2];
             sqlParameters[0] = new SqlParameter("@status", (int)orderStatus);
             sqlParameters[1] = new SqlParameter("@OrderItemId", orderItemId);
 
-            try
-            {
-                ExecuteEditQuery(query, sqlParameters);
-            }
-            catch (SqlException e)
-            {
-                if (e.Number == 50000)
-                {
-                    throw new InvalidOperationException(e.Message);
-                }
-                throw;
-            }
+            ExecuteEditQuery(query, sqlParameters);
         }
 
+        public OrderItem GetOrderItemById(int orderItemId)
+        {
+            string query = @"SELECT [OrderItemId], [OrderId], [OrderItemStatus], [Comment], [Quantity]
+                     FROM [OrderItem]
+                     WHERE [OrderItemId] = @OrderItemId";
+
+            SqlParameter[] sqlParameters = new SqlParameter[1];
+            sqlParameters[0] = new SqlParameter("@OrderItemId", orderItemId);
+            return ReadTable(ExecuteSelectQuery(query, sqlParameters));
+        }
+        private OrderItem ReadTable(DataTable dataTable)
+        {
+            OrderItem orderItem = null;
+            if (dataTable != null)
+            {
+                foreach (DataRow dr in dataTable.Rows)
+                {
+                    orderItem = new OrderItem
+                    {
+                        OrderItemId = (int)dr["OrderItemId"],
+                        Order = new Order()
+                        {
+                            OrderId = (int)dr["OrderId"]
+                        },
+                        OrderItemStatus = (OrderItemStatus)(int)dr["OrderItemStatus"],
+                        Comment = (string)dr["Comment"],
+                        Quantity = (int)dr["Quantity"]
+                    };
+                }
+            }
+
+            return orderItem;
+        }
 
         //Method to update the status of an order item,
         //if the status of all order items is finished, the status of the whole order will be changed to finished

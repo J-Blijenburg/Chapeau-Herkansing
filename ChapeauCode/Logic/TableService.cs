@@ -11,6 +11,7 @@ namespace Logic
     public class TableService
     {
         private TableDAO tableDAO;
+        private ReceiptService receiptService;
         public TableService()
         {
             tableDAO = new TableDAO();
@@ -27,13 +28,18 @@ namespace Logic
             {
                 throw new Exception($"Table with number {tableNumber} not found");
             }
-            if (tableDAO.HasUnhandledReceipt(tableNumber) && table.Status == TableStatus.Occupied && newStatus == TableStatus.Open)
+            if (this.HasUnhandledReceipt(tableNumber) && (table.Status == TableStatus.Occupied || table.Status == TableStatus.Reserved) && newStatus == TableStatus.Open)
             {
-                throw new Exception("Can't set table to 'Free' because there are active orders or unhandled receipts");
+                throw new Exception("Can't set table to 'Free' because there are unhandled receipts");
             }
 
             tableDAO.UpdateTableStatus(tableNumber, newStatus);
         }
+        public bool HasUnhandledReceipt(int tableNumber)
+        {
+            return tableDAO.HasUnhandledReceipt(tableNumber);
+        }
+       
 
 
         public Color GetColorForTable(Table table)

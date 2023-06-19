@@ -20,7 +20,6 @@ namespace UI
         private Employee currentEmployee;
         private TableStatusOverview tableStatusOverview;
         private Receipt currentReceipt;
-        private TimeSpan orderStartDateTime;
         public TableOverview(Table table, Employee currentEmployee, TableStatusOverview tableStatusOverview)
         {
             this.InitializeComponent();
@@ -32,14 +31,13 @@ namespace UI
 
             this.EnableMenuButtons();
             this.UpdateOrderItemsListView();
-
+            this.UpdatePaymentButtonState();
             Initializer();
         }
         private void Initializer()
         {
             try
             {
-                orderStartDateTime = orderService.GetOrderElapsedTime(this.currentReceipt.ReceiptId);
                 timeUpdateTimer.Start();
                 timeUpdateTimer.Tick += timeUpdateTimer_Tick;
                 timeUpdateTimer.Interval = 1000;
@@ -125,6 +123,7 @@ namespace UI
                 currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
                 List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
                 FillListViewOrderedItems(ListViewOrderdItems, orderItems);
+                UpdatePaymentButtonState();
             }
             catch (Exception ex)
             {
@@ -179,13 +178,27 @@ namespace UI
             LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }
 
+        private void UpdatePaymentButtonState()
+        {
+            try
+            {
+                currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
+                List<OrderItem> orderItems = orderService.GetOrderedItemsByReceiptId(currentReceipt.ReceiptId);
+                BtnPayment.Enabled = orderService.AreAllItemsServed(orderItems);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void BtnPayment_Click(object sender, EventArgs e)
         {
             this.Hide();
             BillForm bill = new BillForm(table, currentEmployee);
             bill.Show();
-
         }
+
 
         private void backBtn_Click(object sender, EventArgs e)
         {
@@ -196,23 +209,23 @@ namespace UI
         private void btnServed_Click(object sender, EventArgs e)
         {
             UpdateOrderStatus(OrderItemStatus.Delivered);
+            UpdateOrderItemsListView();
         }
         private void UpdateOrderStatus(OrderItemStatus status)
         {
             if (ListViewOrderdItems.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = ListViewOrderdItems.SelectedItems[0];
-                OrderItem orderItem = selectedItem.Tag as OrderItem;
 
-                if (orderItem != null)
+                if (selectedItem.Tag is OrderItem orderItem)
                 {
                     try
                     {
                         orderService.UpdateOrderItemStatusByWaiter(orderItem.OrderItemId, status);
+                        this.UpdateOrderItemsListView();
                     }
                     catch (InvalidOperationException e)
                     {
-                        // Display the error message to the user
                         MessageBox.Show(e.Message);
                     }
                 }
@@ -233,13 +246,11 @@ namespace UI
         }
         private void timeUpdateTimer_Tick(object sender, EventArgs e)
         {
-            // Refresh the receipt
+            //refresh the receipt
             currentReceipt = receiptService.GetReceipt(this.table, currentEmployee);
 
             TimeSpan elapsedTime = orderService.GetOrderElapsedTime(currentReceipt.ReceiptId);
             orderWaitTimeLbl.Text = $"Order running for: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}";
         }
-
-
     }
 }

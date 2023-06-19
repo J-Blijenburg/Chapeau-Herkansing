@@ -65,8 +65,18 @@ namespace UI
         private void btnSignOff_Click(object sender, EventArgs e)
         {
             loggedInEmployee = null;
-            this.Close();
-            loginForm.ShowDialog();
+            this.Hide();
+            DialogResult result = loginForm.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                this.Close();
+            }
+            else
+            {
+                this.Show();
+            }
         }
+
     }
 }
