@@ -9,12 +9,14 @@ namespace Logic
 
     public class OrderService
     {
-        private const decimal VATRate = 0.15M;
+        private const double HundredPercent = 100.0;
+        private const decimal LowVatRate = 0.06m;
+        private const decimal HighVatRate = 0.21m;
+        
         OrderDAO orderDAO;
-        private TableService tableService;
+        
         public OrderService() { 
             this.orderDAO = new OrderDAO();
-            this.tableService = new TableService();
         }
         public List<MenuItem> GetMenuItemsByMenuAndCategory(Menu menu, MenuCategory category)
         {
@@ -56,12 +58,13 @@ namespace Logic
         {
             var orderItems = orderDAO.GetOrderedItemsByReceiptId(receiptId);
 
-            // If no orders found, return zero timespan
+            //als er geen orders zijn gevonden, return timespan zero
             if (orderItems.Count == 0)
             {
                 return TimeSpan.Zero;
             }
-
+            //return de minimum resulting value
+            //return de eerste order item die is geplaatst in de bestelling
             DateTime earliestOrderTime = orderItems.Min(item => item.Order.OrderDateTime);
 
             return DateTime.Now - earliestOrderTime;
@@ -96,8 +99,13 @@ namespace Logic
 
             orderDAO.UpdateOrderItemStatusByWaiter(orderItemId, orderStatus);
         }
-        public bool AreAllItemsServed(List<OrderItem> orderItems)
+        public bool AllItemsServed(List<OrderItem> orderItems)
         {
+            if (!orderItems.Any())
+            {
+                //return false if there are no order items
+                return false;
+            }
             foreach (var item in orderItems)
             {
                 if (item.OrderItemStatus != OrderItemStatus.Delivered)
@@ -110,16 +118,15 @@ namespace Logic
             return true;
         }
 
-        //TODO: CONST maken 
         public double CalculateTotalVat(List<OrderItem> orderItems)
         {
-            double totalVat = 0; //const maken ?
+            double totalVat = 0;
 
             foreach (var item in orderItems)
             {
                 if (item.MenuItem.MenuCategory != null)
                 {
-                    double vatRate = item.MenuItem.MenuCategory.VAT / 100.0;
+                    double vatRate = item.MenuItem.MenuCategory.VAT / HundredPercent;
                     double itemVat = item.MenuItem.Price * item.Quantity * vatRate;
                     totalVat += itemVat;
                 }
@@ -130,12 +137,11 @@ namespace Logic
         public decimal CalculateLowVat(List<OrderItem> orderItems)
         {
             decimal lowVat = 0;
-            decimal lowVatRate = 0.06M; //const van maken
 
             foreach (var item in orderItems)
             {
-                if ((decimal)(item.MenuItem.MenuCategory.VAT / 100.0) == lowVatRate)
-                    lowVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / 100.0);
+                if ((decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent) == LowVatRate)
+                    lowVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent);
             }
 
             return lowVat;
@@ -143,13 +149,12 @@ namespace Logic
 
         public decimal CalculateHighVat(List<OrderItem> orderItems)
         {
-            decimal highVat = 0; //const maken
-            decimal highVatRate = 0.21M; //const maken
+            decimal highVat = 0;
 
             foreach (var item in orderItems)
             {
-                if ((decimal)(item.MenuItem.MenuCategory.VAT / 100.0) == highVatRate)
-                    highVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / 100.0);
+                if ((decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent) == HighVatRate)
+                    highVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent);
             }
 
             return highVat;
@@ -157,7 +162,7 @@ namespace Logic
 
         public decimal CalculateTotalPrice(List<OrderItem> orderItems)
         {
-            decimal totalPrice = 0; //const maken ? 
+            decimal totalPrice = 0;
 
             foreach (var item in orderItems)
             {

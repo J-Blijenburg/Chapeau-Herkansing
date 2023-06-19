@@ -36,13 +36,13 @@ namespace DAL
                     EmployeeNumber = (int)dr["EmployeeNumber"],
                     Password = (string)dr["Password"],
                     IsActive = (bool)dr["IsActive"],
+                    //als het null is in database krijg je null value terug
                     RegistrationDate = dr["RegistrationDate"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["RegistrationDate"],
                     Role = (EmployeeRole)dr["Role"]
                 };
             }
             return null;
         }
-
 
     }
 }
