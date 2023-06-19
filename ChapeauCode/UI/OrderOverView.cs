@@ -254,6 +254,7 @@ namespace UI
             //else it creates and add that item
             bool itemExists = false;
 
+            //the checkstock method will check if the item has something in stock
             if (menuItem.CheckStock())
             {
                 foreach (OrderItem orderItem in listOfOrderItems)
