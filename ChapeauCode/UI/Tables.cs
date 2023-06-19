@@ -73,6 +73,8 @@ namespace UI
 
         private void btnSignOff_Click(object sender, EventArgs e)
         {
+            timeUpdateTimer.Stop();
+            tableUpdateTimer.Stop();
             loggedInEmployee = null;
             this.Dispose();
             loginForm.Show();

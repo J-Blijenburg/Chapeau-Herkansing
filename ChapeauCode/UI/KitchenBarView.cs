@@ -17,6 +17,7 @@ namespace UI
             loggedInEmployee = employee;
             txtBoxUser.Text = employee.FullName;
             CheckRoleAndSetLabels(employee.Role);
+            this.login = login;
             //initialize the timer
             InitializeTimer(login);
         }
@@ -27,7 +28,6 @@ namespace UI
             timer.Interval = 30000; // 30 seconds
             timer.Tick += Timer_Tick;
             timer.Start();
-            this.login = login;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
