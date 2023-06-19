@@ -54,12 +54,18 @@ namespace UI
             AddColumn(ListViewOrderdItems, "Comment", 100);
 
             //Add columns to the menu listviews
-            AddColumn(ListDinner, "", 375);
+            AddColumn(ListDinner, "", 325);
             AddColumn(ListDinner, "", 100);
-            AddColumn(ListDrinks, "", 375);
+            AddColumn(ListDinner, "", 50);
+
+            AddColumn(ListDrinks, "", 325);
             AddColumn(ListDrinks, "", 100);
-            AddColumn(ListLunch, "", 375);
+            AddColumn(ListDrinks, "", 50);
+
+            AddColumn(ListLunch, "", 325);
             AddColumn(ListLunch, "", 100);
+            AddColumn(ListLunch, "", 50);
+
         }
 
         private void AddColumn(ListView listView, string name, int width)
@@ -108,7 +114,8 @@ namespace UI
                     ListView listView = GetListViewByMenuType(menu.GetMenuType());
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
-                        FillListViewMenuItems(listView, orderService.GetMenuItemsByMenuAndCategory(menu, menuCategory), menuCategory.Name);
+                        menuCategory.SetMenuItems(orderService.GetMenuItemsByMenuAndCategory(menu, menuCategory));
+                        FillListViewMenuItems(listView, menuCategory.GetMenuItems(), menuCategory.Name);
                     }
                 }
             }
@@ -149,7 +156,7 @@ namespace UI
                 {
                     ListViewItem listViewItem = new ListViewItem(menuItem.Name);
                     listViewItem.SubItems.Add(menuItem.GetPriceFormat());
-                    listViewItem.SubItems.Add(menuItem.GetStock().ToString());
+                    listViewItem.SubItems.Add($"{menuItem.GetStock().ToString()}x");
                     listViewItem.Tag = menuItem;
                     listViewItem.BackColor = ColorTranslator.FromHtml("#C4C4C4");
                     listView.Items.Add(listViewItem);
@@ -247,21 +254,31 @@ namespace UI
             //else it creates and add that item
             bool itemExists = false;
 
-            foreach (OrderItem orderItem in listOfOrderItems)
+            //the checkstock method will check if the item has something in stock
+            if (menuItem.CheckStock())
             {
-                if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
+                foreach (OrderItem orderItem in listOfOrderItems)
                 {
-                    CheckAndUpdateQuantity(menuItem, orderItem);
-                    itemExists = true;
+                    if (menuItem.MenuItemId == orderItem.MenuItem.MenuItemId)
+                    {
+                        CheckAndUpdateQuantity(menuItem, orderItem);
+
+                        itemExists = true;
+                    }
+                }
+
+                if (!itemExists)
+                {
+                    CreateOrderItem(menuItem);
                 }
             }
-
-            if (!itemExists)
+            else
             {
-                CreateOrderItem(menuItem);
-            }
+                MessageBox.Show("This item is out of stock");
+            } 
         }
 
+        
         private void CreateOrderItem(MenuItem menuItem)
         {
             OrderItem orderItem = new OrderItem();
