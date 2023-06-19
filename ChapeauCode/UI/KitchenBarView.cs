@@ -141,7 +141,7 @@ namespace UI
 
         private void UpdateOrderStatus(OrderItemStatus status)
         {
-            //checks if an order is selected and updates the status of the order item to the selected status 
+            //checks if an order is selected and updates the status of the order item(s) to the selected status 
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
                 foreach(ListViewItem selectedItem in lstViewOrders.SelectedItems)
