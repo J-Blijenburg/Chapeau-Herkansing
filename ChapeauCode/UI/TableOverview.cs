@@ -72,7 +72,6 @@ namespace UI
                 MessageBox.Show($"An error occurred while enabling the menu buttons: {ex.Message}");
             }
         }
-
         private void EnableButton(Button button, Menu menu)
         {
             button.Enabled = true;
@@ -134,11 +133,11 @@ namespace UI
         }
         private void AddColumnsToListView(ListView listView)
         {
-            listView.Columns.Add("Name", 80);
+            listView.Columns.Add("Name", 70);
             listView.Columns.Add("Price", 60);
             listView.Columns.Add("Qty", 40);
-            listView.Columns.Add("Subtotal", 60);
-            listView.Columns.Add("Status", 60);
+            listView.Columns.Add("Subtotal", 50);
+            listView.Columns.Add("Status", 50);
             listView.Columns.Add("Wait time", 100);
         }
 
@@ -163,8 +162,8 @@ namespace UI
         }
         private void UpdateTotalVatAndPriceLabels(List<OrderItem> orderItems)
         {
-            double totalVat = (double)orderService.CalculateTotalVat(orderItems);
-            double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
+            double totalVat = currentReceipt.CalculateTotalVat(orderItems);
+            double totalPrice = currentReceipt.CalculateTotalPrice(orderItems);
             LblVatPrice.Text = $"€ {totalVat.ToString("N2")}";
             LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }

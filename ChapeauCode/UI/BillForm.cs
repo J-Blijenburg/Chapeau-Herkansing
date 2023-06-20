@@ -57,10 +57,12 @@ namespace UI
             //orderItems = orderService.GetOrderdItems(table);
             orderItems = orderService.GetOrderedItemsByReceiptId(receipt.ReceiptId); //haal comments op in Dao
 
-            receipt.TotalPriceExclVat = (double)orderService.CalculateTotalPrice(orderItems);
-            receipt.LowVatPrice = (double)orderService.CalculateLowVat(orderItems);
-            receipt.HighVatPrice = (double)orderService.CalculateHighVat(orderItems);
-            receipt.TotalVat = (double)orderService.CalculateTotalVat(orderItems);
+            receipt.TotalPriceExclVat = receipt.CalculateTotalPrice(orderItems);
+            receipt.LowVatPrice = receipt.CalculateLowVat(orderItems);
+            receipt.HighVatPrice = receipt.CalculateHighVat(orderItems);
+            receipt.TotalVat = receipt.CalculateTotalVat(orderItems);
+            double totalInclVat = receipt.TotalPriceExclVat + receipt.TotalVat;
+
 
             LblTotalNumber.Text = $"€ {receipt.TotalPrice.ToString("N2")}";
             LblOrderPriceNumber.Text = $"€ {receipt.TotalPriceExclVat.ToString("N2")}";
