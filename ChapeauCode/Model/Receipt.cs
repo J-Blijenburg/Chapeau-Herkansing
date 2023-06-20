@@ -17,8 +17,8 @@ namespace Model
         public double HighVatPrice { get; set; }
         public double TotalVat { get; set; }
         public double TotalPriceExclVat { get; set; }
-
-        public double TotalPrice { get { return TotalVat + TotalPriceExclVat; } }
+        private double totalPrice;
+        public double TotalPrice { get { return TotalVat + TotalPriceExclVat; } set { totalPrice = value; TotalPriceExclVat = totalPrice - TotalVat;  } }
         public double Tip { get; set; }
 
         public bool IsHandled { get; set; }

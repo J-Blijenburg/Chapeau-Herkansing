@@ -21,6 +21,8 @@ namespace UI
         {
             string employeeNumber = userNameTextBox.Text;
             string password = passwordTextbox.Text;
+            //string employeeNumber = "611527";
+            //string password = "4321";
 
             try
             {

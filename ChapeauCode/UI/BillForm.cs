@@ -24,7 +24,7 @@ namespace UI
         private PaymentMethod paymentmethod;
         private List<OrderItem> orderItems;
         private Receipt receipt;
-        RoundedButton clickedButton;
+        private RoundedButton clickedButton;
         private TableOverview tableOverview;
         public BillForm(Table table, Employee currentEmployee)
         {
@@ -124,10 +124,7 @@ namespace UI
                 return;
             }
 
-            //receipt.Payment.PaymentMethod = paymentmethod;
-
             receipt.Payments.Add(new Payment { PaymentMethod = paymentmethod });
-             var x = receipt.Payments.First().PaymentMethod = paymentmethod;
             PaymentOverView pov = new PaymentOverView(receipt, loggedInEmployee);
             this.Hide();
             pov.Show();

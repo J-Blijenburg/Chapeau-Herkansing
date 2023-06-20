@@ -80,10 +80,6 @@ namespace DAL
             UpdateReceiptTables(receipt);
             UpdatePaymentTables(receipt);
             SettabletoFree(receipt);
-
-            var sss = receipt.ReceiptId;
-            var aaa = receipt.Payments.FirstOrDefault().PaymentId;
-
             foreach (Payment payment in receipt.Payments)
             {
                 string query = "INSERT INTO ReceiptPayment ([PaymentId], [ReceiptId]) VALUES (@PaymentId, @ReceiptId);";
@@ -141,9 +137,6 @@ namespace DAL
         }
         private void UpdatePaymentTables(Receipt receipt)
         {
-            var x = receipt.Payments.First().PaymentId;
-            var s = receipt.Payments.First().PaymentMethod;
-            var b = receipt.Payments.First().PaymentMethod;
             string updateQuery = @"
              UPDATE Payment
              SET
@@ -225,23 +218,11 @@ namespace DAL
                 receipt.TotalPriceExclVat = (double)dr["TotalPrice"];
                 receipt.Tip = (double)dr["Tip"];
 
-                //foreach (var item in receipt.Payments)
-                //{
-                //    //item = new Payment();
-                //    item.PaymentId = (int)dr["PaymentId"];
-                //    item.IsPaid = (bool)dr["IsPaid"];
-                //}
-                //receipt.Payment = new Payment()
-                //{
-                //    PaymentId = (int)dr["PaymentId"],
-                //    IsPaid = (bool)dr["IsPaid"]
-                //};
                 var payment = new Payment()
                 {
                     PaymentId = (int)dr["PaymentId"],
                     IsPaid = (bool)dr["IsPaid"]
                 };
-                if(receipt.Payments.Count == 0)
                     receipt.Payments.Add(payment);
 
             }

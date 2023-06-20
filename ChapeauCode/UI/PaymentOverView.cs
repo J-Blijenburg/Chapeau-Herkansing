@@ -17,19 +17,30 @@ namespace UI
     {
         private Receipt receipt;
         private double tip;
-        private double totalInclVat;
         private double remaningBalance;
-        private static double reeiptValue;
         private List<ISplittDisplay> observers = new List<ISplittDisplay>();
         private Employee loggedInEmployee;
         private Receipt placeholder = new Receipt();
-  
+
         public PaymentOverView(Receipt receipt, Employee employee)
         {
             InitializeComponent();
             this.receipt = receipt;
             this.loggedInEmployee = employee;
-            this.placeholder = receipt;
+            this.placeholder = new Receipt
+            {
+                TotalVat = receipt.TotalVat,
+                Tip = receipt.Tip,
+                TotalPriceExclVat = receipt.TotalPriceExclVat,
+                HighVatPrice = receipt.HighVatPrice,
+                LowVatPrice = receipt.LowVatPrice,
+                Feedback =  receipt.Feedback,
+                ReceiptDateTime =  receipt.ReceiptDateTime, 
+                Payments = receipt.Payments,
+                Employee = receipt.Employee,                
+                Table = receipt.Table,      
+                ReceiptId = receipt.ReceiptId,
+            };
 
             NonCashPayment();
             LoadData();
@@ -37,6 +48,7 @@ namespace UI
         private void LoadData()
         {
             this.Refresh();
+            receipt.Payments.Clear();
             LblTotalPriceNumber.Text = receipt.TotalPrice.ToString();
         }
         private void NonCashPayment()
@@ -60,7 +72,8 @@ namespace UI
                 MessageBox.Show($"The remaining balance is €{remaningBalance}");
             }
 
-            if (receipt.Payments.First().IsPaid){
+            if (receipt.Payments.First().IsPaid)
+            {
                 this.Hide();
                 CommentQuestionForm Comment = new CommentQuestionForm(placeholder, loggedInEmployee);
                 Comment.ShowDialog();
@@ -90,7 +103,7 @@ namespace UI
         {
             ISplittDisplay observer = observers.LastOrDefault();
             observer?.Update(receipt);
-            receipt.Payments.Add(receipt.Payments.First());
+            placeholder.Payments = receipt.Payments;
         }
 
         private void BtnSetAmountPaid_Click(object sender, EventArgs e)
@@ -136,16 +149,14 @@ namespace UI
 
         private bool CheckStringToDouble(String toCheck)
         {
-            bool result = false;
             if (!String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double CheckIfNumber))
             {
                 if (!CheckIfNegativeValue(double.Parse(toCheck)))
                 {
-                    result = true;
+                    return true;
                 }
             }
-            return result;
-            //return !String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double parsedNumber) && !CheckIfNegativeValue(parsedNumber);
+            return false;
         }
 
         private void BtnSetCustomTip_Click(object sender, EventArgs e)
