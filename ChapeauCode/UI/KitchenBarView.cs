@@ -32,10 +32,9 @@ namespace UI
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            if (loggedInEmployee != null)
-            {
-                CheckWhichTypeOfOrdersToGet();
-            }
+          
+           CheckWhichTypeOfOrdersToGet();
+            
         }
 
 
