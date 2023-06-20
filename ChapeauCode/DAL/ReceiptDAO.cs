@@ -73,8 +73,7 @@ namespace DAL
 
             return ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
-        // insert payments in koppeltabel
-        // TODO update receipt in the db, with an update set query
+        // update receipt and related tables
         public void UpdateReceiptPaid(Receipt receipt)
         {
             UpdateReceiptTables(receipt);
@@ -92,6 +91,7 @@ namespace DAL
                 ExecuteEditQuery(query, sqlParameters);
             }
         }
+        // set table free
         private void SettabletoFree(Receipt receipt)
         {
             
@@ -108,8 +108,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
-        
-
+        //update receipt table
         private void UpdateReceiptTables(Receipt receipt)
         {
             string updateQuery = @"
@@ -135,6 +134,7 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
+        //update payment table
         private void UpdatePaymentTables(Receipt receipt)
         {
             string updateQuery = @"
