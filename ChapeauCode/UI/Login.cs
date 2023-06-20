@@ -34,8 +34,7 @@ namespace UI
         }
         private void ProcessSuccessfulLogin(Employee loggedInEmployee)
         {
-            ClearFields();
-            this.Hide();
+            this.Close();
             OpenFormBasedOnRole(loggedInEmployee);
         }
         private void ClearFields()
