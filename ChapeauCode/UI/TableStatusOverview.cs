@@ -19,8 +19,6 @@ namespace UI
         private TableService tableService;
         private Employee loggedInEmployee;
         private Tables tablesForm;
-        public event EventHandler TableStatusChanged;
-        private bool isFormClosing = false;
 
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee, Tables tablesForm)
         {
@@ -46,19 +44,10 @@ namespace UI
             freeBtn.Click += ChangeTableStatusButton_Click;
             occupiedBtn.Click += ChangeTableStatusButton_Click;
             reservedBtn.Click += ChangeTableStatusButton_Click;
-            this.FormClosing += TableStatusOverview_FormClosing;
         }
         private void ReloadTables(object sender, EventArgs e)
         {
             UpdateTableStatus((TableStatus)sender);
-        }
-        private void TableStatusOverview_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!isFormClosing)
-            {
-                isFormClosing = true;
-                TableStatusChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
         private void UpdateButtonSelection()
         {

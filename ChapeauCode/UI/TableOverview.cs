@@ -36,17 +36,10 @@ namespace UI
         }
         private void Initializer()
         {
-            try
-            {
                 timeUpdateTimer.Start();
                 timeUpdateTimer.Tick += timeUpdateTimer_Tick;
                 timeUpdateTimer.Interval = 1000;
                 SetLabels();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private void SetLabels()
         {
@@ -140,11 +133,11 @@ namespace UI
         }
         private void AddColumnsToListView(ListView listView)
         {
-            listView.Columns.Add("Name", 100);
+            listView.Columns.Add("Name", 70);
             listView.Columns.Add("Price", 60);
             listView.Columns.Add("Qty", 40);
-            listView.Columns.Add("Subtotal", 60);
-            listView.Columns.Add("Status", 100);
+            listView.Columns.Add("Subtotal", 50);
+            listView.Columns.Add("Status", 50);
             listView.Columns.Add("Wait time", 100);
         }
 
