@@ -20,6 +20,8 @@ namespace UI
         private Employee currentEmployee;
         private TableStatusOverview tableStatusOverview;
         private Receipt currentReceipt;
+        public event EventHandler TableReceiptStatusChanged;
+        private bool isFormClosing = false;
         public TableOverview(Table table, Employee currentEmployee, TableStatusOverview tableStatusOverview)
         {
             this.InitializeComponent();
@@ -41,6 +43,7 @@ namespace UI
                 timeUpdateTimer.Start();
                 timeUpdateTimer.Tick += timeUpdateTimer_Tick;
                 timeUpdateTimer.Interval = 1000;
+                this.FormClosing += TableOverview_FormClosing;
                 SetLabels();
             }
             catch (Exception ex)
@@ -52,6 +55,14 @@ namespace UI
         {
             LblEmployee.Text = this.currentEmployee.FirstName;
             LblTableNumber.Text = $"Table {this.table.Number}";
+        }
+        private void TableOverview_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isFormClosing)
+            {
+                isFormClosing = true;
+                TableReceiptStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
         private void EnableMenuButtons()
         {
@@ -198,8 +209,8 @@ namespace UI
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
-            this.Dispose();
-            tableStatusOverview.ShowDialog();
+            this.Hide();
+            tableStatusOverview.Show();
         }
         private void btnServed_Click(object sender, EventArgs e)
         {
