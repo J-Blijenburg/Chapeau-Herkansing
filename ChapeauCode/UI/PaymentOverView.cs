@@ -17,19 +17,29 @@ namespace UI
     {
         private Receipt receipt;
         private double tip;
-        private double totalInclVat;
-        private double remaningBalance;
-        private static double reeiptValue;
         private List<ISplittDisplay> observers = new List<ISplittDisplay>();
         private Employee loggedInEmployee;
-        private Receipt placeholder = new Receipt();
-  
+        private Receipt updatedReceipt = new Receipt();
+
         public PaymentOverView(Receipt receipt, Employee employee)
         {
             InitializeComponent();
             this.receipt = receipt;
             this.loggedInEmployee = employee;
-            this.placeholder = receipt;
+            this.updatedReceipt = new Receipt
+            {
+                TotalVat = receipt.TotalVat,
+                Tip = receipt.Tip,
+                TotalPriceExclVat = receipt.TotalPriceExclVat,
+                HighVatPrice = receipt.HighVatPrice,
+                LowVatPrice = receipt.LowVatPrice,
+                Feedback = receipt.Feedback,
+                ReceiptDateTime = receipt.ReceiptDateTime,
+                Payments = receipt.Payments,
+                Employee = receipt.Employee,
+                Table = receipt.Table,
+                ReceiptId = receipt.ReceiptId,
+            };
 
             NonCashPayment();
             LoadData();
@@ -37,15 +47,16 @@ namespace UI
         private void LoadData()
         {
             this.Refresh();
-            LblTotalPriceNumber.Text = receipt.TotalPrice.ToString();
+            LblTotalPriceNumber.Text = receipt.TotalPrice.ToString("N2");
         }
         private void NonCashPayment()
         {
-            if (!(receipt.Payments.First().PaymentMethod == PaymentMethod.Cash))
+            if (!(receipt.Payments.Last().PaymentMethod == PaymentMethod.Cash))
             {
                 LblChangeTekst.Hide();
                 LblChangeNumber.Hide();
                 BtnAddChangeAsTip.Hide();
+                LblChangeNumber.Visible = false;
             }
         }
         private void BtnPay_Click(object sender, EventArgs e)
@@ -55,14 +66,10 @@ namespace UI
 
         private void CheckPayment()
         {
-            if (receipt.TotalPrice > 0)
+            if (receipt.Payments.First().IsPaid)
             {
-                MessageBox.Show($"The remaining balance is €{remaningBalance}");
-            }
-
-            if (receipt.Payments.First().IsPaid){
                 this.Hide();
-                CommentQuestionForm Comment = new CommentQuestionForm(placeholder, loggedInEmployee);
+                CommentQuestionForm Comment = new CommentQuestionForm(updatedReceipt, loggedInEmployee);
                 Comment.ShowDialog();
             }
 
@@ -90,24 +97,35 @@ namespace UI
         {
             ISplittDisplay observer = observers.LastOrDefault();
             observer?.Update(receipt);
-            receipt.Payments.Add(receipt.Payments.First());
+            updatedReceipt.Payments = receipt.Payments;
         }
 
         private void BtnSetAmountPaid_Click(object sender, EventArgs e)
         {
             double paidAmount = ConvertValue(TbAmountPaid);
-
             if (CheckIfNegativeValue(paidAmount))
             {
-                MessageBox.Show($"A negative value {paidAmount} cannot be entered"); return;
+                MessageBox.Show($"A negative value {paidAmount.ToString("N2")} cannot be entered"); return;
+            }
+            if (paidAmount > 0 && receipt.TotalPrice > 0)
+            {
+                receipt.TotalPrice -= paidAmount;
+            }
+            if (receipt.TotalPrice < 0)
+            {
+                LblChangeNumber.Text = ( Math.Abs(receipt.TotalPrice)).ToString("N2");
+             
+                Payment payment = new Payment();
+                payment.PaymentId = receipt.Payments.First().PaymentId;
+                payment.PaymentMethod = receipt.Payments.Last().PaymentMethod;
+                if (payment.PaymentMethod == PaymentMethod.Cash)
+                    MessageBox.Show($"You have paid {paidAmount} in total, you will receive {LblChangeNumber.Text} in  change.");
+                receipt.Payments.Clear();
+                receipt.Payments.Add(payment);
+                receipt.Payments.First().IsPaid = true;
             }
 
-            if (paidAmount < receipt.TotalPrice)
-            {
-                remaningBalance = receipt.TotalPrice - paidAmount;
-                MessageBox.Show($"The remaining balance is €{remaningBalance.ToString("N2")}"); return;
-            }
-            LblChangeNumber.Text = (paidAmount - receipt.TotalPrice).ToString("N2");
+
         }
         private double ConvertValue(Control value)
         {
@@ -124,7 +142,7 @@ namespace UI
             if (CheckStringToDouble(LblChangeNumber.Text))
             {
                 this.tip = ConvertValue(LblChangeNumber);
-                receipt.Tip = tip;
+                updatedReceipt.Tip = tip;
                 LblChangeNumber.Text = 0.ToString();
                 LblCustomTip.Visible = false;
                 TbCustomTip.Visible = false;
@@ -136,16 +154,14 @@ namespace UI
 
         private bool CheckStringToDouble(String toCheck)
         {
-            bool result = false;
             if (!String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double CheckIfNumber))
             {
                 if (!CheckIfNegativeValue(double.Parse(toCheck)))
                 {
-                    result = true;
+                    return true;
                 }
             }
-            return result;
-            //return !String.IsNullOrEmpty(toCheck) && double.TryParse(toCheck, out double parsedNumber) && !CheckIfNegativeValue(parsedNumber);
+            return false;
         }
 
         private void BtnSetCustomTip_Click(object sender, EventArgs e)
@@ -155,9 +171,9 @@ namespace UI
             {
                 MessageBox.Show($"A negative value {Checktip} cannot be entered"); return;
             }
-            this.tip = Checktip;
-            receipt.Tip = tip;
+            receipt.Tip = Checktip;
             LblChangeNumber.Text = 0.ToString();
+            MessageBox.Show($"The tip has been set");
         }
 
         private void CbSplitTheBill_CheckedChanged(object sender, EventArgs e)

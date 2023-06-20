@@ -24,7 +24,7 @@ namespace UI
         private PaymentMethod paymentmethod;
         private List<OrderItem> orderItems;
         private Receipt receipt;
-        RoundedButton clickedButton;
+        private RoundedButton clickedButton;
         private TableOverview tableOverview;
         public BillForm(Table table, Employee currentEmployee)
         {
@@ -63,7 +63,8 @@ namespace UI
             receipt.TotalVat = receipt.CalculateTotalVat(orderItems);
             double totalInclVat = receipt.TotalPriceExclVat + receipt.TotalVat;
 
-            LblTotalNumber.Text = $"€ {totalInclVat.ToString("N2")}";
+
+            LblTotalNumber.Text = $"€ {receipt.TotalPrice.ToString("N2")}";
             LblOrderPriceNumber.Text = $"€ {receipt.TotalPriceExclVat.ToString("N2")}";
             LblLowVatNumber.Text = $"€ {receipt.LowVatPrice.ToString("N2")}";
             LblHighVatNumber.Text = $"€ {receipt.HighVatPrice.ToString("N2")}";
@@ -113,7 +114,6 @@ namespace UI
             BtnDebit.BackColor = Color.LightGray;
             BtnVisa.BackColor = Color.LightGray;
             button.BackColor = ColorTranslator.FromHtml("#ffb347");
-
         }
 
         private void BtnProceedToPayment_Click(object sender, EventArgs e)
@@ -124,10 +124,7 @@ namespace UI
                 return;
             }
 
-            //receipt.Payment.PaymentMethod = paymentmethod;
-
             receipt.Payments.Add(new Payment { PaymentMethod = paymentmethod });
-             var x = receipt.Payments.First().PaymentMethod = paymentmethod;
             PaymentOverView pov = new PaymentOverView(receipt, loggedInEmployee);
             this.Hide();
             pov.Show();

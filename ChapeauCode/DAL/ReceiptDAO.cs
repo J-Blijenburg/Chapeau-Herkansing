@@ -73,17 +73,12 @@ namespace DAL
 
             return ExecuteInsertQueryAndReturnId(query, sqlParameters);
         }
-        // insert payments in koppeltabel
-        // TODO update receipt in the db, with an update set query
+        // update receipt and related tables
         public void UpdateReceiptPaid(Receipt receipt)
         {
             UpdateReceiptTables(receipt);
             UpdatePaymentTables(receipt);
             SettabletoFree(receipt);
-
-            var sss = receipt.ReceiptId;
-            var aaa = receipt.Payments.FirstOrDefault().PaymentId;
-
             foreach (Payment payment in receipt.Payments)
             {
                 string query = "INSERT INTO ReceiptPayment ([PaymentId], [ReceiptId]) VALUES (@PaymentId, @ReceiptId);";
@@ -96,6 +91,7 @@ namespace DAL
                 ExecuteEditQuery(query, sqlParameters);
             }
         }
+        // set table free
         private void SettabletoFree(Receipt receipt)
         {
             
@@ -108,12 +104,11 @@ namespace DAL
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@TableStatus", TableStatus.Open),
-                new SqlParameter("@TableNumber", receipt.Table.TableId)
+                new SqlParameter("@TableNumber", receipt.Table.Number)
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
-        
-
+        //update receipt table
         private void UpdateReceiptTables(Receipt receipt)
         {
             string updateQuery = @"
@@ -139,11 +134,9 @@ namespace DAL
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
+        //update payment table
         private void UpdatePaymentTables(Receipt receipt)
         {
-            var x = receipt.Payments.First().PaymentId;
-            var s = receipt.Payments.First().PaymentMethod;
-            var b = receipt.Payments.First().PaymentMethod;
             string updateQuery = @"
              UPDATE Payment
              SET
@@ -164,37 +157,11 @@ namespace DAL
         }
         public Receipt GetReceiptByTable(Table table)
         {
-            string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, PT.PaymentId, PT.IsPaid " +
-                "FROM [Receipt] AS RT " +
-                "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
-                "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
-                "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
-                "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
-                "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
-                "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0"; 
-            SqlParameter[] sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@TableNumber", table.Number)
-            };
-
-            return CreateExistingReceipt(ExecuteSelectQuery(query, sqlParameters));
+            return CreateExistingReceipt(GetReceipt(table));
         }
         public Receipt GetReceiptByTableAndEmployee(Table table, Employee employee)
         {
-            string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, PT.PaymentId, PT.IsPaid " +
-                "FROM [Receipt] AS RT " +
-                "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
-                "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
-                "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
-                "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
-                "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
-                "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0";
-            SqlParameter[] sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@TableNumber", table.Number)
-            };
-
-            DataTable dataTable = ExecuteSelectQuery(query, sqlParameters);
+            DataTable dataTable = GetReceipt(table);
 
             if (dataTable.Rows.Count == 0)
             {
@@ -202,6 +169,24 @@ namespace DAL
             }
             return CreateExistingReceipt(dataTable);
         }
+
+        private DataTable GetReceipt(Table table)
+        {
+            string query = "SELECT RT.ReceiptId, RT.ReceiptDateTime, RT.Feedback, EM.EmployeeId, EM.FirstName, EM.LastName, EM.EmployeeNumber, EM.Password, EM.IsActive, EM.RegistrationDate, ER.Role, TE.TableId, TE.Number, TS.Status, RT.LowVatPrice, RT.HighVatPrice, RT.TotalPrice, RT.Tip, PT.PaymentId, PT.IsPaid " +
+               "FROM [Receipt] AS RT " +
+               "JOIN [Employee] AS EM ON RT.EmployeeId = EM.EmployeeId " +
+               "JOIN [EmployeeRole] AS ER ON EM.Role = ER.EmployeeRoleId " +
+               "JOIN [Table] AS TE ON RT.TableNumber = TE.Number " +
+               "JOIN [TableStatus] AS TS ON TE.Status = TS.TableStatusId " +
+               "JOIN [Payment] AS PT ON RT.PaymentId  = PT.PaymentId " +
+               "WHERE TE.Number = @TableNumber AND RT.Ishandled = 0";
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableNumber", table.Number)
+            };
+            return ExecuteSelectQuery(query, sqlParameters);
+        }
+
         private Receipt CreateExistingReceipt(DataTable dataTable)
         {
             Receipt receipt = new Receipt();
@@ -233,23 +218,11 @@ namespace DAL
                 receipt.TotalPriceExclVat = (double)dr["TotalPrice"];
                 receipt.Tip = (double)dr["Tip"];
 
-                //foreach (var item in receipt.Payments)
-                //{
-                //    //item = new Payment();
-                //    item.PaymentId = (int)dr["PaymentId"];
-                //    item.IsPaid = (bool)dr["IsPaid"];
-                //}
-                //receipt.Payment = new Payment()
-                //{
-                //    PaymentId = (int)dr["PaymentId"],
-                //    IsPaid = (bool)dr["IsPaid"]
-                //};
                 var payment = new Payment()
                 {
                     PaymentId = (int)dr["PaymentId"],
                     IsPaid = (bool)dr["IsPaid"]
                 };
-                if(receipt.Payments.Count == 0)
                     receipt.Payments.Add(payment);
 
             }

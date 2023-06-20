@@ -34,7 +34,6 @@ namespace UI
             LblAmontPaidNummer.Text = (receipt.TotalPriceExclVat + receipt.Tip + receipt.TotalVat).ToString("N2");
             LblTipAmountNummer.Text = receipt.Tip.ToString("N2");
             LblVatNummer.Text = receipt.TotalVat.ToString("N2");
-            receipt.Payments.First().IsPaid = true;
             receipt.IsHandled = true;   
         }
         //update the receipt in the database

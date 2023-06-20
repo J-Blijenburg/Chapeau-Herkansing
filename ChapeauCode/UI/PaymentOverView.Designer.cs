@@ -319,7 +319,7 @@
             MaximizeBox = false;
             Name = "PaymentOverView";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = " Payment over";
+            Text = " ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)AmountOfPeopleNr).EndInit();
             ResumeLayout(false);

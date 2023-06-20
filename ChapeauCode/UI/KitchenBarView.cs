@@ -17,6 +17,7 @@ namespace UI
             loggedInEmployee = employee;
             txtBoxUser.Text = employee.FullName;
             CheckRoleAndSetLabels(employee.Role);
+            this.login = login;
             //initialize the timer
             InitializeTimer(login);
         }
@@ -27,15 +28,13 @@ namespace UI
             timer.Interval = 30000; // 30 seconds
             timer.Tick += Timer_Tick;
             timer.Start();
-            this.login = login;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            if (loggedInEmployee != null)
-            {
-                CheckWhichTypeOfOrdersToGet();
-            }
+          
+           CheckWhichTypeOfOrdersToGet();
+            
         }
 
 
@@ -141,17 +140,19 @@ namespace UI
 
         private void UpdateOrderStatus(OrderItemStatus status)
         {
-            //checks if an order is selected and updates the status of the order item to the selected status 
+            //checks if an order is selected and updates the status of the order item(s) to the selected status 
             if (lstViewSelectedOrder.SelectedItems.Count > 0)
             {
-                // Get the selected order item
-                ListViewItem selectedItem = lstViewOrders.SelectedItems[0];
-                OrderItem orderItem = (OrderItem)selectedItem.Tag;
+                foreach(ListViewItem selectedItem in lstViewOrders.SelectedItems)
+                {
+                    OrderItem orderItem = (OrderItem)selectedItem.Tag;
+                    orderService.UpdateOrderItemStatus(orderItem.Order.OrderId, status, orderItem.OrderItemId);
+                }
 
-                orderService.UpdateOrderItemStatus(orderItem.Order.OrderId, status, orderItem.OrderItemId);
                 lstViewOrders.Items.Clear();
                 lstViewSelectedOrder.Items.Clear();
                 CheckWhichTypeOfOrdersToGet();
+
             }
             else
             {
@@ -203,7 +204,7 @@ namespace UI
             //signs off the logged in employee and closes the current form before opening the login form
             timer.Stop();
             loggedInEmployee = null;
-            this.Close();
+            this.Dispose();
             login.Show();
         }
 
