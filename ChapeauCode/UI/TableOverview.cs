@@ -20,8 +20,6 @@ namespace UI
         private Employee currentEmployee;
         private TableStatusOverview tableStatusOverview;
         private Receipt currentReceipt;
-        public event EventHandler TableReceiptStatusChanged;
-        private bool isFormClosing = false;
         public TableOverview(Table table, Employee currentEmployee, TableStatusOverview tableStatusOverview)
         {
             this.InitializeComponent();
@@ -38,31 +36,15 @@ namespace UI
         }
         private void Initializer()
         {
-            try
-            {
                 timeUpdateTimer.Start();
                 timeUpdateTimer.Tick += timeUpdateTimer_Tick;
                 timeUpdateTimer.Interval = 1000;
-                this.FormClosing += TableOverview_FormClosing;
                 SetLabels();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private void SetLabels()
         {
             LblEmployee.Text = this.currentEmployee.FirstName;
             LblTableNumber.Text = $"Table {this.table.Number}";
-        }
-        private void TableOverview_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!isFormClosing)
-            {
-                isFormClosing = true;
-                TableReceiptStatusChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
         private void EnableMenuButtons()
         {
@@ -152,11 +134,11 @@ namespace UI
         }
         private void AddColumnsToListView(ListView listView)
         {
-            listView.Columns.Add("Name", 100);
+            listView.Columns.Add("Name", 80);
             listView.Columns.Add("Price", 60);
             listView.Columns.Add("Qty", 40);
             listView.Columns.Add("Subtotal", 60);
-            listView.Columns.Add("Status", 100);
+            listView.Columns.Add("Status", 60);
             listView.Columns.Add("Wait time", 100);
         }
 

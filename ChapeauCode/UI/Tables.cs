@@ -42,17 +42,13 @@ namespace UI
                 {
                     tableButton.BackColor = tableService.GetColorForTable(table);
                     tableButton.Tag = table;
+
                     //eerst unsubscriben, preventief om te voorkomen dat de eventhandler meerdere keren wordt toegevoegd aan dezelfde
-                    
                     tableButton.Click -= TableButton_Click;
                     //geeft de object ook meteen door
                     tableButton.Click += TableButton_Click;
                 }
             }
-        }
-        private void ReloadTables(object sender, EventArgs e)
-        {
-            LoadTables();
         }
         private void TableButton_Click(object sender, EventArgs e)
         {
@@ -62,10 +58,7 @@ namespace UI
             this.Hide();
 
             TableStatusOverview tableStatusOverview = new TableStatusOverview(selectedTable, loggedInEmployee, this);
-            tableStatusOverview.TableStatusChanged += ReloadTables;
             tableStatusOverview.Show();
-            
-            
         }
         private void timeUpdateTimer_Tick(object sender, EventArgs e)
         {
@@ -75,7 +68,6 @@ namespace UI
         {
             LoadTables();
         }
-
         private void btnSignOff_Click(object sender, EventArgs e)
         {
             loggedInEmployee = null;
