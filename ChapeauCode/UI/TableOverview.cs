@@ -162,8 +162,8 @@ namespace UI
         }
         private void UpdateTotalVatAndPriceLabels(List<OrderItem> orderItems)
         {
-            double totalVat = (double)orderService.CalculateTotalVat(orderItems);
-            double totalPrice = (double)orderService.CalculateTotalPrice(orderItems);
+            double totalVat = currentReceipt.CalculateTotalVat(orderItems);
+            double totalPrice = currentReceipt.CalculateTotalPrice(orderItems);
             LblVatPrice.Text = $"€ {totalVat.ToString("N2")}";
             LblTotalPrice.Text = $"€ {totalPrice.ToString("N2")}";
         }
