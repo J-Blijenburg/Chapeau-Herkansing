@@ -10,8 +10,8 @@ namespace Logic
     public class OrderService
     {
         private const double HundredPercent = 100.0;
-        private const decimal LowVatRate = 0.06m;
-        private const decimal HighVatRate = 0.21m;
+        private const double LowVatRate = 0.06;
+        private const double HighVatRate = 0.21;
         
         OrderDAO orderDAO;
         
@@ -134,39 +134,39 @@ namespace Logic
 
             return totalVat;
         }
-        public decimal CalculateLowVat(List<OrderItem> orderItems)
+        public double CalculateLowVat(List<OrderItem> orderItems)
         {
-            decimal lowVat = 0;
+            double lowVat = 0;
 
             foreach (var item in orderItems)
             {
-                if ((decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent) == LowVatRate)
-                    lowVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent);
+                if ((double)(item.MenuItem.MenuCategory.VAT / HundredPercent) == LowVatRate)
+                    lowVat += (double)item.MenuItem.Price * item.Quantity * (double)(item.MenuItem.MenuCategory.VAT / HundredPercent);
             }
 
             return lowVat;
         }
 
-        public decimal CalculateHighVat(List<OrderItem> orderItems)
+        public double CalculateHighVat(List<OrderItem> orderItems)
         {
-            decimal highVat = 0;
+            double highVat = 0;
 
             foreach (var item in orderItems)
             {
-                if ((decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent) == HighVatRate)
-                    highVat += (decimal)item.MenuItem.Price * item.Quantity * (decimal)(item.MenuItem.MenuCategory.VAT / HundredPercent);
+                if ((double)(item.MenuItem.MenuCategory.VAT / HundredPercent) == HighVatRate)
+                    highVat += (double)item.MenuItem.Price * item.Quantity * (double)(item.MenuItem.MenuCategory.VAT / HundredPercent);
             }
 
             return highVat;
         }
 
-        public decimal CalculateTotalPrice(List<OrderItem> orderItems)
+        public double CalculateTotalPrice(List<OrderItem> orderItems)
         {
-            decimal totalPrice = 0;
+            double totalPrice = 0;
 
             foreach (var item in orderItems)
             {
-                totalPrice += (decimal)item.MenuItem.Price * item.Quantity;
+                totalPrice += (double)item.MenuItem.Price * item.Quantity;
             }
 
             return totalPrice;

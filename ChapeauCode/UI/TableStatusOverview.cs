@@ -19,8 +19,6 @@ namespace UI
         private TableService tableService;
         private Employee loggedInEmployee;
         private Tables tablesForm;
-        public event EventHandler TableStatusChanged;
-        private bool isFormClosing = false;
 
         public TableStatusOverview(Table selectedTable, Employee loggedInEmployee, Tables tablesForm)
         {
@@ -46,19 +44,6 @@ namespace UI
             freeBtn.Click += ChangeTableStatusButton_Click;
             occupiedBtn.Click += ChangeTableStatusButton_Click;
             reservedBtn.Click += ChangeTableStatusButton_Click;
-            this.FormClosing += TableStatusOverview_FormClosing;
-        }
-        private void ReloadTables(object sender, EventArgs e)
-        {
-            UpdateTableStatus((TableStatus)sender);
-        }
-        private void TableStatusOverview_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!isFormClosing)
-            {
-                isFormClosing = true;
-                TableStatusChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
         private void UpdateButtonSelection()
         {
@@ -94,26 +79,17 @@ namespace UI
         }
         private void UpdateFreeButtonState()
         {
-            try
-            {
                 freeBtn.Enabled = !tableService.HasUnhandledReceipt(selectedTable.Number);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
             tablesForm.Show();
         }
-
         private void goToTableBtn_Click(object sender, EventArgs e)
         {
             TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee, this);
             this.Hide();
-            tableOverview.TableReceiptStatusChanged += ReloadTables;
             tableOverview.Show();
 
         }
