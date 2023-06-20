@@ -79,22 +79,13 @@ namespace UI
         }
         private void UpdateFreeButtonState()
         {
-            try
-            {
                 freeBtn.Enabled = !tableService.HasUnhandledReceipt(selectedTable.Number);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
-            tablesForm.LoadTables();
             tablesForm.Show();
         }
-
         private void goToTableBtn_Click(object sender, EventArgs e)
         {
             TableOverview tableOverview = new TableOverview(selectedTable, loggedInEmployee, this);
