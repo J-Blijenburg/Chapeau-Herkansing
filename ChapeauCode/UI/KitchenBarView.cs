@@ -204,7 +204,7 @@ namespace UI
             //signs off the logged in employee and closes the current form before opening the login form
             timer.Stop();
             loggedInEmployee = null;
-            this.Close();
+            this.Dispose();
             login.Show();
         }
 
