@@ -61,9 +61,8 @@ namespace UI
             receipt.LowVatPrice = (double)orderService.CalculateLowVat(orderItems);
             receipt.HighVatPrice = (double)orderService.CalculateHighVat(orderItems);
             receipt.TotalVat = (double)orderService.CalculateTotalVat(orderItems);
-            double totalInclVat = receipt.TotalPriceExclVat + receipt.TotalVat;
 
-            LblTotalNumber.Text = $"€ {totalInclVat.ToString("N2")}";
+            LblTotalNumber.Text = $"€ {receipt.TotalPrice.ToString("N2")}";
             LblOrderPriceNumber.Text = $"€ {receipt.TotalPriceExclVat.ToString("N2")}";
             LblLowVatNumber.Text = $"€ {receipt.LowVatPrice.ToString("N2")}";
             LblHighVatNumber.Text = $"€ {receipt.HighVatPrice.ToString("N2")}";
@@ -113,7 +112,6 @@ namespace UI
             BtnDebit.BackColor = Color.LightGray;
             BtnVisa.BackColor = Color.LightGray;
             button.BackColor = ColorTranslator.FromHtml("#ffb347");
-
         }
 
         private void BtnProceedToPayment_Click(object sender, EventArgs e)
