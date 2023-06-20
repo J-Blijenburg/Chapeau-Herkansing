@@ -109,8 +109,7 @@ namespace DAL
         }  
 
         private void UpdateQuantity(OrderItem orderItem)
-        {
-            //TODO: er was nog iets met de menuitem stock
+        { 
             int newQuantity = orderItem.MenuItem.Stock - orderItem.Quantity;
             orderItem.MenuItem.Stock = newQuantity;
 

@@ -73,35 +73,6 @@ namespace UI
             listView.Columns.Add(name, width);
         }
 
-
-        //check which Menu button is imported and enable the button
-        private void EnableMenuButtons(List<Menu> menus)
-        {
-            foreach (Menu menu in menus)
-            {
-                switch (menu.GetMenuType())
-                {
-                    case MenuType.Lunch:
-                        EnableButton(BtnLunch, menu);
-                        break;
-                    case MenuType.Dinner:
-                        EnableButton(BtnDinner, menu);
-                        break;
-                    case MenuType.Drinks:
-                        EnableButton(BtnDrinks, menu);
-                        break;
-                }
-            }
-        }
-
-        private void EnableButton(Button button, Menu menu)
-        {
-            button.Enabled = true;
-            button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
-            button.Font = new Font(button.Font, FontStyle.Regular);
-            button.Text = menu.GetMenuType().ToString();
-        }
-
         //Every menu item there is from the database will be displayed instantly
         //Instead of loading them in the listview when the user clicks on the menu button
         private void DisplayAllMenuItems(List<Menu> menus)
@@ -112,6 +83,7 @@ namespace UI
                 {
                     menu.SetMenuCategories(orderService.GetMenuCategoriesByMenu(menu));
                     ListView listView = GetListViewByMenuType(menu.GetMenuType());
+
                     foreach (MenuCategory menuCategory in menu.GetMenuCategories())
                     {
                         menuCategory.SetMenuItems(orderService.GetMenuItemsByMenuAndCategory(menu, menuCategory));
@@ -167,6 +139,37 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        //check which Menu button is imported and enable the button
+        private void EnableMenuButtons(List<Menu> menus)
+        {
+            foreach (Menu menu in menus)
+            {
+                switch (menu.GetMenuType())
+                {
+                    case MenuType.Lunch:
+                        EnableButton(BtnLunch, menu);
+                        break;
+                    case MenuType.Dinner:
+                        EnableButton(BtnDinner, menu);
+                        break;
+                    case MenuType.Drinks:
+                        EnableButton(BtnDrinks, menu);
+                        break;
+                }
+            }
+        }
+
+        private void EnableButton(Button button, Menu menu)
+        {
+            button.Enabled = true;
+            button.BackColor = ColorTranslator.FromHtml("#8AD2B0");
+            button.Font = new Font(button.Font, FontStyle.Regular);
+            button.Text = menu.GetMenuType().ToString();
+        }
+
+        
 
 
         //When the user changes the category it will show the right panel
