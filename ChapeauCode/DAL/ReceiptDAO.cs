@@ -104,7 +104,7 @@ namespace DAL
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@TableStatus", TableStatus.Open),
-                new SqlParameter("@TableNumber", receipt.Table.TableId)
+                new SqlParameter("@TableNumber", receipt.Table.Number)
             };
             ExecuteEditQuery(updateQuery, sqlParameters);
         }
